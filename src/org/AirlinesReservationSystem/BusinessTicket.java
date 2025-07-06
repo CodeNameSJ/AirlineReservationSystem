@@ -1,10 +1,10 @@
-package ARS;
+package org.AirlinesReservationSystem;
 
 class BusinessTicket extends Ticket {
 	public BusinessTicket(Passenger passenger, Flight flight) {
 		super(passenger, flight, SeatClass.BUSINESS, flight.getBaseFare() * 1.5);
 	}
-	
+
 	@Override
 	public void displayDetails() {
 		System.out.println("╔═════════════════════════════ Business Ticket ══════════════════════════════╗");
