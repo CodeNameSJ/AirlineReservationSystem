@@ -1,7 +1,10 @@
 package org.AirlineReservationSystem.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.util.Objects;
@@ -14,10 +17,16 @@ import java.util.Objects;
 @Table(name = "airport")
 public class Airport {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String code;     // e.g. CGK, DEL
+
+    @Column(nullable = false, unique = true)
+    private String code; // e.g. CGK, DEL
+
+    @Column(nullable = false)
     private String city;
+
+    @Column(nullable = false)
     private String country;
 
     @Override
