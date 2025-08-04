@@ -14,7 +14,4 @@ public class ScheduleDTO {
     private LocalDateTime departure;
     private LocalDateTime arrival;
     private BigDecimal basePrice;
-
-    public ScheduleDTO(Long id, String code, String code1, LocalDateTime departure, LocalDateTime arrival, BigDecimal basePrice) {
-    }
 }

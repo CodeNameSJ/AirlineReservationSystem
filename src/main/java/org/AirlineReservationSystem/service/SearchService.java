@@ -23,7 +23,7 @@ public class SearchService {
         var flights = flightRepo.findByOriginCodeAndDestinationCode(req.getOriginCode(), req.getDestinationCode());
         return flights.stream()
                 .flatMap(f -> scheduleRepo.findByFlightIdAndDepartureBetween(f.getId(), req.getFrom(), req.getTo()).stream()
-                        .map(s -> new ScheduleDTO(s.getId(), f.getOrigin().getCode(), f.getDestination().getCode(), s.getDeparture(), s.getArrival(), s.getBasePrice()))
+                        .map(s -> new ScheduleDTO(s.getId(), f.getOrigin().getCode(), s.getDeparture(), s.getArrival(), s.getBasePrice()))
                 )
                 .collect(Collectors.toList());
     }
