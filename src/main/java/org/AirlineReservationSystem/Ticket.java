@@ -1,4 +1,4 @@
-package org.AirlinesReservationSystem;
+package org.AirlineReservationSystem;
 
 abstract class Ticket {
 	private static int nextTicketId = 1;

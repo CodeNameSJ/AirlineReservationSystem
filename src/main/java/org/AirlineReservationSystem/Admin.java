@@ -1,7 +1,7 @@
-package org.AirlinesReservationSystem;
+package org.AirlineReservationSystem;
 
-import static org.AirlinesReservationSystem.Main.exiting;
-import static org.AirlinesReservationSystem.Main.scanner;
+import static org.AirlineReservationSystem.Main.exiting;
+import static org.AirlineReservationSystem.Main.scanner;
 
 class Admin {
 

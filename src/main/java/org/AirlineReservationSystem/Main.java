@@ -1,4 +1,4 @@
-package org.AirlinesReservationSystem;
+package org.AirlineReservationSystem;
 
 import java.util.Scanner;
 

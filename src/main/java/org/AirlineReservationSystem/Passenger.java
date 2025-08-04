@@ -1,4 +1,4 @@
-package org.AirlinesReservationSystem;
+package org.AirlineReservationSystem;
 
 class Passenger {
 	private static int nextPassengerId = 1;
