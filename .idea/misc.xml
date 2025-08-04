@@ -4,7 +4,7 @@
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
-        <option value="$PROJECT_DIR$/AirlinesReservationSystem/pom.xml" />
+        <option value="$PROJECT_DIR$/AirlineReservationSystem/pom.xml" />
         <option value="$PROJECT_DIR$/pom.xml" />
       </list>
     </option>
