@@ -1,6 +1,7 @@
-package org.AirlineReservationSystem.service;
+package org.AirlineReservationSystem.controller;
 
 import org.AirlineReservationSystem.model.Schedule;
+import org.AirlineReservationSystem.service.SearchService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
