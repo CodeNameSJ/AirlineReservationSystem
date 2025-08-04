@@ -1,10 +1,7 @@
 package org.AirlineReservationSystem.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.math.BigDecimal;
@@ -14,6 +11,8 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
+@AllArgsConstructor
+@NoArgsConstructor
 @RequiredArgsConstructor
 @Entity
 @Table(name = "booking")
@@ -38,9 +37,6 @@ public class Booking {
 
     @Column(nullable = false)
     private LocalDateTime bookedAt;
-
-    public Booking(UserAccount userAccount, Schedule sched, int seatNo, BigDecimal price, LocalDateTime now) {
-    }
 
     @Override
     public final boolean equals(Object o) {

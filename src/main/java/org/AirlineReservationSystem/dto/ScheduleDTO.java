@@ -9,8 +9,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Getter
-@RequiredArgsConstructor
-@NoArgsConstructor
+@RequiredArgsConstructor@NoArgsConstructor
 @AllArgsConstructor
 public class ScheduleDTO {
     private Long scheduleId;
@@ -18,4 +17,7 @@ public class ScheduleDTO {
     private LocalDateTime departure;
     private LocalDateTime arrival;
     private BigDecimal basePrice;
+
+    public ScheduleDTO(Long id, String code, String code1, LocalDateTime departure, LocalDateTime arrival, BigDecimal basePrice) {
+    }
 }

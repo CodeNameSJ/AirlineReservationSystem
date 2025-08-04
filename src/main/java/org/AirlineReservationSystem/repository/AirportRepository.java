@@ -4,7 +4,9 @@ import org.AirlineReservationSystem.model.Airport;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface AirportRepository extends JpaRepository<Airport, Long> {
-    Airport findByCode(String code);
+    Optional<Airport> findByCode(String code);
 }

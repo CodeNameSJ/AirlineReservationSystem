@@ -1,7 +1,10 @@
 package org.AirlineReservationSystem.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.util.Objects;
@@ -20,12 +23,15 @@ public class UserAccount {
     @Column(nullable = false, unique = true)
     private String username;
 
+    @Column(nullable = false, unique = true)
+    private String email;
+
     @Column(nullable = false)
     private String password; // hashed
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Role role;
+    private UserRole role;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -38,8 +44,8 @@ public class UserAccount {
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        UserAccount userAccount = (UserAccount) o;
-        return getId() != null && Objects.equals(getId(), userAccount.getId());
+        UserAccount that = (UserAccount) o;
+        return getId() != null && Objects.equals(getId(), that.getId());
     }
 
     @Override
