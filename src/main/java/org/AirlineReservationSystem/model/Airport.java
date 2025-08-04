@@ -21,7 +21,7 @@ public class Airport {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private String code; // e.g. CGK, DEL
+    private String code;
 
     @Column(nullable = false)
     private String city;

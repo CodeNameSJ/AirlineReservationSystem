@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <form action="${pageContext.request.contextPath}/search/results" method="post">
     <label>
         <select name="origin">

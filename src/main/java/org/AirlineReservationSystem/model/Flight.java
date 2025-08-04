@@ -1,7 +1,10 @@
 package org.AirlineReservationSystem.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.util.Objects;
@@ -14,13 +17,19 @@ import java.util.Objects;
 @Table(name = "flight")
 public class Flight {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "origin_id")
     private Airport origin;
-    @ManyToOne
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "destination_id")
     private Airport destination;
-    private String aircraftType; // B737, A380
+
+    @Column(nullable = false)
+    private String aircraftType;
 
     @Override
     public final boolean equals(Object o) {

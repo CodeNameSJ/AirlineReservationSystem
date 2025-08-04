@@ -1,7 +1,10 @@
 package org.AirlineReservationSystem.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.math.BigDecimal;
@@ -16,17 +19,27 @@ import java.util.Objects;
 @Table(name = "booking")
 public class Booking {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
-    private User user;
-    @ManyToOne
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_id")
+    private UserAccount user;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "schedule_id")
     private Schedule schedule;
-    private int seatNumber;
+
+    @Column(nullable = false)
+    private Integer seatNumber;
+
+    @Column(nullable = false)
     private BigDecimal pricePaid;
+
+    @Column(nullable = false)
     private LocalDateTime bookedAt;
 
-    public Booking(User user, Schedule sched, int seatNo, BigDecimal price, LocalDateTime now) {
+    public Booking(UserAccount userAccount, Schedule sched, int seatNo, BigDecimal price, LocalDateTime now) {
     }
 
     @Override
