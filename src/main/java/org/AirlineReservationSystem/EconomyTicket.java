@@ -1,4 +1,4 @@
-package org.AirlinesReservationSystem;
+package org.AirlineReservationSystem;
 
 class EconomyTicket extends Ticket {
 

@@ -1,4 +1,4 @@
-package org.AirlinesReservationSystem;
+package org.AirlineReservationSystem;
 
 enum BookingStatus {
 	ACTIVE, CANCELLED

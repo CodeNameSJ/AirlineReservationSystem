@@ -1,6 +1,6 @@
-package org.AirlinesReservationSystem;
+package org.AirlineReservationSystem;
 
-import static org.AirlinesReservationSystem.Main.scanner;
+import static org.AirlineReservationSystem.Main.scanner;
 
 class BookingSystem implements Bookable {
 	private final Flight[] flights = new Flight[10];

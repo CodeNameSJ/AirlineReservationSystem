@@ -1,4 +1,4 @@
-package org.AirlinesReservationSystem;
+package org.AirlineReservationSystem;
 
 class BusinessTicket extends Ticket {
 	public BusinessTicket(Passenger passenger, Flight flight) {
