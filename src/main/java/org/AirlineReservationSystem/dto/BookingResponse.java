@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@RequiredArgsConstructor
 public class BookingResponse {
     private Long bookingId;
     private Integer seatNumber;
