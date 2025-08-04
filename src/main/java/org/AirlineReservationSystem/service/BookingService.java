@@ -32,7 +32,7 @@ public class BookingService {
         if (bookingRepo.countByScheduleIdAndSeatNumber(req.getScheduleId(), req.getSeatNumber()) > 0)
             throw new IllegalStateException("Seat already booked");
         var user = userRepo.findById(req.getUserId()).orElseThrow(() -> new NoSuchElementException("User not found"));
-        BigDecimal discount = BigDecimal.valueOf(user.getTier().getDiscountPercent()).divide(BigDecimal.valueOf(100),2,RoundingMode.HALF_UP);
+        BigDecimal discount = BigDecimal.valueOf(user.getTier().getDiscountPercent()).divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
         BigDecimal price = schedule.getBasePrice().multiply(BigDecimal.ONE.subtract(discount));
         var booking = new Booking();
         booking.setUser(user);

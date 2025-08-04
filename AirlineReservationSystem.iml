@@ -2,7 +2,7 @@
 <module type="JAVA_MODULE" version="4">
   <component name="AdditionalModuleElements">
     <content url="file://$MODULE_DIR$" dumb="true">
-      <excludeFolder url="file://$MODULE_DIR$/OOP_Version" />
+      <excludeFolder url="file://$MODULE_DIR$/CoreJava_OOP_Version" />
     </content>
   </component>
   <component name="FacetManager">
