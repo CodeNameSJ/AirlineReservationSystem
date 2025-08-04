@@ -1,7 +1,6 @@
 package org.AirlineReservationSystem.repository;
 
 import org.AirlineReservationSystem.model.Booking;
-import org.AirlineReservationSystem.model.Schedule;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
