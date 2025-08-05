@@ -24,9 +24,15 @@ public class UserService {
     }
 
     public boolean registerUser(UserRegistrationDTO dto) {
-        if (userRepo.existsByUsername(dto.getUsername()) || userRepo.existsByEmail(dto.getEmail())) {
-            return false;
+        if (!dto.getPassword().equals(dto.getConfirmPassword())) {
+            throw new IllegalArgumentException("Passwords do not match");
         }
+        userRepo.findByEmail(dto.getEmail()).ifPresent(u ->
+                { throw new IllegalArgumentException("Email already in use"); }
+        );
+        userRepo.findByUsername(dto.getUsername()).ifPresent(u ->
+                { throw new IllegalArgumentException("Username already taken"); }
+        );
         User user = new User();
         user.setUsername(dto.getUsername());
         user.setEmail(dto.getEmail());

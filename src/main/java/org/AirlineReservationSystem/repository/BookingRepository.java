@@ -1,7 +1,9 @@
 package org.AirlineReservationSystem.repository;
 
 import org.AirlineReservationSystem.model.Booking;
+import org.AirlineReservationSystem.model.Flight;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -11,4 +13,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     long countByScheduleIdAndSeatNumber(Long scheduleId, Integer seatNumber);
 
     List<Booking> findByUserId(Long userId);
+
+    @Query("SELECT COALESCE(SUM(b.seatsBooked),0) FROM Booking b WHERE b.flight = :flight")
+    Integer totalSeatsBookedByFlight(Flight flight);
 }

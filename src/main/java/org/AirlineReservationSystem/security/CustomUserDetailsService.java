@@ -1,8 +1,7 @@
-package org.AirlineReservationSystem.service;
+package org.AirlineReservationSystem.security;
 
 import org.AirlineReservationSystem.model.User;
 import org.AirlineReservationSystem.repository.UserRepository;
-import org.AirlineReservationSystem.security.CustomUserDetails;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,9 +17,11 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepo.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = userRepo.findByEmail(email)
+                .orElseThrow(() ->
+                        new UsernameNotFoundException("No user found with email: " + email)
+                );
         return new CustomUserDetails(user);
     }
 }

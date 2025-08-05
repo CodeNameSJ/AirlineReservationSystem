@@ -1,41 +1,41 @@
 package org.AirlineReservationSystem.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.proxy.HibernateProxy;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Getter
 @Setter
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "booking")
+@Table(name = "bookings")
 public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "user_id")
+    // who booked
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "schedule_id")
-    private Schedule schedule;
+    // which flight
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "flight_id", nullable = false)
+    private Flight flight;
 
     @Column(nullable = false)
-    private Integer seatNumber;
+    private Integer seatsBooked;
 
     @Column(nullable = false)
-    private BigDecimal pricePaid;
-
-    @Column(nullable = false)
-    private LocalDateTime bookedAt;
+    private LocalDateTime bookingTime = LocalDateTime.now();
 
     @Override
     public final boolean equals(Object o) {

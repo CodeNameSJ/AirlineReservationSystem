@@ -7,6 +7,8 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.proxy.HibernateProxy;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Objects;
 
 @Getter
@@ -20,16 +22,29 @@ public class Flight {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "origin_id")
-    private Airport origin;
-
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "destination_id")
-    private Airport destination;
+    @Column(nullable = false)
+    private String origin;
 
     @Column(nullable = false)
-    private String aircraftType;
+    private String destination;
+
+    @Column(name = "departure_date", nullable = false)
+    private LocalDate departureDate;
+
+    @Column(name = "departure_time", nullable = false)
+    private LocalTime departureTime;
+
+    @Column(name = "arrival_date", nullable = false)
+    private LocalDate arrivalDate;
+
+    @Column(name = "arrival_time", nullable = false)
+    private LocalTime arrivalTime;
+
+    @Column(nullable = false)
+    private Integer capacity;
+
+    @Column(nullable = false)
+    private Double price;
 
     @Override
     public final boolean equals(Object o) {
