@@ -1,36 +1,52 @@
 package org.AirlineReservationSystem.service;
 
 import org.AirlineReservationSystem.dto.UserRegistrationDTO;
-import org.AirlineReservationSystem.model.Tier;
-import org.AirlineReservationSystem.model.UserAccount;
+import org.AirlineReservationSystem.model.User;
 import org.AirlineReservationSystem.model.UserRole;
-import org.AirlineReservationSystem.repository.UserAccountRepository;
+import org.AirlineReservationSystem.model.UserTier;
+import org.AirlineReservationSystem.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
-	
-	private final UserAccountRepository userRepo;
-	
-	private final PasswordEncoder passwordEncoder;
-	
-	public UserService(UserAccountRepository userRepo, PasswordEncoder passwordEncoder) {
-		this.userRepo = userRepo;
-		this.passwordEncoder = passwordEncoder;
-	}
-	
-	public void register(UserRegistrationDTO dto) {
-		UserAccount user = new UserAccount();
-		user.setUsername(dto.getUsername());
-		user.setEmail(dto.getEmail());
-		user.setPassword(passwordEncoder.encode(dto.getPassword()));
-		user.setRole(UserRole.CUSTOMER);
-		user.setTier(Tier.SILVER);
-		userRepo.save(user);
-	}
-	
-	public UserAccount findByUsername(String username) {
-		return userRepo.findByUsername(username).orElse(null);
-	}
+
+    private final UserRepository userRepo;
+
+    private final PasswordEncoder passwordEncoder;
+
+    public UserService(UserRepository userRepo, PasswordEncoder passwordEncoder) {
+        this.userRepo = userRepo;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    public User findByUsername(String username) {
+        return userRepo.findByUsername(username).orElse(null);
+    }
+
+    public User validateUser(String username, String password) {
+        return userRepo.findByUsernameAndPassword(username, password);
+    }
+
+    public boolean registerUser(UserRegistrationDTO dto) {
+        if (userRepo.existsByUsername(dto.getUsername()) || userRepo.existsByEmail(dto.getEmail())) {
+            return false;
+        }
+        User user = new User();
+        user.setUsername(dto.getUsername());
+        user.setEmail(dto.getEmail());
+        user.setPassword(passwordEncoder.encode(dto.getPassword()));
+        user.setUserRole(UserRole.CUSTOMER);
+        user.setUserTier(UserTier.SILVER);
+        userRepo.save(user);
+        return true;
+    }
+
+    public boolean isUsernameTaken(String username) {
+        return userRepo.existsByUsername(username);
+    }
+
+    public boolean isEmailTaken(String email) {
+        return userRepo.existsByEmail(email);
+    }
 }

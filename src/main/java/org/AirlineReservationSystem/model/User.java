@@ -14,8 +14,8 @@ import java.util.Objects;
 @ToString
 @RequiredArgsConstructor
 @Entity
-@Table(name = "user_account")
-public class UserAccount {
+@Table(name = "user")
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,15 +27,15 @@ public class UserAccount {
     private String email;
 
     @Column(nullable = false)
-    private String password; // hashed
+    private String password;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private UserRole role;
+    private UserRole userRole;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Tier tier;
+    private UserTier userTier;
 
     @Override
     public final boolean equals(Object o) {
@@ -44,7 +44,7 @@ public class UserAccount {
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        UserAccount that = (UserAccount) o;
+        User that = (User) o;
         return getId() != null && Objects.equals(getId(), that.getId());
     }
 

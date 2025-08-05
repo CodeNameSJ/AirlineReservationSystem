@@ -10,11 +10,7 @@
 <body>
 <header>
     <h1>Airline Reservation System</h1>
-    <nav>
-        <a href="<c:url value='/'/>">Home</a> |
-        <a href="<c:url value='/login'/>">Login</a> |
-        <a href="<c:url value='/register'/>">Register</a>
-    </nav>
+    <%@ include file="/WEB-INF/views/fragments/header.jsp" %>
 </header>
 
 <main>
@@ -51,7 +47,7 @@
 </main>
 
 <footer>
-    <p>&copy; 2025 Airline Reservation System</p>
+    <%@ include file="/WEB-INF/views/fragments/footer.jsp" %>
 </footer>
 </body>
 </html>
