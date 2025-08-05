@@ -2,7 +2,7 @@
 <nav>
   <ul>
     <li><a href="<c:url value='/'/>">Home</a></li>
-    <li><a href="<c:url value='/search'/>">Search Flights</a></li>
+    <li><a href="<c:url value='/search/'/>">Search Flights</a></li>
     <c:choose>
       <c:when test="${not empty sessionScope.loggedInUser}">
         <li><a href="<c:url value='/booking/history'/>">My Bookings</a></li>

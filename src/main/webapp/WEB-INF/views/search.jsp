@@ -19,30 +19,14 @@
 
 <main>
     <h2>Search Flights</h2>
-    <form:form modelAttribute="searchRequest" action="${pageContext.request.contextPath}/search/results" method="post">
-        <div class="form-group">
-            <label for="originCode">Origin Airport Code:</label>
-            <form:input path="originCode" id="originCode" required="true"/>
-        </div>
-        <div class="form-group">
-            <label for="destinationCode">Destination Airport Code:</label>
-            <form:input path="destinationCode" id="destinationCode" required="true"/>
-        </div>
-        <div class="form-group">
-            <label for="date">Travel Date:</label>
-            <input type="date" id="date" name="date" required/>
-        </div>
-        <button type="submit">Search</button>
-    </form:form>
-
 
     <form:form modelAttribute="searchRequest" action="${pageContext.request.contextPath}/search/results" method="post">
         <div>
             <label for="originCode">Origin:</label>
             <form:select path="originCode" id="originCode">
-                <form:option value="" label="-- Select Airport --" />
+                <form:option value="" label="-- Select Airport --"/>
                 <c:forEach var="a" items="${airports}">
-                    <form:option value="${a.code}" label="${a.city} (${a.code})" />
+                    <form:option value="${a.code}" label="${a.city} (${a.code})"/>
                 </c:forEach>
             </form:select>
         </div>
@@ -50,16 +34,16 @@
         <div>
             <label for="destinationCode">Destination:</label>
             <form:select path="destinationCode" id="destinationCode">
-                <form:option value="" label="-- Select Airport --" />
+                <form:option value="" label="-- Select Airport --"/>
                 <c:forEach var="a" items="${airports}">
-                    <form:option value="${a.code}" label="${a.city} (${a.code})" />
+                    <form:option value="${a.code}" label="${a.city} (${a.code})"/>
                 </c:forEach>
             </form:select>
         </div>
 
         <div>
             <label for="date">Travel Date:</label>
-            <input type="date" id="date" name="date" required="true" />
+            <input type="date" id="date" name="date" required="true"/>
         </div>
 
         <button type="submit">Search</button>
