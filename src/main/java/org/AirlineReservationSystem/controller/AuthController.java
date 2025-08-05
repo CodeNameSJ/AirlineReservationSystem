@@ -1,9 +1,6 @@
 package org.AirlineReservationSystem.controller;
 
-import jakarta.servlet.http.HttpSession;
-import org.AirlineReservationSystem.dto.LoginDTO;
 import org.AirlineReservationSystem.dto.UserRegistrationDTO;
-import org.AirlineReservationSystem.model.User;
 import org.AirlineReservationSystem.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,29 +33,7 @@ public class AuthController {
     }
 
     @GetMapping("/login")
-    public String loginPage(Model model) {
-        model.addAttribute("loginDTO", new LoginDTO());
+    public String loginPage() {
         return "login";
-    }
-
-    @PostMapping("/login")
-    public String processLogin(@ModelAttribute("loginDTO") LoginDTO loginDTO,
-                               HttpSession session,
-                               Model model) {
-        User user = userService.validateUser(loginDTO.getUsername(), loginDTO.getPassword());
-        System.out.println(loginDTO.getUsername() + loginDTO.getPassword());
-        if (user != null) {
-            session.setAttribute("loggedInUser", user);
-            return "redirect:/home";
-        } else {
-            model.addAttribute("loginError", "Invalid username or password");
-            return "login";
-        }
-    }
-
-    @GetMapping("/logout")
-    public String logout(HttpSession session) {
-        session.invalidate();
-        return "redirect:/login?logout";
     }
 }
