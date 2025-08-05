@@ -7,7 +7,9 @@
     <link rel="stylesheet" href="<c:url value='../../../resources/css/style.css'/>"/>
 </head>
 <body>
-<%@ include file="../fragments/header.jsp" %>
+<header>
+    <%@ include file="../fragments/header.jsp" %>
+</header>
 <main>
     <h2>All Flights</h2>
     <table>
@@ -38,6 +40,8 @@
         <button type="submit">Add</button>
     </form>
 </main>
-<%@ include file="../fragments/footer.jsp" %>
+<footer>
+    <%@ include file="../fragments/footer.jsp" %>
+</footer>
 </body>
 </html>

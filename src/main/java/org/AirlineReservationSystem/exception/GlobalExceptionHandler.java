@@ -11,4 +11,10 @@ public class GlobalExceptionHandler {
         model.addAttribute("message", ex.getMessage());
         return "error";
     }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public String handleBadRequest(IllegalArgumentException ex, Model mmodel) {
+        mmodel.addAttribute("message", ex.getMessage());
+        return "error";
+    }
 }

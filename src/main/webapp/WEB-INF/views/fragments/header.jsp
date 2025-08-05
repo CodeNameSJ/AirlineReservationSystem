@@ -7,7 +7,7 @@
 
     <c:choose>
       <c:when test="${not empty sessionScope.loggedInUser}">
-        <li><a href="<c:url value='/booking/history'/>">My Bookings</a></li>
+        <li><a href="<c:url value='booking/history'/>">My Bookings</a></li>
         <li><a href="<c:url value='/logout'/>">Logout</a></li>
         <li style="color: white;">Welcome, ${sessionScope.loggedInUser.username}</li>
       </c:when>

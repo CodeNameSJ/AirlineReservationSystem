@@ -26,14 +26,12 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public String processRegister(@ModelAttribute("registerDTO") UserRegistrationDTO dto,
+    public String processRegister(@ModelAttribute("user") UserRegistrationDTO dto,
                                   Model model) {
         if (!userService.registerUser(dto)) {
             model.addAttribute("registerError", "Username or Email already exists.");
             return "register";
         }
-        userService.registerUser(dto);
-
         return "redirect:/login?registerSuccess";
     }
 
@@ -48,7 +46,7 @@ public class AuthController {
                                HttpSession session,
                                Model model) {
         User user = userService.validateUser(loginDTO.getUsername(), loginDTO.getPassword());
-
+        System.out.println(loginDTO.getUsername() + loginDTO.getPassword());
         if (user != null) {
             session.setAttribute("loggedInUser", user);
             return "redirect:/home";

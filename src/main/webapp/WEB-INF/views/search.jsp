@@ -5,12 +5,12 @@
 <head>
     <meta charset="UTF-8"/>
     <title>Flight Search</title>
-    <link rel="stylesheet" href="<c:url value='/resources/css/style.css'/>"/>
+    <link rel="stylesheet" href="<c:url value='../../resources/css/style.css'/>"/>
 </head>
 <body>
 <header>
     <h1>Airline Reservation System</h1>
-    <%@ include file="/WEB-INF/views/fragments/header.jsp" %>
+    <%@ include file="fragments/header.jsp" %>
 </header>
 
 <main>
@@ -47,7 +47,7 @@
 </main>
 
 <footer>
-    <%@ include file="/WEB-INF/views/fragments/footer.jsp" %>
+    <%@ include file="fragments/footer.jsp" %>
 </footer>
 </body>
 </html>
