@@ -1,11 +1,14 @@
 package org.AirlineReservationSystem.service;
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import org.AirlineReservationSystem.dto.UserRegistrationDTO;
 import org.AirlineReservationSystem.model.UserAccount;
 import org.AirlineReservationSystem.model.UserRole;
 import org.AirlineReservationSystem.repository.UserAccountRepository;
 =======
+=======
+>>>>>>> Stashed changes
 import lombok.RequiredArgsConstructor;
 import org.AirlineReservationSystem.model.Role;
 import org.AirlineReservationSystem.model.User;
@@ -13,6 +16,9 @@ import org.AirlineReservationSystem.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,14 +33,20 @@ public class UserService implements UserDetailsService {
 	private final PasswordEncoder encoder;
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     private final UserAccountRepository userRepo;
 =======
+=======
+>>>>>>> Stashed changes
 	@Transactional(readOnly = true)
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User user = userRepo.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
 		return org.springframework.security.core.userdetails.User.withUsername(user.getUsername()).password(user.getPassword()).roles(user.getRole().name()).build();
 	}
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
 	@Transactional
@@ -45,6 +57,7 @@ public class UserService implements UserDetailsService {
 		return userRepo.save(user);
 	}
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
     public UserService(UserAccountRepository userRepo, PasswordEncoder passwordEncoder) {
         this.userRepo = userRepo;
@@ -63,6 +76,11 @@ public class UserService implements UserDetailsService {
     public UserAccount findByUsername(String username) {
         return userRepo.findByUsername(username).orElse(null);
     }
+=======
+	public Optional<User> findByUsername(String username) {
+		return userRepo.findByUsername(username);
+	}
+>>>>>>> Stashed changes
 =======
 	public Optional<User> findByUsername(String username) {
 		return userRepo.findByUsername(username);

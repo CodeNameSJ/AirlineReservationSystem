@@ -8,6 +8,11 @@ import lombok.ToString;
 import org.hibernate.proxy.HibernateProxy;
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+>>>>>>> Stashed changes
 =======
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -24,6 +29,7 @@ public class Flight {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+<<<<<<< Updated upstream
 
 <<<<<<< Updated upstream
     @ManyToOne(optional = false)
@@ -37,6 +43,9 @@ public class Flight {
     @Column(nullable = false)
     private String aircraftType;
 =======
+=======
+
+>>>>>>> Stashed changes
 	@Column(nullable = false, unique = true)
 	private String flightNumber;
 
@@ -70,6 +79,9 @@ public class Flight {
 		Flight flight = (Flight) o;
 		return getId() != null && Objects.equals(getId(), flight.getId());
 	}
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
 	@Override

@@ -1,6 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -34,6 +35,8 @@
   </main>
   <%@ include file="fragments/footer.jsp" %>
 =======
+=======
+>>>>>>> Stashed changes
 <html>
 <head>
     <title>Search Flights</title>
@@ -73,6 +76,9 @@
         </tr>
     </c:forEach>
 </table>
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 </body>
 </html>

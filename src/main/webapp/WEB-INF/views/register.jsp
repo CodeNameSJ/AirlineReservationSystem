@@ -1,6 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -32,6 +33,11 @@
 <html>
 <head><title>User Registration</title></head>
 <body>
+=======
+<html>
+<head><title>User Registration</title></head>
+<body>
+>>>>>>> Stashed changes
 <h1>Register</h1>
 <form action="<c:url value='./register'/>" method="post">
 	Name: <input name="name" value="${user.name}"/><br/>
@@ -42,6 +48,9 @@
 </form>
 <c:if test="${errorMessage != null}"><p style="color:red">${errorMessage}</p></c:if>
 <a href="<c:url value='./loginUser'/>">Back to Login</a>
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 </body>
 </html>

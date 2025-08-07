@@ -1,6 +1,7 @@
 package org.AirlineReservationSystem.controller;
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import org.AirlineReservationSystem.dto.ScheduleDTO;
 import org.AirlineReservationSystem.dto.SearchRequest;
 import org.AirlineReservationSystem.model.Airport;
@@ -66,6 +67,8 @@ public class FlightController {
         model.addAttribute("results", list);
         return "results";
 =======
+=======
+>>>>>>> Stashed changes
 import org.AirlineReservationSystem.model.Flight;
 import org.AirlineReservationSystem.service.FlightService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -114,6 +117,9 @@ public class FlightController {
         model.addAttribute("date", date.map(LocalDate::toString).orElse(""));
 
         return "flight-list";
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     }
 }

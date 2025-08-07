@@ -7,6 +7,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+import java.time.LocalDateTime;
+>>>>>>> Stashed changes
 =======
 import java.time.LocalDateTime;
 >>>>>>> Stashed changes
@@ -27,11 +31,14 @@ public class FlightService {
 	}
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     public void save(Flight f) {
         flightRepo.save(f);
     }
 }
 =======
+=======
+>>>>>>> Stashed changes
 	public Optional<Flight> findById(Long id) {
 		return flightRepo.findById(id);
 	}
@@ -58,5 +65,9 @@ public class FlightService {
 		flight.setBusinessSeatsAvailable(flight.getBusinessSeatsAvailable() + businessDelta);
 		flightRepo.save(flight);
 	}
+<<<<<<< Updated upstream
+}
+>>>>>>> Stashed changes
+=======
 }
 >>>>>>> Stashed changes

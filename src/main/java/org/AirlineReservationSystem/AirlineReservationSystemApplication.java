@@ -7,9 +7,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class AirlineReservationSystemApplication {
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     public static void main(String[] args) {
         SpringApplication.run(AirlineReservationSystemApplication.class, args);
 =======
+=======
+>>>>>>> Stashed changes
 	public static void main(String[] args) {
 		SpringApplication.run(AirlineReservationSystemApplication.class, args);
 	}
