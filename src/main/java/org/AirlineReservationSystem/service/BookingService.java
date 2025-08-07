@@ -1,14 +1,21 @@
 package org.AirlineReservationSystem.service;
 
 import jakarta.transaction.Transactional;
+import org.AirlineReservationSystem.dto.BookingRequest;
+import org.AirlineReservationSystem.dto.BookingResponse;
 import org.AirlineReservationSystem.model.Booking;
 import org.AirlineReservationSystem.model.Flight;
 import org.AirlineReservationSystem.model.User;
 import org.AirlineReservationSystem.repository.BookingRepository;
 import org.AirlineReservationSystem.repository.FlightRepository;
-import org.AirlineReservationSystem.repository.ScheduleRepository;
 import org.AirlineReservationSystem.repository.UserRepository;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class BookingService {
@@ -58,5 +65,23 @@ public class BookingService {
         booking.setSeatsBooked(seats);
 
         return bookingRepo.save(booking);
+    }
+
+    public List<Booking> getUserBookings(Long userId) {
+        User user = userRepo.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        return bookingRepo.findAllByUserOrderByBookingTimeDesc(user);
+    }
+
+    @Transactional
+    public void cancelBooking(Long bookingId, Long userId) {
+        Booking booking = bookingRepo.findById(bookingId)
+                .orElseThrow(() -> new IllegalArgumentException("Booking not found"));
+
+        if (!booking.getUser().getId().equals(userId)) {
+            throw new IllegalStateException("Unauthorized booking cancellation");
+        }
+
+        bookingRepo.delete(booking);
     }
 }
