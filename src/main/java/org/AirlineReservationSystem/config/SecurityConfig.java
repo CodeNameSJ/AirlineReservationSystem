@@ -23,16 +23,7 @@ public class SecurityConfig {
 	public static class AdminSecurityConfig {
 		@Bean
 		public SecurityFilterChain adminFilterChain(HttpSecurity http) throws Exception {
-			http.securityMatcher("/admin/**")
-					.authorizeHttpRequests(auth -> auth.anyRequest().hasRole("ADMIN"))
-					.formLogin(form -> form
-							                   .loginPage("/loginAdmin")
-							                   .loginProcessingUrl("/admin_login")
-							                   .defaultSuccessUrl("/admin/dashboard"))
-					.logout(logout -> logout
-							                  .logoutUrl("/admin_logout")
-							                  .logoutSuccessUrl("/loginAdmin?logout"))
-					.csrf(AbstractHttpConfigurer::disable);
+			http.securityMatcher("/admin/**").authorizeHttpRequests(auth -> auth.anyRequest().hasRole("ADMIN")).formLogin(form -> form.loginPage("/loginAdmin").loginProcessingUrl("/admin_login").defaultSuccessUrl("/admin/dashboard")).logout(logout -> logout.logoutUrl("/admin_logout").logoutSuccessUrl("/loginAdmin?logout")).csrf(AbstractHttpConfigurer::disable);
 
 			return http.build();
 		}
@@ -44,16 +35,7 @@ public class SecurityConfig {
 	public static class UserSecurityConfig {
 		@Bean
 		public SecurityFilterChain userFilterChain(HttpSecurity http) throws Exception {
-			http.securityMatcher("/user/**")
-					.authorizeHttpRequests(auth -> auth.anyRequest().hasRole("USER"))
-					.formLogin(form -> form
-							                   .loginPage("/loginUser")
-							                   .loginProcessingUrl("/user_login")
-							                   .defaultSuccessUrl("/user/home"))
-					.logout(logout -> logout
-							                  .logoutUrl("/user_logout")
-							                  .logoutSuccessUrl("/loginUser?logout"))
-					.csrf(AbstractHttpConfigurer::disable);
+			http.securityMatcher("/user/**").authorizeHttpRequests(auth -> auth.anyRequest().hasRole("USER")).formLogin(form -> form.loginPage("/loginUser").loginProcessingUrl("/user_login").defaultSuccessUrl("/user/home")).logout(logout -> logout.logoutUrl("/user_logout").logoutSuccessUrl("/loginUser?logout")).csrf(AbstractHttpConfigurer::disable);
 
 			return http.build();
 		}
@@ -62,13 +44,7 @@ public class SecurityConfig {
 	// Public pages and general config
 	@Bean
 	public SecurityFilterChain publicFilterChain(HttpSecurity http) throws Exception {
-		http
-				.authorizeHttpRequests(auth -> auth
-						                               .requestMatchers("/login*", "/register", "/css/**").permitAll()
-						                               .anyRequest().authenticated()
-				)
-				.formLogin(AbstractHttpConfigurer::disable)
-				.csrf(AbstractHttpConfigurer::disable);
+		http.authorizeHttpRequests(auth -> auth.requestMatchers("/login*", "/register", "/css/**", "/user_login", "/admin_login").permitAll().anyRequest().authenticated()).formLogin(AbstractHttpConfigurer::disable).csrf(AbstractHttpConfigurer::disable);
 
 		return http.build();
 	}
