@@ -1,48 +1,44 @@
 package org.AirlineReservationSystem.service;
 
-import org.AirlineReservationSystem.dto.UserRegistrationDTO;
+import lombok.RequiredArgsConstructor;
 import org.AirlineReservationSystem.model.Role;
 import org.AirlineReservationSystem.model.User;
-import org.AirlineReservationSystem.model.UserTier;
-import org.AirlineReservationSystem.repository.RoleRepository;
 import org.AirlineReservationSystem.repository.UserRepository;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
-public class UserService {
+@RequiredArgsConstructor
+public class UserService implements UserDetailsService {
+	private final UserRepository userRepo;
+	private final PasswordEncoder encoder;
 
-    private final UserRepository userRepo;
-    private final RoleRepository roleRepo;
+	@Transactional(readOnly = true)
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		User user = userRepo.findByUsername(username)
+				.orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
+		return org.springframework.security.core.userdetails.User.withUsername(user.getUsername())
+				.password(user.getPassword())
+				.roles(user.getRole().name())
+				.build();
+	}
 
-    private final PasswordEncoder passwordEncoder;
+	@Transactional
+	public User register(User user) {
+		// hash password and set role
+		user.setPassword(encoder.encode(user.getPassword()));
+		user.setRole(Role.USER);
+		return userRepo.save(user);
+	}
 
-    public UserService(UserRepository userRepo, PasswordEncoder passwordEncoder, RoleRepository roleRepo) {
-        this.userRepo = userRepo;
-        this.passwordEncoder = passwordEncoder;
-        this.roleRepo = roleRepo;
-    }
-
-    public boolean registerUser(UserRegistrationDTO dto) {
-        if (!dto.getPassword().equals(dto.getConfirmPassword())) {
-            throw new IllegalArgumentException("Passwords do not match");
-        }
-        userRepo.findByEmail(dto.getEmail()).ifPresent(u ->
-                { throw new IllegalArgumentException("Email already in use"); }
-        );
-        userRepo.findByUsername(dto.getUsername()).ifPresent(u ->
-                { throw new IllegalArgumentException("Username already taken"); }
-        );
-        User user = new User();
-        user.setUsername(dto.getUsername());
-        user.setEmail(dto.getEmail());
-        user.setPassword(passwordEncoder.encode(dto.getPassword()));
-        user.setUserTier(UserTier.SILVER);
-        Role role = roleRepo.findByName("USER")
-                .orElseThrow(() -> new RuntimeException("USER missing"));
-        user.setRole(role);
-
-        userRepo.save(user);
-        return true;
-    }
+	public Optional<User> findByUsername(String username) {
+		return userRepo.findByUsername(username);
+	}
 }

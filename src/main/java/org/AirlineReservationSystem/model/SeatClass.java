@@ -1,5 +1,5 @@
 package org.AirlineReservationSystem.model;
 
-public enum Role {
-	USER, ADMIN
+public enum SeatClass {
+	ECONOMY, BUSINESS
 }

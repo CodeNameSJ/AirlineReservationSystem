@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8"/>
     <title>Error ${errorCode}</title>
-    <link rel="stylesheet" href="<c:url value='/resources/css/style.css'/>"/>
+    <link rel="stylesheet" href="<c:url value='/static/css/style.css'/>"/>
     <style>
         .error-container { text-align: center; margin: 5em auto; }
         .error-code { font-size: 4em; margin-bottom: 0.2em; }

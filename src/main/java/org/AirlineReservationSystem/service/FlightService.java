@@ -1,48 +1,53 @@
 package org.AirlineReservationSystem.service;
 
+import lombok.RequiredArgsConstructor;
 import org.AirlineReservationSystem.model.Flight;
 import org.AirlineReservationSystem.repository.FlightRepository;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class FlightService {
-    private final FlightRepository flightRepo;
+	private final FlightRepository flightRepo;
 
-    public FlightService(FlightRepository flightRepo) {
-        this.flightRepo = flightRepo;
-    }
+	public List<Flight> findAll() {
+		return flightRepo.findAll();
+	}
 
-    public List<Flight> getAllFlights() {
-        return flightRepo.findAll();
-    }
+	public List<Flight> search(String origin, String destination, LocalDateTime start, LocalDateTime end) {
+		return flightRepo.findByOriginAndDestinationAndDepartureTimeBetween(origin, destination, start, end);
+	}
 
-    public void save(Flight f) {
-        flightRepo.save(f);
-    }
+	public Optional<Flight> findById(Long id) {
+		return flightRepo.findById(id);
+	}
 
-    public Page<Flight> searchFlights(
-            Optional<String> originOpt,
-            Optional<String> destinationOpt,
-            Optional<LocalDate> dateOpt,
-            Pageable pageable
-    ) {
-        String origin = originOpt.orElse("");
-        String destination = destinationOpt.orElse("");
+	@Transactional
+	public void save(Flight flight) {
+		// initialize availability if new
+		if (flight.getEconomySeatsAvailable() == 0 && flight.getBusinessSeatsAvailable() == 0) {
+			flight.setEconomySeatsAvailable(flight.getTotalEconomySeats());
+			flight.setBusinessSeatsAvailable(flight.getTotalBusinessSeats());
+		}
+		flightRepo.save(flight);
+	}
 
-        if (dateOpt.isPresent()) {
-            return flightRepo.findByOriginContainingIgnoreCaseAndDestinationContainingIgnoreCaseAndDepartureDate(
-                    origin, destination, dateOpt.get(), pageable
-            );
-        } else {
-            return flightRepo.findByOriginContainingIgnoreCaseAndDestinationContainingIgnoreCase(
-                    origin, destination, pageable
-            );
-        }
-    }
+	@Transactional
+	public void delete(Long id) {
+		flightRepo.deleteById(id);
+	}
+
+	@Transactional
+	public void updateAvailability(Long id, int economyDelta, int businessDelta) {
+		Flight flight = flightRepo.findById(id).orElseThrow();
+		flight.setEconomySeatsAvailable(flight.getEconomySeatsAvailable() + economyDelta);
+		flight.setBusinessSeatsAvailable(flight.getBusinessSeatsAvailable() + businessDelta);
+		flightRepo.save(flight);
+	}
 }

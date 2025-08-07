@@ -1,47 +1,26 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8"/>
-    <title>Manage Flights</title>
-    <link rel="stylesheet" href="<c:url value='../../../resources/css/style.css'/>"/>
-</head>
+<html>
+<head><title>Manage Flights</title></head>
 <body>
-<header>
-    <%@ include file="../fragments/header.jsp" %>
-</header>
-<main>
-    <h2>All Flights</h2>
-    <table>
-        <thead>
+<h1>Manage Flights</h1>
+<a href="<c:url value='/admin/flights/new'/>">Add New Flight</a>
+<table border="1">
+    <tr><th>Flight No</th><th>Origin</th><th>Destination</th><th>Actions</th></tr>
+    <c:forEach var="f" items="${flights}">
         <tr>
-            <th>ID</th>
-            <th>Origin</th>
-            <th>Destination</th>
-            <th>Aircraft</th>
+            <td>${f.flightNumber}</td>
+            <td>${f.origin}</td>
+            <td>${f.destination}</td>
+            <td>
+                <a href="${pageContext.request.contextPath}/admin/flights/edit?id=${f.id}/>">Edit</a>
+                <form action="${pageContext.request.contextPath}/admin/flights/delete/>" style="display:inline;" method="post">
+                    <input type="hidden" name="id" value="${f.id}"/>
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
         </tr>
-        </thead>
-        <tbody>
-        <c:forEach var="f" items="${flights}">
-            <tr>
-                <td>${f.id}</td>
-                <td>${f.origin.code}</td>
-                <td>${f.destination.code}</td>
-                <td>${f.aircraftType}</td>
-            </tr>
-        </c:forEach>
-        </tbody>
-    </table>
-    <h3>Add Flight</h3>
-    <form action="<c:url value='/admin/flights/add'/>" method="post">
-        <label>Origin ID: <input type="number" name="origin.id" required/></label>
-        <label>Destination ID: <input type="number" name="destination.id" required/></label>
-        <label>Aircraft Type: <input type="text" name="aircraftType" required/></label>
-        <button type="submit">Add</button>
-    </form>
-</main>
-<footer>
-    <%@ include file="../fragments/footer.jsp" %>
-</footer>
+    </c:forEach>
+</table>
 </body>
 </html>

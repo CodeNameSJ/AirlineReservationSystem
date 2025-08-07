@@ -1,87 +1,72 @@
 package org.AirlineReservationSystem.service;
 
-import jakarta.transaction.Transactional;
-import org.AirlineReservationSystem.dto.BookingRequest;
-import org.AirlineReservationSystem.dto.BookingResponse;
+import lombok.RequiredArgsConstructor;
 import org.AirlineReservationSystem.model.Booking;
-import org.AirlineReservationSystem.model.Flight;
+import org.AirlineReservationSystem.model.BookingStatus;
+import org.AirlineReservationSystem.model.SeatClass;
 import org.AirlineReservationSystem.model.User;
 import org.AirlineReservationSystem.repository.BookingRepository;
-import org.AirlineReservationSystem.repository.FlightRepository;
-import org.AirlineReservationSystem.repository.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class BookingService {
-    private final BookingRepository bookingRepo;
-    private final FlightRepository flightRepo;
-    private final UserRepository userRepo;
+	private final BookingRepository bookingRepo;
+	private final FlightService flightService;
 
-    public BookingService(BookingRepository bookingRepo, FlightRepository flightRepo, UserRepository userRepo) {
-        this.bookingRepo = bookingRepo;
-        this.flightRepo = flightRepo;
-        this.userRepo = userRepo;
-    }
+	public List<Booking> findAll() {
+		return bookingRepo.findAll();
+	}
 
-//    @Transactional
-//    public BookingResponse bookSeat(BookingRequest req) {
-//        var schedule = flightRepo.findById(req.getScheduleId()).orElseThrow(() -> new NoSuchElementException("Schedule not found"));
-//        if (bookingRepo.countByScheduleIdAndSeatNumber(req.getScheduleId(), req.getSeatNumber()) > 0)
-//            throw new IllegalStateException("Seat already booked");
-//        var user = userRepo.findById(req.getUserId()).orElseThrow(() -> new NoSuchElementException("User not found"));
-//        BigDecimal discount = BigDecimal.valueOf(user.getUserTier().getDiscountPercent()).divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
-//        BigDecimal price = schedule.getBasePrice().multiply(BigDecimal.ONE.subtract(discount));
-//        var booking = new Booking();
-//        booking.setUser(user);
-//        booking.setSchedule(schedule);
-//        booking.setSeatNumber(req.getSeatNumber());
-//        booking.setPricePaid(price);
-//        booking.setBookedAt(LocalDateTime.now());
-//        var saved = bookingRepo.save(booking);
-//        return new BookingResponse(saved.getId(), saved.getSeatNumber(), saved.getPricePaid(), saved.getBookedAt());
-//    }
+	public List<Booking> findByUser(User user) {
+		return bookingRepo.findByUser(user);
+	}
 
-    @Transactional
-    public Booking makeBooking(Long userId, Long flightId, int seats) {
-        User user = userRepo.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
-        Flight flight = flightRepo.findById(flightId)
-                .orElseThrow(() -> new IllegalArgumentException("Flight not found"));
+	@Transactional
+	public Booking createBooking(User user, Long flightId, SeatClass seatClass, int seats) {
+		var flightOpt = flightService.findById(flightId);
+		if (flightOpt.isEmpty()) throw new IllegalArgumentException("Flight not found");
+		var flight = flightOpt.get();
 
-        int booked = bookingRepo.totalSeatsBookedByFlight(flight);
-        if (booked + seats > flight.getCapacity()) {
-            throw new IllegalStateException("Not enough seats available");
-        }
+		// check availability
+		if (seatClass == SeatClass.ECONOMY && flight.getEconomySeatsAvailable() < seats)
+			throw new IllegalArgumentException("Not enough economy seats");
+		if (seatClass == SeatClass.BUSINESS && flight.getBusinessSeatsAvailable() < seats)
+			throw new IllegalArgumentException("Not enough business seats");
 
-        Booking booking = new Booking();
-        booking.setUser(user);
-        booking.setFlight(flight);
-        booking.setSeatsBooked(seats);
+		// adjust availability
+		int econDelta = seatClass == SeatClass.ECONOMY ? -seats : 0;
+		int busDelta = seatClass == SeatClass.BUSINESS ? -seats : 0;
+		flightService.updateAvailability(flightId, econDelta, busDelta);
 
-        return bookingRepo.save(booking);
-    }
+		// save booking
+		Booking booking = new Booking();
+		booking.setUser(user);
+		booking.setFlight(flight);
+		booking.setSeatClass(seatClass);
+		booking.setSeats(seats);
+		booking.setBookingTime(LocalDateTime.now());
+		booking.setStatus(BookingStatus.BOOKED);
+		return bookingRepo.save(booking);
+	}
 
-    public List<Booking> getUserBookings(Long userId) {
-        User user = userRepo.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
-        return bookingRepo.findAllByUserOrderByBookingTimeDesc(user);
-    }
+	@Transactional
+	public void cancelBooking(Long bookingId) {
+		Booking booking = bookingRepo.findById(bookingId).orElseThrow();
+		if (booking.getStatus() == BookingStatus.CANCELLED) throw new IllegalStateException("Already cancelled");
 
-    @Transactional
-    public void cancelBooking(Long bookingId, Long userId) {
-        Booking booking = bookingRepo.findById(bookingId)
-                .orElseThrow(() -> new IllegalArgumentException("Booking not found"));
+		// revert seats
+		int econDelta = booking.getSeatClass() == SeatClass.ECONOMY ? booking.getSeats() : 0;
+		int busDelta = booking.getSeatClass() == SeatClass.BUSINESS ? booking.getSeats() : 0;
+		flightService.updateAvailability(booking.getFlight().getId(), econDelta, busDelta);
 
-        if (!booking.getUser().getId().equals(userId)) {
-            throw new IllegalStateException("Unauthorized booking cancellation");
-        }
-
-        bookingRepo.delete(booking);
-    }
+		// update status
+		booking.setStatus(BookingStatus.CANCELLED);
+		bookingRepo.save(booking);
+	}
 }
