@@ -1,14 +1,10 @@
 package org.AirlineReservationSystem.model;
 
 import jakarta.persistence.*;
-<<<<<<< Updated upstream
-import lombok.*;
-=======
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
->>>>>>> Stashed changes
 import org.hibernate.proxy.HibernateProxy;
 
 import java.math.BigDecimal;
@@ -18,12 +14,8 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-<<<<<<< Updated upstream
-@AllArgsConstructor
-@NoArgsConstructor
-=======
+
 @RequiredArgsConstructor
->>>>>>> Stashed changes
 @Entity
 @Table(name = "booking")
 public class Booking {
@@ -31,24 +23,6 @@ public class Booking {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-<<<<<<< Updated upstream
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "user_id")
-    private UserAccount user;
-
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "schedule_id")
-    private Schedule schedule;
-
-    @Column(nullable = false)
-    private Integer seatNumber;
-
-    @Column(nullable = false)
-    private BigDecimal pricePaid;
-
-    @Column(nullable = false)
-    private LocalDateTime bookedAt;
-=======
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id", nullable = false)
 	@ToString.Exclude
@@ -65,7 +39,6 @@ public class Booking {
 
 	@Column(nullable = false)
 	private int seats;
->>>>>>> Stashed changes
 
 	@Column(nullable = false)
 	private LocalDateTime bookingTime;

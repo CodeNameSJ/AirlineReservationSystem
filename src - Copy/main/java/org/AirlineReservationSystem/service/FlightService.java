@@ -6,10 +6,7 @@ import org.AirlineReservationSystem.repository.FlightRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-<<<<<<< Updated upstream
-=======
 import java.time.LocalDateTime;
->>>>>>> Stashed changes
 import java.util.List;
 
 @Service
@@ -26,12 +23,6 @@ public class FlightService {
 		return flightRepo.findByOriginAndDestinationAndDepartureTimeBetween(origin, destination, start, end);
 	}
 
-<<<<<<< Updated upstream
-    public void save(Flight f) {
-        flightRepo.save(f);
-    }
-}
-=======
 	public Optional<Flight> findById(Long id) {
 		return flightRepo.findById(id);
 	}
@@ -59,4 +50,3 @@ public class FlightService {
 		flightRepo.save(flight);
 	}
 }
->>>>>>> Stashed changes

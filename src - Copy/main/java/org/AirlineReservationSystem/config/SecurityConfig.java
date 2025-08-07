@@ -2,18 +2,12 @@ package org.AirlineReservationSystem.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-<<<<<<< Updated upstream
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-=======
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
->>>>>>> Stashed changes
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
@@ -23,42 +17,6 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
-<<<<<<< Updated upstream
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-//    @Bean
-//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//        http
-//                .securityMatcher("/**")
-//                .authorizeHttpRequests(auth -> auth
-//                        .requestMatchers("/admin/**").hasRole("ADMIN")
-//                        .requestMatchers("/booking/**").hasRole("CUSTOMER")
-//                        .anyRequest().permitAll()
-//                )
-//                .formLogin(form -> form
-//                        .loginPage("/login")
-//                        .defaultSuccessUrl("/home", true)
-//                        .permitAll()
-//                )
-//                .logout(logout -> logout
-//                        .logoutSuccessUrl("/")
-//                        .permitAll()
-//                )
-//                .csrf(AbstractHttpConfigurer::disable);
-//
-//        return http.build();
-//    }
-
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(auth -> auth.requestMatchers("/admin/**").hasRole("ADMIN").requestMatchers("/booking/**").hasRole("USER").anyRequest().permitAll()).formLogin(form -> form.loginPage("/login").defaultSuccessUrl("/home", true).permitAll()).logout(logout -> logout.logoutSuccessUrl("/").permitAll()).csrf(AbstractHttpConfigurer::disable);
-        return http.build();
-    }
-}
-=======
 	// Admin security chain
 	@Configuration
 	@Order(1)
@@ -129,4 +87,3 @@ public class SecurityConfig {
 		return new BCryptPasswordEncoder();
 	}
 }
->>>>>>> Stashed changes
