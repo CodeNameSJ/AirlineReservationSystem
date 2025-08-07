@@ -934,7 +934,7 @@
       <AutoIntrospectionLevel>3</AutoIntrospectionLevel>
       <Current>1</Current>
       <LastIntrospectionLevel>3</LastIntrospectionLevel>
-      <LastIntrospectionLocalTimestamp>2025-08-07.20:05:05</LastIntrospectionLocalTimestamp>
+      <LastIntrospectionLocalTimestamp>2025-08-07.20:37:41</LastIntrospectionLocalTimestamp>
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </schema>
     <user id="297" parent="1" name="mysql.infoschema">
