@@ -44,10 +44,11 @@ public class SecurityConfig {
 	// Public pages and general config
 	@Bean
 	public SecurityFilterChain publicFilterChain(HttpSecurity http) throws Exception {
-		http.authorizeHttpRequests(auth -> auth.requestMatchers("/login*", "/register", "/css/**", "/user_login", "/admin_login").permitAll().anyRequest().authenticated()).formLogin(AbstractHttpConfigurer::disable).csrf(AbstractHttpConfigurer::disable);
+		http.authorizeHttpRequests(auth -> auth.requestMatchers("/", "/home", "/flights", "/login*", "/register", "/css/**", "/js/**", "/img/**", "/user_login", "/admin_login").permitAll().anyRequest().authenticated()).formLogin(AbstractHttpConfigurer::disable).csrf(AbstractHttpConfigurer::disable);
 
 		return http.build();
 	}
+
 
 	// In-memory users for demo
 	@Bean
