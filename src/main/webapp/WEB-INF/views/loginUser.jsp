@@ -3,21 +3,27 @@
 <html>
 <head>
 	<title>User Login</title>
-	<link rel="stylesheet" href="${pageContext.request.contextPath}resources/static/css/style.css"/>
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/style.css"/>
 </head>
 <body>
-<script src="${pageContext.request.contextPath}resources/static/js/script.js"></script>
 <h1>User Login</h1>
-<form action="${pageContext.request.contextPath}/user_login/>" method="post">
-	Username: <label>
-	<input name="username"/>
-</label><br/>
-	Password: <label>
-	<input type="password" name="password"/>
-</label><br/>
+
+<form action="${pageContext.request.contextPath}/perform_login" method="post">
+	<label>Username: <input name="username" required /></label><br/>
+	<label>Password: <input type="password" name="password" required /></label><br/>
+
+	<c:if test="${not empty _csrf}">
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+	</c:if>
+
 	<button type="submit">Login</button>
 </form>
-<a href="${pageContext.request.contextPath}/register/>">Register</a>
-<c:if test="${param.error != null}"><p style="color:red">Invalid credentials</p></c:if>
+
+<a href="${pageContext.request.contextPath}/register">Register</a>
+
+<c:if test="${param.error != null}">
+	<p style="color:red">Invalid credentials</p>
+</c:if>
+
 </body>
 </html>
