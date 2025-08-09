@@ -17,97 +17,45 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
-	// ——— ADMIN CHAIN ———
-	@Bean
+	// Admin security chain
+	@Configuration
 	@Order(1)
-	public SecurityFilterChain adminFilterChain(HttpSecurity http) throws Exception {
-		http
-				// only apply this chain to URLs under /admin
-				.securityMatcher("/admin/**")
-				.authorizeHttpRequests(auth -> auth
-						                               // allow everyone to see the admin login page and static assets
-						                               .requestMatchers("/admin/login", "/css/**", "/js/**", "/images/**").permitAll()
-						                               // everything else under /admin/** requires ADMIN role
-						                               .anyRequest().hasRole("ADMIN")
-				)
-				.formLogin(form -> form
-						                   .loginPage("/admin/login")
-						                   .loginProcessingUrl("/admin/processLogin")
-						                   .defaultSuccessUrl("/admin/dashboard", true)
-						                   .permitAll()
-				)
-				.logout(logout -> logout
-						                  .logoutUrl("/admin/logout")
-						                  .logoutSuccessUrl("/admin/login?logout")
-						                  .permitAll()
-				)
-				.csrf(AbstractHttpConfigurer::disable);
+	public static class AdminSecurityConfig {
+		@Bean
+		public SecurityFilterChain adminFilterChain(HttpSecurity http) throws Exception {
+			http.securityMatcher("/admin/**").authorizeHttpRequests(auth -> auth.anyRequest().hasRole("ADMIN")).formLogin(form -> form.loginPage("/loginAdmin").loginProcessingUrl("/admin_login").defaultSuccessUrl("/admin/dashboard")).logout(logout -> logout.logoutUrl("/admin_logout").logoutSuccessUrl("/loginAdmin?logout")).csrf(AbstractHttpConfigurer::disable);
 
-		return http.build();
+			return http.build();
+		}
 	}
 
-	// ——— USER CHAIN ———
-	@Bean
+	// User security chain
+	@Configuration
 	@Order(2)
-	public SecurityFilterChain userFilterChain(HttpSecurity http) throws Exception {
-		http
-				.securityMatcher("/user/**")
-				.authorizeHttpRequests(auth -> auth
-						                               .requestMatchers("/user/login", "/user/register", "/css/**", "/js/**", "/images/**")
-						                               .permitAll()
-						                               .anyRequest().hasRole("USER")
-				)
-				.formLogin(form -> form
-						                   .loginPage("/user/login")
-						                   .loginProcessingUrl("/user/processLogin")
-						                   .defaultSuccessUrl("/user/home", true)
-						                   .permitAll()
-				)
-				.logout(logout -> logout
-						                  .logoutUrl("/user/logout")
-						                  .logoutSuccessUrl("/user/login?logout")
-						                  .permitAll()
-				)
-				.csrf(AbstractHttpConfigurer::disable);
+	public static class UserSecurityConfig {
+		@Bean
+		public SecurityFilterChain userFilterChain(HttpSecurity http) throws Exception {
+			http.securityMatcher("/user/**").authorizeHttpRequests(auth -> auth.anyRequest().hasRole("USER")).formLogin(form -> form.loginPage("/loginUser").loginProcessingUrl("/user_login").defaultSuccessUrl("/user/home")).logout(logout -> logout.logoutUrl("/user_logout").logoutSuccessUrl("/loginUser?logout")).csrf(AbstractHttpConfigurer::disable);
 
-		return http.build();
+			return http.build();
+		}
 	}
 
-	// ——— PUBLIC CHAIN ———
+	// Public pages and general config
 	@Bean
-	@Order(3)
 	public SecurityFilterChain publicFilterChain(HttpSecurity http) throws Exception {
-		http
-				// this chain applies to *everything* (fallback)
-				.authorizeHttpRequests(auth -> auth
-						                               // public pages
-						                               .requestMatchers(
-								                               "/", "/index", "/home",
-								                               "/register", "/registerUser", "/registerAdmin",
-								                               "/loginUser", "/loginAdmin",
-								                               "/css/**", "/js/**", "/images/**", "/webjars/**"
-						                               )
-						                               .permitAll()
-						                               // any other URL must be authenticated (USER or ADMIN)
-						                               .anyRequest().authenticated()
-				)
-				.csrf(AbstractHttpConfigurer::disable);
+		http.authorizeHttpRequests(auth -> auth.requestMatchers("/", "/home", "/flights", "/login*", "/register", "/css/**", "/js/**", "/img/**", "/user_login", "/admin_login").permitAll().anyRequest().authenticated()).formLogin(AbstractHttpConfigurer::disable).csrf(AbstractHttpConfigurer::disable);
 
 		return http.build();
 	}
 
-	// ——— IN-MEMORY USERS (for testing/demo) ———
+
+	// In-memory users for demo
 	@Bean
 	public UserDetailsService userDetailsService(PasswordEncoder encoder) {
 		InMemoryUserDetailsManager mgr = new InMemoryUserDetailsManager();
-		mgr.createUser(User.withUsername("user")
-				               .password(encoder.encode("userPass"))
-				               .roles("USER")
-				               .build());
-		mgr.createUser(User.withUsername("admin")
-				               .password(encoder.encode("adminPass"))
-				               .roles("ADMIN")
-				               .build());
+		mgr.createUser(User.withUsername("user").password(encoder.encode("userPass")).roles("USER").build());
+		mgr.createUser(User.withUsername("admin").password(encoder.encode("adminPass")).roles("ADMIN").build());
 		return mgr;
 	}
 
