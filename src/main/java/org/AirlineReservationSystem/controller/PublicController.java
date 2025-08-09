@@ -16,15 +16,20 @@ import java.time.LocalTime;
 public class PublicController {
 	private final FlightService flightService;
 
-	@GetMapping({"/home"})
+	@GetMapping({"/", "/home"})
 	public String home(Model model) {
 		model.addAttribute("flights", flightService.findAll());
 		return "home";
 	}
 
-	@GetMapping("/")
-	public String showDefault() {
-		return "redirect:/loginUser";
+	@GetMapping("/loginUser")
+	public String showLoginUser() {
+		return "loginUser";
+	}
+
+	@GetMapping("/loginAdmin")
+	public String showLoginAdmin() {
+		return "loginAdmin";
 	}
 
 	@GetMapping("/flights")
