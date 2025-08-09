@@ -24,12 +24,12 @@ public class SecurityConfig {
 	}
 
 	// Auth manager (useful if you need to manually authenticate elsewhere)
-	@Bean
-	public AuthenticationManager authenticationManager(HttpSecurity http, UserDetailsService uds, PasswordEncoder pe) throws Exception {
-		AuthenticationManagerBuilder amb = http.getSharedObject(AuthenticationManagerBuilder.class);
-		amb.userDetailsService(uds).passwordEncoder(pe);
-		return amb.build();
-	}
+//	@Bean
+//	public AuthenticationManager authenticationManager(HttpSecurity http, UserDetailsService userDetailsService, PasswordEncoder pe) throws Exception {
+//		AuthenticationManagerBuilder amb = http.getSharedObject(AuthenticationManagerBuilder.class);
+//		amb.userDetailsService(userDetailsService).passwordEncoder(pe);
+//		return amb.build();
+//	}
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
