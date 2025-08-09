@@ -1,7 +1,5 @@
 package org.AirlineReservationSystem.config;
 
-import org.AirlineReservationSystem.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,14 +17,6 @@ import java.util.Collection;
 
 @Configuration
 public class SecurityConfig {
-
-
-	private final UserService userService;
-
-	@Autowired
-	public SecurityConfig(UserService userService) {
-		this.userService = userService;
-	}
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
