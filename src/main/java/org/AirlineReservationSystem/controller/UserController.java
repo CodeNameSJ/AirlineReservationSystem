@@ -29,6 +29,11 @@ public class UserController {
 		return "user/home";
 	}
 
+	@GetMapping("/login")
+	public String login() {
+		return "loginUser";
+	}
+
 	@GetMapping("/book")
 	public String showBookingForm(@RequestParam Long flightId, Model model) {
 		model.addAttribute("flight", flightService.findById(flightId).orElseThrow());
