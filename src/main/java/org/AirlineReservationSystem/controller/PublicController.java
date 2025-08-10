@@ -22,15 +22,20 @@ public class PublicController {
 		return "home";
 	}
 
-	@GetMapping("/loginUser")
-	public String showLoginUser() {
-		return "loginUser";
+	@GetMapping("/login")
+	public String showLoginPage() {
+		return "login";
 	}
 
-	@GetMapping("/loginAdmin")
-	public String showLoginAdmin() {
-		return "loginAdmin";
-	}
+//	@GetMapping("/loginUser")
+//	public String showLoginUser() {
+//		return "loginUser";
+//	}
+//
+//	@GetMapping("/loginAdmin")
+//	public String showLoginAdmin() {
+//		return "loginAdmin";
+//	}
 
 	@GetMapping("/flights")
 	public String search(@RequestParam(required = false) String origin, @RequestParam(required = false) String destination, @RequestParam(required = false) LocalDate date, Model model) {

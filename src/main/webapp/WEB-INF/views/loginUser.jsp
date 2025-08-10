@@ -3,7 +3,7 @@
 <html>
 <head>
 	<title>User Login</title>
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/style.css"/>
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
 </head>
 <body>
 <h1>User Login</h1>
