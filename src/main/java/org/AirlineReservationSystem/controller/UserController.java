@@ -1,19 +1,15 @@
 package org.AirlineReservationSystem.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.AirlineReservationSystem.model.SeatClass;
-import org.AirlineReservationSystem.model.User;
+import org.AirlineReservationSystem.model.Flight;
+import org.AirlineReservationSystem.model.enums.SeatClass;
 import org.AirlineReservationSystem.service.BookingService;
 import org.AirlineReservationSystem.service.FlightService;
-import org.AirlineReservationSystem.service.UserService;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/user")
@@ -21,39 +17,62 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class UserController {
 	private final FlightService flightService;
 	private final BookingService bookingService;
-	private final UserService userService;
 
+	// view bookings
 	@GetMapping("/home")
-	public String userHome(Model model) {
-		model.addAttribute("flights", flightService.findAll());
+	public String viewBookings(HttpServletRequest req, Model model) {
+		HttpSession s = req.getSession(false);
+		if (s == null || s.getAttribute("userId") == null) return "redirect:/login";
+		Long userId = (Long) s.getAttribute("userId");
+		model.addAttribute("bookings", bookingService.findByUserId(userId));
 		return "user/home";
 	}
 
 	@GetMapping("/book")
-	public String showBookingForm(@RequestParam Long flightId, Model model) {
-		model.addAttribute("flight", flightService.findById(flightId).orElseThrow());
-		model.addAttribute("seatClasses", SeatClass.values());
+	public String showBookingForm(@RequestParam Long flightId, HttpServletRequest req, Model model) {
+		HttpSession s = req.getSession(false);
+		if (s == null || s.getAttribute("userId") == null) {
+			// save intended URL and redirect to log in
+			String url = "/user/book?flightId=" + flightId;
+			req.getSession(true).setAttribute("redirectAfterLogin", url);
+			return "redirect:/login";
+		}
+		Flight f = flightService.findById(flightId).orElseThrow();
+		model.addAttribute("flight", f);
 		return "user/bookingForm";
 	}
 
 	@PostMapping("/book")
-	public String book(@AuthenticationPrincipal UserDetails ud, @RequestParam Long flightId, @RequestParam SeatClass seatClass, @RequestParam int seats, Model model) {
-		User user = userService.findByUsername(ud.getUsername()).orElseThrow();
-		var booking = bookingService.createBooking(user, flightId, seatClass, seats);
+	public String doBook(@RequestParam Long flightId, @RequestParam int seats, HttpServletRequest req, Model model) {
+		HttpSession s = req.getSession(false);
+		if (s == null || s.getAttribute("userId") == null) {
+			req.getSession(true).setAttribute("redirectAfterLogin", "/user/book?flightId=" + flightId);
+			return "redirect:/login";
+		}
+		Long userId = (Long) s.getAttribute("userId");
+		// call the updated booking method that requires userId
+		var booking = bookingService.createBooking(userId, flightId, SeatClass.ECONOMY, seats);
 		model.addAttribute("booking", booking);
 		return "user/bookingSuccess";
 	}
 
-	@GetMapping("/bookings")
-	public String viewBookings(@AuthenticationPrincipal UserDetails ud, Model model) {
-		User user = userService.findByUsername(ud.getUsername()).orElseThrow();
-		model.addAttribute("bookings", bookingService.findByUser(user));
-		return "user/bookings";
+	@PostMapping("/bookings/cancel")
+	public String cancel(@RequestParam Long id) {
+		bookingService.cancelBooking(id);
+		return "redirect:/user/home";
 	}
 
-	@PostMapping("/cancel")
-	public String cancelBooking(@RequestParam Long bookingId) {
-		bookingService.cancelBooking(bookingId);
-		return "redirect:/user/bookings";
+	@GetMapping("/booking/{id}")
+	public String bookingDetail(@PathVariable Long id, HttpServletRequest req, Model model) {
+		HttpSession s = req.getSession(false);
+		if (s == null || s.getAttribute("userId") == null) return "redirect:/login";
+		Long userId = (Long) s.getAttribute("userId");
+		var opt = bookingService.findById(id);
+		if (opt.isEmpty()) return "redirect:/user/bookings";
+		var booking = opt.get();
+		// ensure booking belongs to logged user (safety)
+		if (!booking.getUser().getId().equals(userId)) return "redirect:/user/bookings";
+		model.addAttribute("booking", booking);
+		return "user/bookingBill";
 	}
 }
