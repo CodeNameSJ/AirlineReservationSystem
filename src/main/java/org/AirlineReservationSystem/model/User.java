@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.AirlineReservationSystem.model.enums.Role;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.util.Objects;
@@ -26,9 +27,6 @@ public class User {
 
 	@Column(nullable = false)
 	private String password;
-
-	@Column(nullable = false)
-	private String name;
 
 	@Column(nullable = false, unique = true)
 	private String email;

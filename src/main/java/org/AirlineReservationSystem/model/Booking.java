@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.AirlineReservationSystem.model.enums.BookingStatus;
+import org.AirlineReservationSystem.model.enums.SeatClass;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.time.LocalDateTime;

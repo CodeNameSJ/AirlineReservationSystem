@@ -34,6 +34,9 @@ public class Flight {
 	@Column(nullable = false)
 	private LocalDateTime departureTime;
 
+	@Column(nullable = false)
+	private LocalDateTime arrivalTime;
+
 	private int totalEconomySeats;
 	private int totalBusinessSeats;
 	private int economySeatsAvailable;
@@ -44,6 +47,8 @@ public class Flight {
 
 	@Column(nullable = false)
 	private BigDecimal priceBusiness;
+
+	private double price;
 
 	@Override
 	public final boolean equals(Object o) {
