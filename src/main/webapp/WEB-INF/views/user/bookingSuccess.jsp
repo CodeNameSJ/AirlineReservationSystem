@@ -9,6 +9,6 @@
 <p>Class: ${booking.seatClass}</p>
 <p>Seats: ${booking.seats}</p>
 <p>Status: ${booking.status}</p>
-<a href="${pageContext.request.contextPath}/user/bookings/>">View My Bookings</a>
+<a href="${pageContext.request.contextPath}/user/bookings">View My Bookings</a>
 </body>
 </html>

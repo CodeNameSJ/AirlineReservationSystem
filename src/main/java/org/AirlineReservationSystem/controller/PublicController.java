@@ -27,16 +27,6 @@ public class PublicController {
 		return "login";
 	}
 
-//	@GetMapping("/loginUser")
-//	public String showLoginUser() {
-//		return "loginUser";
-//	}
-//
-//	@GetMapping("/loginAdmin")
-//	public String showLoginAdmin() {
-//		return "loginAdmin";
-//	}
-
 	@GetMapping("/flights")
 	public String search(@RequestParam(required = false) String origin, @RequestParam(required = false) String destination, @RequestParam(required = false) LocalDate date, Model model) {
 		LocalDateTime start = date != null ? date.atStartOfDay() : LocalDate.now().atStartOfDay();

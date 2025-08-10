@@ -4,7 +4,7 @@
 <head><title>My Bookings</title></head>
 <body>
 <h1>My Bookings</h1>
-<table border="1">
+<table style="border:1px solid black">
 	<tr><th>ID</th><th>Flight</th><th>Class</th><th>Seats</th><th>Status</th><th>Action</th></tr>
 	<c:forEach var="b" items="${bookings}">
 		<tr>
@@ -15,7 +15,7 @@
 			<td>${b.status}</td>
 			<td>
 				<c:if test="${b.status == 'BOOKED'}">
-					<form action="${pageContext.request.contextPath}/user/cancel/>" method="post">
+					<form action="${pageContext.request.contextPath}/user/cancel" method="post">
 						<input type="hidden" name="bookingId" value="${b.id}"/>
 						<button type="submit">Cancel</button>
 					</form>

@@ -5,7 +5,7 @@
 <body>
 <h1><c:choose><c:when
         test="${flight.id != null}">Edit Flight</c:when><c:otherwise>New Flight</c:otherwise></c:choose></h1>
-<form action="${pageContext.request.contextPath}/admin/flights/>" method="post">
+<form action="${pageContext.request.contextPath}/admin/flights" method="post">
     <input type="hidden" name="id" value="${flight.id}"/>
     Flight Number: <label>
     <input name="flightNumber" value="${flight.flightNumber}"/>

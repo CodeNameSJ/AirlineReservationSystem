@@ -4,7 +4,7 @@
 <head><title>Book Flight</title></head>
 <body>
 <h1>Book Flight ${flight.flightNumber}</h1>
-<form action="${pageContext.request.contextPath}/user/book/>" method="post">
+<form action="${pageContext.request.contextPath}/user/book" method="post">
 	<input type="hidden" name="flightId" value="${flight.id}"/>
 	Class:
 	<label>

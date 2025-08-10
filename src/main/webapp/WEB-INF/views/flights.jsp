@@ -3,12 +3,12 @@
 <html>
 <head>
     <title>Search Flights</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}resources/css/style.css'/>">
+<%--    <link rel="stylesheet" href="${pageContext.request.contextPath}resources/css/style.css'/>">--%>
 </head>
 <body>
 <h1>Search Flights</h1>
 
-<form action="<c:url value='/flights'/>" method="get">
+<form action="${pageContext.request.contextPath}/flights" method="get">
     Origin: <label>
     <input type="text" name="origin" value="${param.origin}"/>
 </label>
@@ -22,7 +22,7 @@
 </form>
 
 <h2>Results</h2>
-<table border="1">
+<table style="border:1px solid black">
     <tr>
         <th>Flight No</th>
         <th>Origin</th>
@@ -43,10 +43,10 @@
             <td>
                 <c:choose>
                     <c:when test="${pageContext.request.userPrincipal != null}">
-                        <a href="<c:url value='/user/book?flightId=${flight.id}'/>">Book</a>
+                        <a href="${pageContext.request.contextPath}/user/book?flightId=${flight.id}">Book</a>
                     </c:when>
                     <c:otherwise>
-                        <a href="<c:url value='./loginUser'/>">Login to Book</a>
+                        <a href="${pageContext.request.contextPath}/login">Login to Book</a>
                     </c:otherwise>
                 </c:choose>
             </td>

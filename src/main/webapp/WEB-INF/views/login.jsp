@@ -2,7 +2,9 @@
 <html>
 <head>
 	<title>Login</title>
-	<link rel="stylesheet" href="../resources/css/style.css">
+<%--	<link rel="stylesheet" href="<c:url value='./css/style.css'/>">--%>
+<%--	<link rel="stylesheet" href="${pageContext.request.contextPath}resources/static/css/style.css"/>--%>
+
 </head>
 <body>
 <h2>Login</h2>
