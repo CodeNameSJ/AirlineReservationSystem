@@ -2,8 +2,8 @@
 <html>
 <head>
 	<title>Login</title>
-<%--	<link rel="stylesheet" href="<c:url value='./css/style.css'/>">--%>
-<%--	<link rel="stylesheet" href="${pageContext.request.contextPath}resources/static/css/style.css"/>--%>
+	<%--	<link rel="stylesheet" href="<c:url value='./css/style.css'/>">--%>
+	<%--	<link rel="stylesheet" href="${pageContext.request.contextPath}resources/static/css/style.css"/>--%>
 
 </head>
 <body>
@@ -15,11 +15,16 @@
 <c:if test="${param.logout != null}">
 	<p style="color:green;">You have been logged out</p>
 </c:if>
-
 <form action="${pageContext.request.contextPath}/perform_login" method="post">
-	<label>Username: <input type="text" name="username"></label><br/>
-	<label>Password: <input type="password" name="password"></label><br/>
-	<input type="submit" value="Login">
+	<label>
+		<input type="text" name="username"/>
+	</label>
+	<label>
+		<input type="password" name="password"/>
+	</label>
+	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+	<button type="submit">Login</button>
 </form>
+
 </body>
 </html>

@@ -13,7 +13,7 @@
     Name: <label>
     <input name="name" value="${user.name}"/>
 </label><br/>
-    Email: <label>   
+    Email: <label>
     <input name="email" value="${user.email}"/>
 </label><br/>
     Username: <label>
