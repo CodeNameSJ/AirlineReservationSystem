@@ -2,35 +2,49 @@ package org.AirlineReservationSystem.service;
 
 import lombok.RequiredArgsConstructor;
 import org.AirlineReservationSystem.model.Booking;
-import org.AirlineReservationSystem.model.BookingStatus;
-import org.AirlineReservationSystem.model.SeatClass;
-import org.AirlineReservationSystem.model.User;
+import org.AirlineReservationSystem.model.Flight;
+import org.AirlineReservationSystem.model.enums.BookingStatus;
+import org.AirlineReservationSystem.model.enums.SeatClass;
 import org.AirlineReservationSystem.repository.BookingRepository;
+import org.AirlineReservationSystem.repository.FlightRepository;
+import org.AirlineReservationSystem.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class BookingService {
 	private final BookingRepository bookingRepo;
+	private final UserRepository userRepo;
+	private final FlightRepository flightRepo;
 	private final FlightService flightService;
 
 	public List<Booking> findAll() {
 		return bookingRepo.findAll();
 	}
 
-	public List<Booking> findByUser(User user) {
-		return bookingRepo.findByUser(user);
+	public List<Booking> findByUserId(Long userId) {
+		return bookingRepo.findByUserId(userId);
+	}
+
+	public Optional<Booking> findById(Long id) {
+		return bookingRepo.findById(id);
 	}
 
 	@Transactional
-	public Booking createBooking(User user, Long flightId, SeatClass seatClass, int seats) {
-		var flightOpt = flightService.findById(flightId);
-		if (flightOpt.isEmpty()) throw new IllegalArgumentException("Flight not found");
+	public Booking createBooking(Long userId, Long flightId, SeatClass seatClass, int seats) {
+		// load user and flight via repositories/services
+		var userOpt = userRepo.findById(userId);
+		var flightOpt = flightRepo.findById(flightId);
+
+		if (userOpt.isEmpty()) throw new IllegalArgumentException("User not found: " + userId);
+		if (flightOpt.isEmpty()) throw new IllegalArgumentException("Flight not found: " + flightId);
+
 		var flight = flightOpt.get();
 
 		// check availability
@@ -43,30 +57,40 @@ public class BookingService {
 		int econDelta = seatClass == SeatClass.ECONOMY ? -seats : 0;
 		int busDelta = seatClass == SeatClass.BUSINESS ? -seats : 0;
 		flightService.updateAvailability(flightId, econDelta, busDelta);
+		flightRepo.save(flight);
 
-		// save booking
 		Booking booking = new Booking();
-		booking.setUser(user);
+		booking.setUser(userOpt.get());                 // ← IMPORTANT: set user
 		booking.setFlight(flight);
 		booking.setSeatClass(seatClass);
 		booking.setSeats(seats);
 		booking.setBookingTime(LocalDateTime.now());
 		booking.setStatus(BookingStatus.BOOKED);
+
 		return bookingRepo.save(booking);
 	}
 
 	@Transactional
 	public void cancelBooking(Long bookingId) {
-		Booking booking = bookingRepo.findById(bookingId).orElseThrow();
-		if (booking.getStatus() == BookingStatus.CANCELLED) throw new IllegalStateException("Already cancelled");
+		var opt = bookingRepo.findById(bookingId);
 
-		// revert seats
-		int econDelta = booking.getSeatClass() == SeatClass.ECONOMY ? booking.getSeats() : 0;
-		int busDelta = booking.getSeatClass() == SeatClass.BUSINESS ? booking.getSeats() : 0;
-		flightService.updateAvailability(booking.getFlight().getId(), econDelta, busDelta);
+		if (opt.isEmpty()) return;
 
+		Booking booking = opt.get();
+
+		if (booking.getStatus() == BookingStatus.CANCELLED) return;
+
+		Flight flight = booking.getFlight();
+		// restore seats
+		if (booking.getSeatClass() == SeatClass.ECONOMY) {
+			flight.setEconomySeatsAvailable(flight.getEconomySeatsAvailable() + booking.getSeats());
+		} else {
+			flight.setBusinessSeatsAvailable(flight.getBusinessSeatsAvailable() + booking.getSeats());
+		}
+		flightRepo.save(flight);
 		// update status
 		booking.setStatus(BookingStatus.CANCELLED);
 		bookingRepo.save(booking);
 	}
+
 }

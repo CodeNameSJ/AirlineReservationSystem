@@ -2,29 +2,66 @@
 <html>
 <head>
 	<title>Login</title>
-	<%--	<link rel="stylesheet" href="<c:url value='./css/style.css'/>">--%>
-	<%--	<link rel="stylesheet" href="${pageContext.request.contextPath}resources/static/css/style.css"/>--%>
+	<link rel="stylesheet" href="<c:url value='./css/style.css'/>">
+	<style>
+		.input {
+			max-width: 290px;
+			height: 44px;
+			background-color: #05060f0a;
+			border-radius: .5rem;
+			padding: 0 1rem;
+			border: 2px solid transparent;
+			font-size: 1rem;
+			transition: border-color .3s cubic-bezier(.25, .01, .25, 1) 0s, color .3s cubic-bezier(.25, .01, .25, 1) 0s, background .2s cubic-bezier(.25, .01, .25, 1) 0s;
+		}
 
+		.label {
+			display: block;
+			margin-bottom: .3rem;
+			font-size: .9rem;
+			font-weight: bold;
+			color: #05060f99;
+			transition: color .3s cubic-bezier(.25, .01, .25, 1) 0s;
+		}
+
+		.input:hover, .input:focus, .input-group:hover .input {
+			outline: none;
+			border-color: #05060f;
+		}
+
+		.input-group:hover .label, .input:focus {
+			color: #05060fc2;
+		}
+	</style>
 </head>
 <body>
-<h2>Login</h2>
+<header>
+	<jsp:include page="/WEB-INF/views/fragments/navbar.jsp"/>
+</header>
+<main>
+	<h2>Login</h2>
+	<form action="${pageContext.request.contextPath}/login" method="post">
+		<div class="input-group">
+			<label class="label">Username</label>
+			<label for="username"></label><input autocomplete="off" name="username" id="username" class="input" type="text"
+			                                     required>
+			<br>
+			<label class="label">Password</label>
+			<label for="password"></label><input name="password" id="password" class="input"
+			                                     type="password" required>
+			<div></div>
+		</div>
+		<button type="submit">Login</button>
+		<span> | </span>
+		<button type="button" onclick="window.location.href='${pageContext.request.contextPath}/register'">Register
+		</button>
+	</form>
 
-<c:if test="${param.error != null}">
-	<p style="color:red;">Invalid username or password</p>
-</c:if>
-<c:if test="${param.logout != null}">
-	<p style="color:green;">You have been logged out</p>
-</c:if>
-<form action="${pageContext.request.contextPath}/perform_login" method="post">
-	<label>
-		<input type="text" name="username"/>
-	</label>
-	<label>
-		<input type="password" name="password"/>
-	</label>
-	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-	<button type="submit">Login</button>
-</form>
+	<c:if test="${not empty error}"><p style="color:red">${error}</p></c:if>
 
+</main>
+<footer>
+	<jsp:include page="/WEB-INF/views/fragments/footer.jsp"/>
+</footer>
 </body>
 </html>

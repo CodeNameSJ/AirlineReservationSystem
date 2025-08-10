@@ -30,7 +30,6 @@ public class FlightService {
 
 	@Transactional
 	public void save(Flight flight) {
-		// initialize availability if new
 		if (flight.getEconomySeatsAvailable() == 0 && flight.getBusinessSeatsAvailable() == 0) {
 			flight.setEconomySeatsAvailable(flight.getTotalEconomySeats());
 			flight.setBusinessSeatsAvailable(flight.getTotalBusinessSeats());

@@ -3,27 +3,65 @@
 <html>
 <head>
 	<title>Airline Reservation - Home</title>
-<%--	<link rel="stylesheet" href="<c:url value='./css/style.css'/>">--%>
+	<link rel="stylesheet" href="<c:url value='./css/style.css'/>">
 </head>
 <body>
-<h1>Welcome to Airline Reservation System</h1>
-<a href="${pageContext.request.contextPath}/login">Login</a> |
-<a href=${pageContext.request.contextPath}/register">Register</a> |
+<header>
 
-<h2>All Flights</h2>
-<table style="border:1px solid black">
-	<tr><th>Flight No</th><th>Origin</th><th>Destination</th><th>Departure</th><th>Economy Seats</th><th>Business Seats</th><th>Actions</th></tr>
-	<c:forEach var="flight" items="${flights}">
-		<tr>
-			<td>${flight.flightNumber}</td>
-			<td>${flight.origin}</td>
-			<td>${flight.destination}</td>
-			<td>${flight.departureTime}</td>
-			<td>${flight.economySeatsAvailable}</td>
-			<td>${flight.businessSeatsAvailable}</td>
-			<td><a href="${pageContext.request.contextPath}/flights?origin=&destination=&date=">Search</a></td>
-		</tr>
-	</c:forEach>
-</table>
+
+	<jsp:include page="/WEB-INF/views/fragments/navbar.jsp"/>
+</header>
+<main>
+
+	<script>
+		document.querySelector('#flightSearchForm').addEventListener('submit', function (e) {
+			e.preventDefault();
+			const form = e.target;
+			const params = new URLSearchParams(new FormData(form));
+			params.set('ajax', 'true');
+			fetch(form.action + '?' + params.toString(), {headers: {'X-Requested-With': 'XMLHttpRequest'}})
+					.then(r => r.text())
+					.then(html => {
+						document.getElementById('searchResults').innerHTML = html;
+					})
+					.catch(err => console.error(err));
+		});
+	</script>
+
+	<h1>Welcome</h1>
+
+	<h1>Search Flights</h1>
+
+	<form action="${pageContext.request.contextPath}/flights" method="get">
+		Origin: <label>
+		<input type="text" name="origin" value="${param.origin}"/>
+	</label>
+		Destination: <label>
+		<input type="text" name="destination" value="${param.destination}"/>
+	</label>
+		Date: <label>
+		<input type="date" name="date" value="${param.date}"/>
+	</label>
+		<button type="submit">Search</button>
+	</form>
+
+
+	<hr/>
+	<h2>Featured Flights</h2>
+	<c:if test="${not empty flights}">
+		<ul>
+			<c:forEach var="f" items="${flights}">
+				<li>
+					<a href="${pageContext.request.contextPath}/flight/${f.id}">${f.origin} → ${f.destination}</a>
+					&nbsp;|&nbsp; ${f.departureTime} &nbsp;|&nbsp; ${f.price} | <a
+						href="${pageContext.request.contextPath}/user/book?flightId=${f.id}">Book</a>
+				</li>
+			</c:forEach>
+		</ul>
+	</c:if>
+</main>
+<footer>
+	<jsp:include page="/WEB-INF/views/fragments/footer.jsp"/>
+</footer>
 </body>
 </html>
