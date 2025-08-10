@@ -1,4 +1,3 @@
-// Simple script to confirm deletion or cancellation actions
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('form').forEach(form => {
     if (form.querySelector('button') && (form.action.includes('delete') || form.action.includes('cancel'))) {
