@@ -4,6 +4,8 @@
 <head>
 	<title>Search Flights</title>
 	<link rel="stylesheet" href="<c:url value='./css/style.css'/>">
+	<link rel="stylesheet" href="<c:url value='./css/card.css'/>">
+	<link rel="stylesheet" href="<c:url value='../css/search.css'/>">
 </head>
 <body>
 <header>
@@ -27,18 +29,7 @@
 
 	<h1>Search</h1>
 
-	<form action="${pageContext.request.contextPath}/flights" method="get">
-		Origin: <label>
-		<input type="text" name="origin" value="${origin}"/>
-	</label>
-		Destination: <label>
-		<input type="text" name="destination" value="${destination}"/>
-	</label>
-		Date: <label>
-		<input type="date" name="date" value="${date}"/>
-	</label>
-		<button type="submit">Search</button>
-	</form>
+	<jsp:include page="/WEB-INF/views/fragments/searchForm.jsp"/>
 
 	<br/>
 	<hr/>
