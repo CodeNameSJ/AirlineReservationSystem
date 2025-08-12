@@ -1,0 +1,111 @@
+:root {
+	--grad-angle: 45deg;
+}
+
+.card-container {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 24px;
+	justify-content: center;
+}
+
+.card {
+	width: 17em;
+	height: 22.5em;
+	clip-path: polygon(30px 0%, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%, 0% 30px);
+	display: flex;
+	flex-direction: column;
+	padding: 20px;
+	font-family: Arial, sans-serif;
+	text-align: center;
+	flex: 2 10 250px;
+
+	border-radius: 20px;
+	justify-content: center;
+	align-items: center;
+	transition: border-radius 0.36s ease-in-out, --grad-angle 0.36s linear;
+	background: linear-gradient(var(--grad-angle), #04051dea 0%, #2b566e 100%);
+	box-shadow: 3px 6px 9px rgba(0, 0, 0, 0.1);
+	color: white;
+}
+
+.card:hover {
+	transition: 0.36s ease-in-out;
+	transform: scale(1.01);
+	border-radius: 20px;
+	clip-path: none;
+	background: #6B6ECC linear-gradient(135deg, #04051dea 0%, #2b566e 100%);
+}
+
+.card:hover {
+	border-radius: 50px;
+	animation: rotateGradient 0.36s forwards;
+}
+
+@keyframes rotateGradient {
+	from {
+		background: linear-gradient(45deg, #04051dea 0%, #2b566e 100%);
+	}
+	to {
+		background: linear-gradient(90deg, #04051dea 0%, #2b566e 100%);
+	}
+}
+
+.card span {
+	font-weight: bold;
+	color: white;
+	text-align: center;
+	display: block;
+	font-size: 1em;
+}
+
+.card .content {
+	font-weight: 400;
+	color: white;
+	display: block;
+	text-align: center;
+	font-size: 0.72em;
+	margin: 1em;
+}
+
+.btn {
+	display: inline-block;
+	font-family: sans-serif;
+	font-weight: 600;
+	font-size: 16px;
+	color: #fff;
+	margin: 1rem auto;
+	padding: 0.7rem 2rem;
+	border-radius: 30em;
+	border-style: none;
+	position: relative;
+	z-index: 1;
+	overflow: hidden;
+	text-decoration: none;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+	background-color: transparent;
+	box-shadow: 1px 1px 12px #000000;
+}
+
+.btn::before {
+	content: "";
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	background-color: #fff;
+	transform: translateX(-101%);
+	transition: all .3s ease-in-out;
+	z-index: -1;
+}
+
+.btn:hover {
+	color: #272727;
+	transition: all .3s ease;
+}
+
+.btn:hover::before {
+	transform: translateX(0);
+}
