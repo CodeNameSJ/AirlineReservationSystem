@@ -11,12 +11,6 @@
 	<jsp:include page="/WEB-INF/views/fragments/navbar.jsp"/>
 </header>
 <main>
-	<nav>
-		<a href="${pageContext.request.contextPath}/">Home</a> | <a
-			href="${pageContext.request.contextPath}/user/home">My
-		Bookings</a>
-	</nav>
-
 	<h1>Booking Confirmed</h1>
 	<c:if test="${not empty booking}">
 		<p>Your booking ID is: <strong>${booking.id}</strong></p>
