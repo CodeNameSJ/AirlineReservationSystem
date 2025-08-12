@@ -5,6 +5,7 @@
 	<title>Airline Reservation - Home</title>
 	<link rel="stylesheet" href="<c:url value='./css/style.css'/>">
 	<link rel="stylesheet" href="<c:url value='./css/card.css'/>">
+	<link rel="stylesheet" href="<c:url value='../css/search.css'/>">
 </head>
 <body>
 <header>
@@ -27,23 +28,7 @@
 		});
 	</script>
 
-	<h1>Welcome</h1>
-
-	<h1>Search Flights</h1>
-
-	<form action="${pageContext.request.contextPath}/flights" method="get">
-		Origin: <label>
-		<input type="text" name="origin" value="${param.origin}"/>
-	</label>
-		Destination: <label>
-		<input type="text" name="destination" value="${param.destination}"/>
-	</label>
-		Date: <label>
-		<input type="date" name="date" value="${param.date}"/>
-	</label>
-		<button type="submit">Search</button>
-	</form>
-
+	<jsp:include page="/WEB-INF/views/fragments/searchForm.jsp"/>
 
 	<hr/>
 	<h2>Featured Flights</h2>
