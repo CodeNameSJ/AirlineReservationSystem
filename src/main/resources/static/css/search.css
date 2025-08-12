@@ -1,0 +1,60 @@
+.flight-search-card {
+	max-width: 600px;
+	margin: 40px auto;
+	background: linear-gradient(45deg, #04051dea 0%, #2b566e 100%);
+	border-radius: 16px;
+	box-shadow: 0 8px 32px rgba(0,0,0,0.13);
+	padding: 36px 28px 30px 28px;
+	color: #fff;
+	text-align: center;
+}
+
+.flight-search-card h2 {
+	font-size: 2rem;
+	font-weight: 700;
+	margin-bottom: 18px;
+	letter-spacing: 1px;
+}
+
+.flight-search-form {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 16px;
+	flex-wrap: wrap;
+}
+
+.flight-search-form select,
+.flight-search-form input[type="date"] {
+	font-size: 1.06rem;
+	padding: 10px 14px;
+	border-radius: 8px;
+	border: none;
+	background: #f3f6f8;
+	color: #252e38;
+	box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+	outline: none;
+	min-width: 150px;
+	transition: border-color 0.2s;
+}
+
+.flight-search-form select:focus,
+.flight-search-form input[type="date"]:focus {
+	border: 2px solid #009dff;
+}
+
+.form-separator {
+	font-size: 1.35rem;
+	color: #6cbff8;
+	font-weight: bold;
+}
+
+@media (max-width: 700px) {
+	.flight-search-form {
+		flex-direction: column;
+		gap: 12px;
+	}
+	.flight-search-card {
+		padding: 24px 10px 18px 10px;
+	}
+}
