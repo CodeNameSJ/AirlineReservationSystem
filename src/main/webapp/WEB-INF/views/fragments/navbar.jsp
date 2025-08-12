@@ -15,9 +15,9 @@
 	</div>
 
 	<!-- Center Links -->
-	<div class="nav-center">
+	<div class="nav-center hover-underline">
 		<a href="${pageContext.request.contextPath}/">Home</a>
-		<a href="${pageContext.request.contextPath}/flights">Flights</a>
+		<a href="${pageContext.request.contextPath}/flight-list">Flights</a>
 	</div>
 
 	<!-- Right Links -->
@@ -57,9 +57,12 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		background: rgba(0.6, 0.6, 0.6, 0.6);
+		background: #6B6ECC linear-gradient(45deg, #04051dea 0%, #2b566e 100%);
 		padding: 5px 10px;
 		border-radius: 20px;
+		color: #fff;
+		margin-bottom: 20px;
+		box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 	}
 
 	.navbar a {
@@ -69,9 +72,39 @@
 	}
 
 	.navbar a:hover {
-		text-decoration: underline;
+		text-decoration: none;
+		
 	}
+.hover-underline {
+  font-size: 2rem;
+  color: #ffffff;
+  position: relative;
+  display: inline-block;
+}
 
+.hover-underline::after,
+.hover-underline::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(to right, #ff0000, #00ffff);
+  bottom: -5px;
+  left: 0;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.4s ease-out;
+}
+
+.hover-underline::before {
+  top: -5px;
+  transform-origin: left;
+}
+
+.hover-underline:hover::after,
+.hover-underline:hover::before {
+  transform: scaleX(1);
+}
 	.logo {
 		height: 40px;
 	}
