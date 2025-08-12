@@ -16,7 +16,7 @@
 		<p>Register</p>
 		<form action="${pageContext.request.contextPath}/register" method="post">
 			<div class="user-box">
-				<input required name="username" id="username" type="text" autocomplete="on">
+				<input required name="username" id="username" type="text"">
 				<label for="username">Username</label>
 			</div>
 			<div class="user-box">
