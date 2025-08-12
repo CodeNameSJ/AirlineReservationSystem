@@ -4,11 +4,10 @@
 <head>
 	<title>Airline Reservation - Home</title>
 	<link rel="stylesheet" href="<c:url value='./css/style.css'/>">
+	<link rel="stylesheet" href="<c:url value='./css/card.css'/>">
 </head>
 <body>
 <header>
-
-
 	<jsp:include page="/WEB-INF/views/fragments/navbar.jsp"/>
 </header>
 <main>
@@ -49,16 +48,25 @@
 	<hr/>
 	<h2>Featured Flights</h2>
 	<c:if test="${not empty flights}">
-		<ul>
+		<div class="card-container">
 			<c:forEach var="f" items="${flights}">
-				<li>
-					<a href="${pageContext.request.contextPath}/flight/${f.id}">${f.origin} → ${f.destination}</a>
-					&nbsp;|&nbsp; ${f.departureTime} &nbsp;|&nbsp; ${f.price} | <a
-						href="${pageContext.request.contextPath}/user/book?flightId=${f.id}">Book</a>
-				</li>
+				<div class="card">
+					<div class="content">
+						<div class="title">${f.origin} ➡ ${f.destination}</div>
+						<div class="price">Economy: $${f.priceEconomy}</div>
+						<div class="price">Business: $${f.priceBusiness}</div>
+						<div class="description">
+							Departure Time: ${f.departureTime}
+						</div>
+					</div>
+					<a href="${pageContext.request.contextPath}/user/book?flightId=${f.id}">
+						<button class="btn">Book Now</button>
+					</a>
+				</div>
 			</c:forEach>
-		</ul>
+		</div>
 	</c:if>
+
 </main>
 <footer>
 	<jsp:include page="/WEB-INF/views/fragments/footer.jsp"/>
