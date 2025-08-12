@@ -1,5 +1,4 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<link rel="stylesheet" href="<c:url value='../css/style.css'/>">
 
 <nav class="navbar">
 	<!-- Logo -->
@@ -15,13 +14,13 @@
 	</div>
 
 	<!-- Center Links -->
-	<div class="nav-center hover-underline">
-		<a href="${pageContext.request.contextPath}/">Home</a>
-		<a href="${pageContext.request.contextPath}/flight-list">Flights</a>
+	<div class="nav-center">
+		<a class="hover-link" style="font-size: 1.36rem" href="${pageContext.request.contextPath}/">Home</a>
+		<a class="hover-link" style="font-size: 1.36rem" href="${pageContext.request.contextPath}/flight-list">Flights</a>
 	</div>
 
 	<!-- Right Links -->
-	<div class="nav-right">
+	<div class="hover-link nav-right">
 		<c:choose>
 			<c:when test="${not empty sessionScope.role and sessionScope.role eq 'ADMIN'}">
 				<div class="dropdown">
@@ -73,38 +72,36 @@
 
 	.navbar a:hover {
 		text-decoration: none;
-		
 	}
-.hover-underline {
-  font-size: 2rem;
-  color: #ffffff;
-  position: relative;
-  display: inline-block;
-}
 
-.hover-underline::after,
-.hover-underline::before {
-  content: '';
-  position: absolute;
-  width: 100%;
-  height: 2px;
-  background: linear-gradient(to right, #ff0000, #00ffff);
-  bottom: -5px;
-  left: 0;
-  transform: scaleX(0);
-  transform-origin: right;
-  transition: transform 0.4s ease-out;
-}
+	.hover-link {
+		font-size: 1.2rem;
+		color: #fff;
+		position: relative;
+		text-decoration: none;
+		padding-bottom: 3px;
+		transition: color 0.3s ease;
+	}
 
-.hover-underline::before {
-  top: -5px;
-  transform-origin: left;
-}
+	.hover-link::after {
+		content: '';
+		position: absolute;
+		left: 0;
+		bottom: 0;
+		width: 0;
+		height: 2px;
+		background-color: currentColor;
+		transition: width 0.3s ease;
+	}
 
-.hover-underline:hover::after,
-.hover-underline:hover::before {
-  transform: scaleX(1);
-}
+	.hover-link:hover {
+		color: #80dcff;
+	}
+
+	.hover-link:hover::after {
+		width: 100%;
+	}
+
 	.logo {
 		height: 40px;
 	}
