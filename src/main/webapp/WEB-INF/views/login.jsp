@@ -1,11 +1,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
-
 <head>
 	<title>Login</title>
 	<link rel="stylesheet" href="<c:url value='./css/form.css'/>">
 </head>
-
 <body>
 <header>
 	<jsp:include page="/WEB-INF/views/fragments/navbar.jsp"/>
@@ -42,5 +40,4 @@
 	<jsp:include page="/WEB-INF/views/fragments/footer.jsp"/>
 </footer>
 </body>
-
 </html>
