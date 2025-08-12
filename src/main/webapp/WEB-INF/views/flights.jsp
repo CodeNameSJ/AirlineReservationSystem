@@ -25,7 +25,7 @@
 		});
 	</script>
 
-	<h1>Search Results</h1>
+	<h1>Search</h1>
 
 	<form action="${pageContext.request.contextPath}/flights" method="get">
 		Origin: <label>
