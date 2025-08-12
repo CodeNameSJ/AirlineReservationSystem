@@ -13,11 +13,12 @@ body {
 }
 
 header {
-	background: #103b6e;
-	color: #fff;
-	padding: 10px 20px;
-	margin-bottom: 20px;
-	border-radius: 20px;
+	/*background: #6B6ECC linear-gradient(45deg, #04051dea 0%, #2b566e 100%);*/
+	/*background-size: 40px 40px;*/
+	/*background: linear-gradient(45deg, rgba(4, 5, 29, 0.92) 25%, transparent 25%),*/
+	/*linear-gradient(-45deg, rgba(255, 255, 255, 0.1) 25%, transparent 25%),*/
+	/*linear-gradient(45deg, transparent 75%, rgb(43, 86, 110) 75%),*/
+	/*linear-gradient(-45deg, transparent 75%, rgba(255, 255, 255, 0.1) 75%) repeat 0 0, 0 20px, 20px -20px, -20px 0;*/
 }
 
 header h1 {
