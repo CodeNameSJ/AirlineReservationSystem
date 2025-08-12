@@ -26,9 +26,14 @@ public class PublicController {
 
 	@GetMapping({"/", "/home"})
 	public String home(Model model) {
-		List<Flight> flights = flightService.findAll();
-		model.addAttribute("flights", flights);
+		model.addAttribute("flights", flightService.findAll());
 		return "home";
+	}
+
+	@GetMapping({"/flight-list"})
+	public String flightList(Model model) {
+		model.addAttribute("flights", flightService.findAll());
+		return "flights";
 	}
 
 	// Flight search page — accessible without login
@@ -46,7 +51,7 @@ public class PublicController {
 
 		if ("true".equalsIgnoreCase(request.getParameter("ajax"))) {
 			model.addAttribute("flights", results);
-			return "fragments/flightList";
+			return "fragments/flight-list";
 		}
 
 		return "flights";
