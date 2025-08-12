@@ -20,21 +20,23 @@ public class AuthController {
 
 	// Show login page
 	@GetMapping("/login")
-	public String loginPage(@RequestParam(required = false) String error, Model model) {
+	public String loginPage(@RequestParam(required = false) String error, HttpServletRequest req, Model model) {
+		HttpSession s = req.getSession(true);
+		if (s != null && s.getAttribute("userId") != null) {
+			return "redirect:/";
+		}
 		if (error != null) model.addAttribute("error", error);
-		return "login"; // login.jsp
+		return "login";
 	}
 
 	@PostMapping("/login")
 	public String doLogin(@RequestParam String username, @RequestParam String password, HttpServletRequest req, Model model) {
-
 		var opt = userService.findByUsername(username);
 		if (opt.isEmpty()) {
 			model.addAttribute("error", "Invalid username or password");
 			return "login";
 		}
 		User user = opt.get();
-		// plain-text check (simple)
 		if (!user.getPassword().equals(password)) {
 			model.addAttribute("error", "Invalid username or password");
 			return "login";
@@ -64,11 +66,16 @@ public class AuthController {
 	}
 
 	@GetMapping("/register")
-	public String registerPage() {return "register";}
+	public String registerPage(HttpServletRequest req) {
+		HttpSession s = req.getSession(true);
+		if (s != null && s.getAttribute("userId") != null) {
+			return "redirect:/";
+		}
+		return "register";
+	}
 
 	@PostMapping("/register")
 	public String doRegister(@RequestParam String username, @RequestParam String email, @RequestParam String password, HttpServletRequest req, Model model) {
-
 		if (userService.findByUsername(username).isPresent()) {
 			model.addAttribute("error", "Username taken");
 			return "register";
