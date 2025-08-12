@@ -82,7 +82,7 @@ public class AdminController {
 
 	@PostMapping("/bookings/cancel")
 	public String cancel(HttpServletRequest req, @RequestParam Long id) {
-//		if (isAdmin(req)) return "redirect:/login";
+		if (isAdmin(req)) return "redirect:/login";
 		bookingService.cancelBooking(id);
 		return "redirect:/admin/bookings";
 	}
