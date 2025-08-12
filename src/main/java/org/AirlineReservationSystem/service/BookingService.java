@@ -60,7 +60,7 @@ public class BookingService {
 		flightRepo.save(flight);
 
 		Booking booking = new Booking();
-		booking.setUser(userOpt.get());                 // ← IMPORTANT: set user
+		booking.setUser(userOpt.get());
 		booking.setFlight(flight);
 		booking.setSeatClass(seatClass);
 		booking.setSeats(seats);
@@ -93,4 +93,11 @@ public class BookingService {
 		bookingRepo.save(booking);
 	}
 
+	public boolean existsByFlightId(Long flightId) {
+		return bookingRepo.existsByFlightId(flightId);
+	}
+
+	public void deleteByFlightId(Long flightId) {
+		bookingRepo.deleteByFlightId(flightId);
+	}
 }

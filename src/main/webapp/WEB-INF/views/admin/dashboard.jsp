@@ -18,9 +18,9 @@
 			<th>Origin</th>
 			<th>Destination</th>
 			<th>Departure</th>
+			<th>Arrival</th>
 			<th>Economy Seats</th>
 			<th>Business Seats</th>
-			<th>Actions</th>
 		</tr>
 		<c:forEach var="flight" items="${flights}">
 			<tr>
@@ -28,9 +28,9 @@
 				<td>${flight.origin}</td>
 				<td>${flight.destination}</td>
 				<td>${flight.departureTime}</td>
-				<td>${flight.economySeatsAvailable}</td>
-				<td>${flight.businessSeatsAvailable}</td>
-				<td><a href="${pageContext.request.contextPath}/flights?origin=&destination=&date=">Search</a></td>
+				<td>${flight.arrivalTime}</td>
+				<td>${flight.economySeatsAvailable}/${flight.totalEconomySeats}</td>
+				<td>${flight.businessSeatsAvailable}/${flight.totalBusinessSeats}</td>
 			</tr>
 		</c:forEach>
 	</table>

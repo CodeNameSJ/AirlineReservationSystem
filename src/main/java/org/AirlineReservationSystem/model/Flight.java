@@ -9,6 +9,7 @@ import org.hibernate.proxy.HibernateProxy;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -21,6 +22,11 @@ public class Flight {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
+	@Transient
+	private List<Booking> bookings;
+	@Transient
+	private boolean hasBookings;
 
 	@Column(nullable = false, unique = true)
 	private String flightNumber;

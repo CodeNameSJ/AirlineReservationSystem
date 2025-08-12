@@ -1,10 +1,100 @@
+<%--<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>--%>
+<%--<!doctype html>--%>
+<%--<html>--%>
+<%--<head>--%>
+<%--	<meta charset="utf-8"/>--%>
+<%--	<title>Manage Flights</title>--%>
+<%--	<link rel="stylesheet" href="<c:url value='../css/style.css'/>"/>--%>
+<%--	<style>--%>
+<%--		.warning-row {--%>
+<%--			background-color: #fff3cd;--%>
+<%--		}--%>
+
+<%--		.warning-row td {--%>
+<%--			padding: 10px;--%>
+<%--		}--%>
+<%--	</style>--%>
+<%--</head>--%>
+<%--<body>--%>
+<%--<header>--%>
+<%--	<jsp:include page="/WEB-INF/views/fragments/navbar.jsp"/>--%>
+<%--</header>--%>
+<%--<main>--%>
+<%--	<h1>Manage Flights</h1>--%>
+<%--	<table style="border:1px solid black; border-collapse: collapse; width:100%;">--%>
+<%--		<tr>--%>
+<%--			<th>ID</th>--%>
+<%--			<th>Flight</th>--%>
+<%--			<th>Economy Seats</th>--%>
+<%--			<th>Business Seats</th>--%>
+<%--			<th>Action</th>--%>
+<%--		</tr>--%>
+
+<%--		<c:forEach var="b" items="${flights}">--%>
+<%--			<!-- Main data row -->--%>
+<%--			<tr>--%>
+<%--				<td>${b.id}</td>--%>
+<%--				<td>${b.flightNumber}</td>--%>
+<%--				<td>${b.economySeatsAvailable}/${b.totalEconomySeats}</td>--%>
+<%--				<td>${b.businessSeatsAvailable}/${b.totalBusinessSeats}</td>--%>
+<%--				<td>--%>
+<%--					<form method="get" action="${pageContext.request.contextPath}/admin/flights/edit"--%>
+<%--					      style="display:inline;">--%>
+<%--						<input type="hidden" name="id" value="${b.id}"/>--%>
+<%--						<button type="submit">Edit</button>--%>
+<%--					</form>--%>
+<%--					<button type="button" onclick="toggleWarning(${b.id}, true)">--%>
+<%--						Delete--%>
+<%--					</button>--%>
+<%--				</td>--%>
+<%--			</tr>--%>
+
+<%--			<!-- Inline confirmation row (hidden by default) -->--%>
+<%--			<tr id="warning-${b.id}" class="warning-row" style="display:none;">--%>
+<%--				<td colspan="5">--%>
+<%--					<strong>&#9888; Are you sure you want to delete flight ${b.flightNumber}?</strong><br/>--%>
+<%--					<form method="post" action="${pageContext.request.contextPath}/admin/flights/delete"--%>
+<%--					      style="display:inline;">--%>
+<%--						<input type="hidden" name="id" value="${b.id}"/>--%>
+<%--						<input type="hidden" name="confirm" value="true"/>--%>
+<%--						<button type="submit" style="background-color:red; color:white;">Yes, Delete</button>--%>
+<%--					</form>--%>
+<%--					<button type="button" onclick="toggleWarning(${b.id}, false)">Cancel</button>--%>
+<%--				</td>--%>
+<%--			</tr>--%>
+<%--		</c:forEach>--%>
+
+<%--	</table>--%>
+<%--</main>--%>
+<%--<footer>--%>
+<%--	<jsp:include page="/WEB-INF/views/fragments/footer.jsp"/>--%>
+<%--</footer>--%>
+
+<%--<script>--%>
+<%--	function toggleWarning(id, show) {--%>
+<%--		const row = document.getElementById("warning-" + id);--%>
+<%--		row.style.display = show ? "table-row" : "none";--%>
+<%--	}--%>
+<%--</script>--%>
+<%--</body>--%>
+<%--</html>--%>
+
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!doctype html>
 <html>
 <head>
 	<meta charset="utf-8"/>
-	<title>Login</title>
+	<title>Manage Flights</title>
 	<link rel="stylesheet" href="<c:url value='../css/style.css'/>"/>
+	<style>
+		.warning-row {
+			background-color: #fff3cd;
+		}
+
+		.warning-row td {
+			padding: 10px;
+		}
+	</style>
 </head>
 <body>
 <header>
@@ -12,32 +102,83 @@
 </header>
 <main>
 	<h1>Manage Flights</h1>
-	<table style="border:1px solid black">
+	<table style="border:1px solid black; border-collapse: collapse; width:100%;">
 		<tr>
 			<th>ID</th>
 			<th>Flight</th>
+			<th>Origin</th>
+			<th>Destination</th>
+			<th>Departure</th>
+			<th>Arrival</th>
 			<th>Economy Seats</th>
 			<th>Business Seats</th>
 			<th>Action</th>
 		</tr>
-		<c:forEach var="b" items="${flights}">
+
+		<c:forEach var="flight" items="${flights}">
+			<!-- Main data row -->
 			<tr>
-				<td>${b.id}</td>
-				<td>${b.flightNumber}</td>
-				<td>${b.economySeatsAvailable}/${b.totalEconomySeats}</td>
-				<td>${b.businessSeatsAvailable}/${b.totalBusinessSeats}</td>
+				<td>${flight.id}</td>
+				<td>${flight.flightNumber}</td>
+				<td>${flight.origin}</td>
+				<td>${flight.destination}</td>
+				<td>${flight.departureTime}</td>
+				<td>${flight.arrivalTime}</td>
+				<td>${flight.economySeatsAvailable}/${flight.totalEconomySeats}</td>
+				<td>${flight.businessSeatsAvailable}/${flight.totalBusinessSeats}</td>
 				<td>
-					<form action="${pageContext.request.contextPath}/admin/flights/cancel" method="post">
-						<input type="hidden" name="id" value="${b.id}"/>
-						<button type="submit">Cancel</button>
+					<!-- Delete triggers the inline confirmation -->
+					<form method="get" action="${pageContext.request.contextPath}/admin/flights/edit"
+					      style="display:inline;">
+						<input type="hidden" name="id" value="${flight.id}"/>
+						<button type="submit">Edit</button>
+						<button type="button" onclick="toggleWarning(${flight.id}, true)">
+							Delete
+						</button>
 					</form>
 				</td>
 			</tr>
+
+			<!-- Inline warning row -->
+			<tr id="warning-${flight.id}" class="warning-row" style="display:none;">
+				<td colspan="5">
+					<strong>&#9888;
+						<c:choose>
+							<c:when test="${flight.hasBookings}">
+								This flight has existing bookings! Deleting it will also remove all related bookings. Are you sure?
+							</c:when>
+							<c:otherwise>
+								Are you sure you want to delete this flight?
+							</c:otherwise>
+						</c:choose>
+					</strong>
+					<br/>
+					<form method="post" action="${pageContext.request.contextPath}/admin/flights/delete"
+					      style="display:inline;">
+						<input type="hidden" name="id" value="${flight.id}"/>
+						<input type="hidden" name="confirm" value="true"/>
+						<button type="submit" style="background-color:red; color:white;">
+							Yes, Delete
+						</button>
+					</form>
+					<button type="button" onclick="toggleWarning(${flight.id}, false)">Cancel</button>
+				</td>
+			</tr>
 		</c:forEach>
+
 	</table>
 </main>
 <footer>
 	<jsp:include page="/WEB-INF/views/fragments/footer.jsp"/>
 </footer>
+
+<script>
+	function toggleWarning(id, show) {
+		const row = document.getElementById("warning-" + id);
+		if (row) {
+			row.style.display = show ? "table-row" : "none";
+		}
+	}
+</script>
 </body>
 </html>

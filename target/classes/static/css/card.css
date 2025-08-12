@@ -1,6 +1,7 @@
 :root {
 	--grad-angle: 45deg;
 }
+
 .card-container {
 	display: flex;
 	flex-wrap: wrap;
@@ -27,6 +28,7 @@
 	box-shadow: 3px 6px 9px rgba(0, 0, 0, 0.1);
 	color: white;
 }
+
 .card:hover {
 	transition: 0.36s ease-in-out;
 	transform: scale(1.01);

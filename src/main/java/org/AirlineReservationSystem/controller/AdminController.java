@@ -10,6 +10,9 @@ import org.AirlineReservationSystem.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/admin")
@@ -41,6 +44,14 @@ public class AdminController {
 	@GetMapping("/flights")
 	public String manageFlights(HttpServletRequest req, Model model) {
 		if (isAdmin(req)) return "redirect:/login";
+
+		List<Flight> flights = flightService.findAll();
+
+		flights.forEach(f -> {
+			boolean hasBookings = bookingService.existsByFlightId(f.getId());
+			f.setHasBookings(hasBookings);
+		});
+
 		model.addAttribute("flights", flightService.findAll());
 		return "admin/flights";
 	}
@@ -67,11 +78,44 @@ public class AdminController {
 	}
 
 	@PostMapping("/flights/delete")
-	public String deleteFlight(HttpServletRequest req, @RequestParam Long id) {
+	public String deleteFlightRequest(HttpServletRequest req, @RequestParam Long id, @RequestParam(required = false) boolean confirm, Model model, RedirectAttributes redirectAttributes) {
 		if (isAdmin(req)) return "redirect:/login";
-		flightService.delete(id);
-		return "redirect:/admin/flights";
+
+		// If already confirmed
+		if (confirm) {
+			bookingService.deleteByFlightId(id); // Or skip if not deleting bookings
+			flightService.delete(id);
+			redirectAttributes.addFlashAttribute("successMessage", "Flight deleted successfully.");
+			return "redirect:/admin/flights";
+		}
+
+		// Not confirmed yet - check for bookings
+		if (bookingService.existsByFlightId(id)) {
+			model.addAttribute("flightId", id);
+			model.addAttribute("flight", flightService.findById(id).orElseThrow());
+			model.addAttribute("hasBookings", true);
+			return "admin/confirmFlightDelete";
+		} else {
+			// No bookings - safe to delete immediately
+			flightService.delete(id);
+			redirectAttributes.addFlashAttribute("successMessage", "Flight deleted successfully.");
+			return "redirect:/admin/flights";
+		}
 	}
+
+	// ? if I want to delete flight and bookings (also there is cascade remove option available
+//	@PostMapping("/flights/delete")
+//	public String deleteFlight(HttpServletRequest req, @RequestParam Long id, RedirectAttributes redirectAttributes) {
+//		if (!isAdmin(req)) return "redirect:/login";
+//
+//		bookingService.deleteByFlightId(id);  // Remove dependent bookings first
+//		flightService.delete(id);
+//
+//		redirectAttributes.addFlashAttribute("successMessage",
+//				"Flight and related bookings deleted successfully.");
+//		return "redirect:/admin/flights";
+//	}
+
 
 	@GetMapping("/bookings")
 	public String manageBookings(HttpServletRequest req, Model model) {

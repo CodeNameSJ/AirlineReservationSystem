@@ -51,18 +51,18 @@
 			<th>Status</th>
 			<th>Action</th>
 		</tr>
-		<c:forEach var="b" items="${bookings}">
+		<c:forEach var="flight" items="${bookings}">
 			<tr>
-				<td>${b.id}</td>
-				<td>${b.user.username}</td>
-				<td>${b.flight.flightNumber}</td>
-				<td>${b.seats}</td>
-				<td>${b.bookingTime}</td>
-				<td>${b.status}</td>
+				<td>${flight.id}</td>
+				<td>${flight.user.username}</td>
+				<td>${flight.flight.flightNumber}</td>
+				<td>${flight.seats}</td>
+				<td>${flight.bookingTime}</td>
+				<td>${flight.status}</td>
 				<td>
-					<c:if test="${b.status == 'BOOKED'}">
+					<c:if test="${flight.status == 'BOOKED'}">
 						<form action="${pageContext.request.contextPath}/admin/bookings/cancel" method="post">
-							<input type="hidden" name="id" value="${b.id}"/>
+							<input type="hidden" name="id" value="${flight.id}"/>
 							<button class="tooltip" type="submit">
 								<span class="tooltip-text">delete</span>
 								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
