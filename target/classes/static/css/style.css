@@ -1,3 +1,98 @@
+/** {*/
+/*	margin: 0;*/
+/*	padding: 0;*/
+/*	box-sizing: border-box;*/
+/*}*/
+
+/*body {*/
+/*	font-family: Arial, sans-serif;*/
+/*	background: #f5f5f5;*/
+/*	color: #333;*/
+/*	line-height: 1.6;*/
+/*	padding: 20px;*/
+/*}*/
+
+/*header {*/
+/*	!*background: #6B6ECC linear-gradient(45deg, #04051dea 0%, #2b566e 100%);*!*/
+/*	!*background-size: 40px 40px;*!*/
+/*	!*background: linear-gradient(45deg, rgba(4, 5, 29, 0.92) 25%, transparent 25%),*!*/
+/*	!*linear-gradient(-45deg, rgba(255, 255, 255, 0.1) 25%, transparent 25%),*!*/
+/*	!*linear-gradient(45deg, transparent 75%, rgb(43, 86, 110) 75%),*!*/
+/*	!*linear-gradient(-45deg, transparent 75%, rgba(255, 255, 255, 0.1) 75%) repeat 0 0, 0 20px, 20px -20px, -20px 0;*!*/
+/*}*/
+
+/*header h1 {*/
+/*	font-size: 24px;*/
+/*}*/
+
+/*nav a {*/
+/*	color: #fff;*/
+/*	margin-right: 15px;*/
+/*	text-decoration: none;*/
+/*}*/
+
+/*nav a:hover {*/
+/*	text-decoration: red;*/
+/*}*/
+
+/*.container {*/
+/*	max-width: 1000px;*/
+/*	margin: 0 auto;*/
+/*	background: #fff;*/
+/*	padding: 20px;*/
+/*	border-radius: 8px;*/
+/*	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);*/
+/*}*/
+
+/*table {*/
+/*	width: 100%;*/
+/*	border-collapse: collapse;*/
+/*	margin-top: 20px;*/
+/*}*/
+
+/*th, td {*/
+/*	padding: 12px;*/
+/*	border: 1px solid #ddd;*/
+/*	text-align: left;*/
+/*}*/
+
+/*th {*/
+/*	background: #e9ecef;*/
+/*}*/
+
+/*tr:nth-child(even) {*/
+/*	background: #f8f9fa;*/
+/*}*/
+
+/*button, input[type="submit"] {*/
+/*	background: #004aad;*/
+/*	color: #fff;*/
+/*	border: none;*/
+/*	padding: 8px 16px;*/
+/*	border-radius: 4px;*/
+/*	cursor: pointer;*/
+/*}*/
+
+/*button:hover, input[type="submit"]:hover {*/
+/*	background: #003380;*/
+/*}*/
+
+/*form input[type="text"], form input[type="password"], form input[type="email"], form input[type="date"], form input[type="number"], form input[type="datetime-local"], form select {*/
+/*	width: 100%;*/
+/*	padding: 8px;*/
+/*	margin: 8px 0;*/
+/*	border: 1px solid #ccc;*/
+/*	border-radius: 4px;*/
+/*}*/
+
+/*.alert {*/
+/*	padding: 10px;*/
+/*	background-color: #f44336;*/
+/*	color: white;*/
+/*	margin-bottom: 15px;*/
+/*	border-radius: 4px;*/
+/*}*/
+
 * {
 	margin: 0;
 	padding: 0;
@@ -5,90 +100,84 @@
 }
 
 body {
-	font-family: Arial, sans-serif;
-	background: #f5f5f5;
+	font-family: "Segoe UI", Arial, sans-serif;
+	background: linear-gradient(135deg, #eef2f3, #dfe9f3);
 	color: #333;
 	line-height: 1.6;
 	padding: 20px;
 }
 
-header {
-	/*background: #6B6ECC linear-gradient(45deg, #04051dea 0%, #2b566e 100%);*/
-	/*background-size: 40px 40px;*/
-	/*background: linear-gradient(45deg, rgba(4, 5, 29, 0.92) 25%, transparent 25%),*/
-	/*linear-gradient(-45deg, rgba(255, 255, 255, 0.1) 25%, transparent 25%),*/
-	/*linear-gradient(45deg, transparent 75%, rgb(43, 86, 110) 75%),*/
-	/*linear-gradient(-45deg, transparent 75%, rgba(255, 255, 255, 0.1) 75%) repeat 0 0, 0 20px, 20px -20px, -20px 0;*/
+/* Page Title */
+.page-title {
+	text-align: center;
+	font-size: 2rem;
+	margin-bottom: 25px;
+	color: #004aad;
+	font-weight: 700;
 }
 
-header h1 {
-	font-size: 24px;
-}
-
-nav a {
-	color: #fff;
-	margin-right: 15px;
-	text-decoration: none;
-}
-
-nav a:hover {
-	text-decoration: red;
-}
-
-.container {
-	max-width: 1000px;
+/* Card Style */
+.search-card {
+	max-width: 500px;
 	margin: 0 auto;
 	background: #fff;
-	padding: 20px;
-	border-radius: 8px;
-	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+	padding: 25px;
+	border-radius: 12px;
+	box-shadow: 0 4px 20px rgba(0,0,0,0.08);
 }
 
-table {
-	width: 100%;
-	border-collapse: collapse;
-	margin-top: 20px;
-}
-
-th, td {
-	padding: 12px;
-	border: 1px solid #ddd;
-	text-align: left;
-}
-
-th {
-	background: #e9ecef;
-}
-
-tr:nth-child(even) {
-	background: #f8f9fa;
-}
-
-button, input[type="submit"] {
-	background: #004aad;
-	color: #fff;
-	border: none;
-	padding: 8px 16px;
-	border-radius: 4px;
-	cursor: pointer;
-}
-
-button:hover, input[type="submit"]:hover {
-	background: #003380;
-}
-
-form input[type="text"], form input[type="password"], form input[type="email"], form input[type="date"], form input[type="number"], form input[type="datetime-local"], form select {
-	width: 100%;
-	padding: 8px;
-	margin: 8px 0;
-	border: 1px solid #ccc;
-	border-radius: 4px;
-}
-
-.alert {
-	padding: 10px;
-	background-color: #f44336;
-	color: white;
+/* Labels & Inputs */
+.form-group {
 	margin-bottom: 15px;
-	border-radius: 4px;
+}
+
+label {
+	display: block;
+	font-weight: 600;
+	margin-bottom: 6px;
+}
+
+input[type="text"], input[type="date"], select {
+	width: 100%;
+	padding: 10px;
+	border: 1px solid #ccc;
+	border-radius: 8px;
+	font-size: 14px;
+	transition: all 0.3s ease;
+}
+
+input:focus {
+	border-color: #004aad;
+	outline: none;
+	box-shadow: 0 0 5px rgba(0,74,173,0.3);
+}
+
+/* Button */
+/*button {*/
+/*	width: 100%;*/
+/*	background: #004aad;*/
+/*	color: #fff;*/
+/*	border: none;*/
+/*	padding: 12px;*/
+/*	border-radius: 8px;*/
+/*	font-size: 16px;*/
+/*	font-weight: 600;*/
+/*	cursor: pointer;*/
+/*	transition: all 0.3s ease;*/
+/*}*/
+
+/*button:hover {*/
+/*	background: #003380;*/
+/*	transform: translateY(-2px);*/
+/*	box-shadow: 0 4px 10px rgba(0,0,0,0.15);*/
+/*}*/
+
+/* Responsive */
+@media (max-width: 600px) {
+	.search-card {
+		padding: 20px;
+	}
+	.page-title {
+		font-size: 1.5rem;
+	}
 }
