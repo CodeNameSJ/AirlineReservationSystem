@@ -1,0 +1,217 @@
+/*navbar*/
+body {
+	font-family: "Segoe UI", Arial, sans-serif;
+}
+
+nav {
+	display: flex;
+}
+
+.navbar {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background: #6B6ECC linear-gradient(45deg, #04051dea 0%, #2b566e 100%);
+	padding: 10px 10px;
+	border-radius: 20px;
+	color: #fff;
+	margin-bottom: 20px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2),
+	0 6px 20px rgba(0, 0, 0, 0.19);
+}
+
+.navbar a {
+	color: white;
+	text-decoration: none;
+	margin: 8px 8px;
+
+	display: flex;
+	align-items: center;
+	height: 100%;
+	padding: 0 8px;
+}
+
+.navbar a:hover {
+	text-decoration: antiquewhite;
+}
+
+.hover-decoration {
+	font-size: 18px;
+	color: #e1e1e1;
+	font-family: inherit;
+	font-weight: 600;
+	cursor: pointer;
+	position: relative;
+	border: none;
+	background: none;
+	text-transform: uppercase;
+	transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
+	transition-duration: 300ms;
+	transition-property: color;
+}
+
+.hover-decoration:focus,
+.hover-decoration:hover {
+	color: #fff;
+}
+
+.hover-decoration:focus:after,
+.hover-decoration:hover:after {
+	width: 100%;
+	left: 0;
+}
+
+.hover-decoration:after {
+	content: "";
+	pointer-events: none;
+	bottom: -15px;
+	left: 50%;
+	position: absolute;
+	width: 0;
+	height: 2px;
+	background-color: #fff;
+	transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
+	transition-duration: 300ms;
+	transition-property: width, left;
+}
+
+.logo {
+	height: 40px;
+}
+
+.nav-left,
+.nav-center,
+.nav-right {
+	display: flex;
+	align-items: center;
+}
+
+.nav-left {
+	justify-content: left;
+}
+
+.nav-center {
+	justify-content: center;
+	flex: 1 1 auto;
+}
+
+.nav-right {
+	justify-content: right;
+}
+
+/* Links styling */
+.navbar a {
+	display: flex;
+	align-items: center; /* centers text/icon vertically */
+	height: 100%;
+	padding: 0 8px;
+	text-decoration: none;
+	color: white;
+}
+
+/* Dropdown Styles */
+.dropdown {
+	position: relative;
+	display: inline-block;
+}
+
+.drop-btn {
+	cursor: pointer;
+}
+
+.dropdown-content {
+	display: none;
+	position: absolute;
+	background-color: #103b6e;
+	min-width: 160px;
+	box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+	z-index: 1;
+	border-radius: 15px;
+}
+
+.dropdown-content a {
+	color: white;
+	padding: 10px 16px;
+	text-decoration: none;
+	display: block;
+}
+
+.dropdown-content a:hover {
+	background-color: #004ba9;
+	border-radius: 15px;
+}
+
+.dropdown.show .dropdown-content {
+	display: block;
+}
+
+.signup {
+	--primary-color: #645bff;
+	--secondary-color: #fff;
+	--hover-color: #111;
+	--arrow-width: 10px;
+	--arrow-stroke: 2px;
+	box-sizing: border-box;
+	border: 0;
+	border-radius: 20px;
+	color: var(--secondary-color);
+	padding: 1em 1em;
+	background: var(--primary-color);
+	display: flex;
+	transition: 0.2s background;
+	/*align-items: center;*/
+	gap: 0.6em;
+	font-weight: bold;
+}
+
+.signup .arrow-wrapper {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.signup .arrow {
+	margin-top: 1px;
+	width: var(--arrow-width);
+	background: var(--primary-color);
+	height: var(--arrow-stroke);
+	position: relative;
+	transition: 0.2s;
+}
+
+.signup .arrow::before {
+	content: "";
+	box-sizing: border-box;
+	position: absolute;
+	border: solid var(--secondary-color);
+	border-width: 0 var(--arrow-stroke) var(--arrow-stroke) 0;
+	display: inline-block;
+	top: -3px;
+	right: 3px;
+	transition: 0.2s;
+	padding: 3px;
+	transform: rotate(-45deg);
+}
+
+.signup:hover {
+	background-color: var(--hover-color);
+}
+
+.signup:hover .arrow {
+	background: var(--secondary-color);
+}
+
+.signup:hover .arrow:before {
+	right: 0;
+}
+
+@media (max-width: 600px) {
+	.nav-center {
+		gap: 12px;
+	}
+
+	.navbar {
+		flex-direction: column;
+		align-items: stretch;
+	}
+}
