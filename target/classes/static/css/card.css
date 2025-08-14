@@ -22,27 +22,48 @@
 	border-radius: 20px;
 	justify-content: center;
 	align-items: center;
+	background-image: linear-gradient(
+			139deg,
+			rgba(36, 40, 50, 1) 0%,
+			rgba(36, 40, 50, 1) 0%,
+			rgba(37, 28, 40, 1) 100%
+	);
 	transition: border-radius 0.36s ease-in-out, --grad-angle 0.36s linear;
-	background: linear-gradient(var(--grad-angle), #04051dea 0%, #2b566e 100%);
 	box-shadow: 3px 6px 9px rgba(0, 0, 0, 0.1);
 	color: white;
 }
 
 .card:hover {
-	transition: 0.36s ease-in-out;
+
 	transform: scale(1.01);
 	border-radius: 20px;
 	clip-path: none;
-	background: #6B6ECC linear-gradient(135deg, #04051dea 0%, #2b566e 100%);
+	background-image: linear-gradient(
+			139deg,
+			rgba(36, 40, 50, 1) 0%,
+			rgba(36, 40, 50, 1) 0%,
+			rgba(37, 28, 40, 1) 100%
+	);
 	animation: rotateGradient 0.36s forwards;
 }
 
 @keyframes rotateGradient {
 	from {
-		background: linear-gradient(45deg, #04051dea 0%, #2b566e 100%);
+
+		background-image: linear-gradient(
+				45deg,
+				rgba(36, 40, 50, 1) 0%,
+				rgba(36, 40, 50, 1) 0%,
+				rgba(37, 28, 40, 1) 100%
+		);
 	}
 	to {
-		background: linear-gradient(90deg, #04051dea 0%, #2b566e 100%);
+		background-image: linear-gradient(
+				180deg,
+				rgba(36, 40, 50, 1) 0%,
+				rgba(36, 40, 50, 1) 0%,
+				rgba(37, 28, 40, 1) 100%
+		);
 	}
 }
 
@@ -65,12 +86,7 @@
 
 .btn {
 	display: inline-block;
-	font-family: sans-serif;
 	font-weight: 600;
-	font-size: 16px;
-	color: #fff;
-
-	margin: 1rem auto;
 	padding: 0.7rem 2rem;
 	border-radius: 30em;
 	border-style: none;
@@ -79,7 +95,7 @@
 	overflow: hidden;
 	text-decoration: none;
 	text-transform: uppercase;
-	letter-spacing: 2px;
+	letter-spacing: 1px;
 	background-color: #fff;
 	box-shadow: 1px 1px 12px #00000066;
 }
@@ -98,7 +114,7 @@
 }
 
 .btn:hover {
-	color: #272727;
+	color: #fff;
 	transition: all .3s ease;
 }
 
