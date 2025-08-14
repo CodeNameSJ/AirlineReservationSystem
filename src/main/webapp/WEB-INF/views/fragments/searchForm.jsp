@@ -49,7 +49,7 @@
 				<input type="date" name="date" value="${param.date}" required>
 			</label>
 		</div>
-
+		<br>
 		<!-- Button -->
 		<button type="submit" class="btn">Search Flights</button>
 	</form>
