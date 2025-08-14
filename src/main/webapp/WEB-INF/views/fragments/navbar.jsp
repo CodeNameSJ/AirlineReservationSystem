@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<link rel="stylesheet" href="<c:url value='../css/navbar.css'/>">
 <nav class="navbar">
 	<!-- Logo -->
 	<div class="nav-left">
@@ -15,12 +16,12 @@
 
 	<!-- Center Links -->
 	<div class="nav-center">
-		<a class="hover-link" style="font-size: 1.36rem" href="${pageContext.request.contextPath}/">Home</a>
-		<a class="hover-link" style="font-size: 1.36rem" href="${pageContext.request.contextPath}/flight-list">Flights</a>
+		<a class="hover-decoration" href="${pageContext.request.contextPath}/">Home</a>
+		<a class="hover-decoration" href="${pageContext.request.contextPath}/flight-list">Flights</a>
 	</div>
 
 	<!-- Right Links -->
-	<div class="hover-link nav-right">
+	<div class="nav-right">
 		<c:choose>
 			<c:when test="${not empty sessionScope.role and sessionScope.role eq 'ADMIN'}">
 				<div class="dropdown">
@@ -43,110 +44,17 @@
 			</c:when>
 			<c:otherwise>
 				<a href="${pageContext.request.contextPath}/login">Login</a>
-				<span>/</span>
-				<a href="${pageContext.request.contextPath}/register">Sign Up</a>
+
+
+				<a href="${pageContext.request.contextPath}/register" class="signup"> Sign up
+					<div class="arrow-wrapper">
+						<div class="arrow"></div>
+					</div>
+				</a>
 			</c:otherwise>
 		</c:choose>
 	</div>
 </nav>
-
-<!-- CSS -->
-<style>
-	.navbar {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		background: #6B6ECC linear-gradient(45deg, #04051dea 0%, #2b566e 100%);
-		padding: 5px 10px;
-		border-radius: 20px;
-		color: #fff;
-		margin-bottom: 20px;
-		box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-	}
-
-	.navbar a {
-		color: white;
-		text-decoration: none;
-		margin: 8px 8px;
-	}
-
-	.navbar a:hover {
-		text-decoration: none;
-	}
-
-	.hover-link {
-		font-size: 1.2rem;
-		color: #fff;
-		position: relative;
-		text-decoration: none;
-		padding-bottom: 3px;
-		transition: color 0.3s ease;
-	}
-
-	.hover-link::after {
-		content: '';
-		position: absolute;
-		left: 0;
-		bottom: 0;
-		width: 0;
-		height: 2px;
-		background-color: currentColor;
-		transition: width 0.3s ease;
-	}
-
-	.hover-link:hover {
-		color: #80dcff;
-	}
-
-	.hover-link:hover::after {
-		width: 100%;
-	}
-
-	.logo {
-		height: 40px;
-	}
-
-	.nav-left, .nav-center, .nav-right {
-		display: flex;
-		align-items: center;
-	}
-
-	/* Dropdown Styles */
-	.dropdown {
-		position: relative;
-		display: inline-block;
-	}
-
-	.drop-btn {
-		cursor: pointer;
-	}
-
-	.dropdown-content {
-		display: none;
-		position: absolute;
-		background-color: #103b6e;
-		min-width: 160px;
-		box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
-		z-index: 1;
-		border-radius: 15px;
-	}
-
-	.dropdown-content a {
-		color: white;
-		padding: 10px 16px;
-		text-decoration: none;
-		display: block;
-	}
-
-	.dropdown-content a:hover {
-		background-color: #004ba9;
-		border-radius: 15px;
-	}
-
-	.dropdown.show .dropdown-content {
-		display: block;
-	}
-</style>
 
 <script>
 	document.addEventListener('DOMContentLoaded', function () {
