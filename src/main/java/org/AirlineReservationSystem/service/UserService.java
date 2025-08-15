@@ -12,33 +12,38 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class UserService {
 	private final UserRepository userRepo;
 
-	@Transactional
 	public void save(User user) {
-		// hash password and set role
-		user.setPassword(user.getPassword());
-		user.setRole(Role.USER);
+		// If creating a new user, ensure a role is set; preserve password hashing if needed
+		if (user.getRole() == null) user.setRole(Role.USER);
+		// TODO: encode password if you add PasswordEncoder later
 		userRepo.save(user);
 	}
 
-	@Transactional
 	public void delete(User user) {
 		userRepo.delete(user);
 	}
 
-	@Transactional
 	public void delete(Long id) {
 		userRepo.deleteById(id);
 	}
 
-	@Transactional
 	public List<User> findAll() {
 		return userRepo.findAll();
 	}
 
 	public Optional<User> findByUsername(String username) {
 		return userRepo.findByUsername(username);
+	}
+
+	public Optional<User> findByEmail(String email) {
+		return userRepo.findByEmail(email);
+	}
+
+	public Optional<User> findById(Long id) {
+		return userRepo.findById(id);
 	}
 }
