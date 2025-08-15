@@ -21,7 +21,39 @@ public class FlightService {
 	}
 
 	public List<Flight> search(String origin, String destination, LocalDateTime start, LocalDateTime end) {
-		return flightRepo.findByOriginAndDestinationAndDepartureTimeBetween(origin, destination, start, end);
+		boolean hasOrigin = origin != null && !origin.isBlank();
+		boolean hasDestination = destination != null && !destination.isBlank();
+		boolean hasDateRange = (start != null && end != null);
+
+		if (!hasOrigin && !hasDestination) {
+			if (!hasDateRange) {
+				return flightRepo.findAll();
+			} else {
+				return flightRepo.findByDepartureTimeBetween(start, end);
+			}
+		}
+
+		if (hasOrigin && hasDestination) {
+			if (hasDateRange) {
+				return flightRepo.findByOriginAndDestinationAndDepartureTimeBetween(origin, destination, start, end);
+			} else {
+				return flightRepo.findByOriginAndDestination(origin, destination);
+			}
+		} else if (hasOrigin) {
+			if (hasDateRange) {
+				return flightRepo.findByOriginAndDepartureTimeBetween(origin, start, end);
+			} else {
+				return flightRepo.findByOrigin(origin);
+			}
+		} else if (hasDestination) {
+			if (hasDateRange) {
+				return flightRepo.findByDestinationAndDepartureTimeBetween(destination, start, end);
+			} else {
+				return flightRepo.findByDestination(destination);
+			}
+		}
+
+		return flightRepo.findAll();
 	}
 
 	public Optional<Flight> findById(Long id) {
