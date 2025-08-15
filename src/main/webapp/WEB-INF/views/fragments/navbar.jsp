@@ -17,7 +17,7 @@
 	<!-- Center Links -->
 	<div class="nav-center">
 		<a class="hover-decoration" href="${pageContext.request.contextPath}/">Home</a>
-		<a class="hover-decoration" href="${pageContext.request.contextPath}/flight-list">Flights</a>
+		<a class="hover-decoration" href="${pageContext.request.contextPath}/flights">Flights</a>
 	</div>
 
 	<!-- Right Links -->
@@ -48,10 +48,10 @@
 				<a href="${pageContext.request.contextPath}/logout">Logout</a>
 			</c:when>
 			<c:otherwise>
-				<a href="${pageContext.request.contextPath}/login" class="glowing-text">Login</a>
+				<a href="${pageContext.request.contextPath}/login" class="glowing-text">LOGIN</a>
 
 
-				<a href="${pageContext.request.contextPath}/register" class="signup"> Sign up
+				<a href="${pageContext.request.contextPath}/register" class="signup">SIGN UP
 					<div class="arrow-wrapper">
 						<div class="arrow"></div>
 					</div>
