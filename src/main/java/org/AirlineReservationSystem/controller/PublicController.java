@@ -3,6 +3,7 @@ package org.AirlineReservationSystem.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import org.AirlineReservationSystem.model.Flight;
 import org.AirlineReservationSystem.service.FlightService;
+import org.AirlineReservationSystem.util.DateUtils;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class PublicController {
@@ -26,38 +29,47 @@ public class PublicController {
 
 	@GetMapping({"/", "/home"})
 	public String home(Model model) {
-		model.addAttribute("flights", flightService.findAll());
+		List<Flight> flights = flightService.findAll();
+		addFormattedMaps(model, flights);
+		model.addAttribute("flights", flights);
 		return "home";
 	}
 
 	@GetMapping({"/flight-list"})
 	public String flightList(Model model) {
-		model.addAttribute("flights", flightService.findAll());
+		List<Flight> flights = flightService.findAll();
+		addFormattedMaps(model, flights);
+		model.addAttribute("flights", flights);
 		return "flights";
 	}
 
-	// Flight search page — accessible without login
 	@GetMapping("/flights")
 	public String flights(@RequestParam(required = false) String origin, @RequestParam(required = false) String destination, @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date, HttpServletRequest request, Model model) {
 
-		LocalDateTime start = (date != null) ? date.atStartOfDay() : LocalDate.now().atStartOfDay();
-		LocalDateTime end = (date != null) ? date.atTime(LocalTime.MAX) : LocalDate.now().atTime(LocalTime.MAX);
+		List<Flight> results;
+		if (date == null) {
+			results = flightService.search(origin, destination, null, null);
+		} else {
+			LocalDateTime start = date.atStartOfDay();
+			LocalDateTime end = date.atTime(LocalTime.MAX);
+			results = flightService.search(origin, destination, start, end);
+		}
 
-		List<Flight> results = flightService.search(origin, destination, start, end);
+		addFormattedMaps(model, results);
 		model.addAttribute("flights", results);
 		model.addAttribute("origin", origin);
 		model.addAttribute("destination", destination);
 		model.addAttribute("date", date);
 
 		if ("true".equalsIgnoreCase(request.getParameter("ajax"))) {
-			model.addAttribute("flights", results);
-			return "fragments/flight-list";
+			return "fragments/flights";
 		}
-
 		return "flights";
 	}
 
-	// Flight details page — public, shows details and "Book" button that goes to /user/book (protected)
+	/**
+	 * Flight details page — shows single flight details and a Book button.
+	 */
 	@GetMapping("/flight/{id}")
 	public String flightDetails(@PathVariable("id") Long id, Model model) {
 		Flight f = flightService.findById(id).orElse(null);
@@ -65,6 +77,20 @@ public class PublicController {
 			return "redirect:/flights";
 		}
 		model.addAttribute("flight", f);
-		return "flights-details";
+		model.addAttribute("departureMap", DateUtils.formatForDisplay(f.getDepartureTime()));
+		model.addAttribute("arrivalMap", DateUtils.formatForDisplay(f.getArrivalTime()));
+		return "flightDetails";
+	}
+
+	private void addFormattedMaps(Model model, List<Flight> flights) {
+		Map<Long, String> departureMap = new HashMap<>();
+		Map<Long, String> arrivalMap = new HashMap<>();
+
+		for (Flight f : flights) {
+			departureMap.put(f.getId(), DateUtils.formatForDisplay(f.getDepartureTime()));
+			arrivalMap.put(f.getId(), DateUtils.formatForDisplay(f.getArrivalTime()));
+		}
+		model.addAttribute("departureMap", departureMap);
+		model.addAttribute("arrivalMap", arrivalMap);
 	}
 }
