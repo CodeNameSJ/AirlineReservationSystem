@@ -31,7 +31,6 @@
 				Register
 			</button>
 		</form>
-		<span><br></span>
 		<p>Already have an account?
 			<a href="${pageContext.request.contextPath}/login" class="a2">Login</a>
 		</p>
