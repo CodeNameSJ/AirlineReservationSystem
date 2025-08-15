@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Flight Form</title>
+	<title>Flight Details</title>
 	<link rel="stylesheet" href="<c:url value='../css/style.css'/>">
 </head>
 <body>
@@ -10,37 +10,52 @@
 	<jsp:include page="/WEB-INF/views/fragments/navbar.jsp"/>
 </header>
 <main>
-	<h1><c:choose><c:when
-			test="${flight.id != null}">Edit Flight</c:when><c:otherwise>New Flight</c:otherwise></c:choose></h1>
+	<h1><c:choose><c:when test="${flight.id != null}">Edit Flight</c:when>
+		<c:otherwise>New Flight</c:otherwise></c:choose></h1>
 	<form action="${pageContext.request.contextPath}/admin/flights" method="post">
 		<input type="hidden" name="id" value="${flight.id}"/>
-		Flight Number: <label>
-		<input name="flightNumber" value="${flight.flightNumber}"/>
-	</label><br/>
-		Origin: <label>
-		<input name="origin" value="${flight.origin}"/>
-	</label><br/>
-		Destination: <label>
-		<input name="destination" value="${flight.destination}"/>
-	</label><br/>
+		Flight Number:
 		<label>
-			Departure Time:<input type="datetime-local" name="departureTime" value="${departureTimeStr}"/>
-		</label>
+			<input name="flightNumber" value="${flight.flightNumber}"/>
+		</label><br/>
+		Origin:
 		<label>
-			Arrival Time: <input type="datetime-local" name="arrivalTime" value="${arrivalTimeStr}"/>
-		</label>
-		Total Economy Seats: <label>
-		<input type="number" name="totalEconomySeats" value="${flight.totalEconomySeats}"/>
-	</label><br/>
-		Total Business Seats: <label>
-		<input type="number" name="totalBusinessSeats" value="${flight.totalBusinessSeats}"/>
-	</label><br/>
-		Price Economy: <label>
-		<input name="priceEconomy" value="${flight.priceEconomy}"/>
-	</label><br/>
-		Price Business: <label>
-		<input name="priceBusiness" value="${flight.priceBusiness}"/>
-	</label><br/>
+			<input name="origin" value="${flight.origin}"/>
+		</label><br/>
+		Destination:
+		<label>
+			<input name="destination" value="${flight.destination}"/>
+		</label><br/>
+		<label>
+			Departure Time:
+			<input type="datetime-local" name="departureTime"
+					<c:if test="${not empty departureInput}">
+						value="${departureInput}"
+					</c:if> />
+		</label><br/>
+		<label>
+			Arrival Time:
+			<input type="datetime-local" name="arrivalTime"
+					<c:if test="${not empty arrivalInput}">
+						value="${arrivalInput}"
+					</c:if> />
+		</label><br/>
+		Total Economy Seats:
+		<label>
+			<input type="number" name="totalEconomySeats" value="${flight.totalEconomySeats}"/>
+		</label><br/>
+		Total Business Seats:
+		<label>
+			<input type="number" name="totalBusinessSeats" value="${flight.totalBusinessSeats}"/>
+		</label><br/>
+		Price Economy:
+		<label>
+			<input name="priceEconomy" value="${flight.priceEconomy}"/>
+		</label><br/>
+		Price Business:
+		<label>
+			<input name="priceBusiness" value="${flight.priceBusiness}"/>
+		</label><br/>
 		<button type="submit">Save</button>
 	</form>
 </main>
