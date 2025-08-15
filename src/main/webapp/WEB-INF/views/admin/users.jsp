@@ -18,26 +18,62 @@
 	<table border="1" cellpadding="5">
 		<thead>
 		<tr>
+			<th>ID</th>
 			<th>Username</th>
 			<th>Email</th>
-			<th>Role</th>
+			<th>Actions</th>
 		</tr>
 		</thead>
 		<tbody>
 		<c:forEach var="user" items="${users}">
 			<tr>
-				<td>${user.username}</td>
-				<td>${user.email}</td>
+				<td><c:out value="${user.id}"/></td>
+				<td><c:out value="${user.username}"/></td>
+				<td><c:out value="${user.email}"/></td>
 				<td>
-					<a href="${pageContext.request.contextPath}/admin/users/delete/${user.id}">Delete</a>
+					<form method="get" action="${pageContext.request.contextPath}/admin/users/edit"
+					      style="display:inline;">
+						<input type="hidden" name="id" value="${user.id}"/>
+						<button type="submit">Edit</button>
+						<button type="button" onclick="toggleWarning(${user.id}, true)">
+							Delete
+						</button>
+					</form>
+				</td>
+			</tr>
+
+			<tr id="warning-${user.id}" class="warning-row" style="display:none;">
+				<td colspan="5">
+					<strong>&#9888;
+						<c:choose>
+							<c:when test="${user.hasBookings}">
+								This user has existing bookings! Deleting it will also remove all related bookings. Are you sure?
+							</c:when>
+							<c:otherwise>
+								Are you sure you want to delete this user?
+							</c:otherwise>
+						</c:choose>
+					</strong>
+					<br/>
+					<form method="post" action="${pageContext.request.contextPath}/admin/users/delete"
+					      style="display:inline;">
+						<input type="hidden" name="id" value="${user.id}"/>
+						<input type="hidden" name="confirm" value="true"/>
+						<button type="submit" style="background-color:red; color:white;">
+							Yes, Delete
+						</button>
+					</form>
+					<button type="button" onclick="toggleWarning(${user.id}, false)">Cancel</button>
 				</td>
 			</tr>
 		</c:forEach>
+
 		</tbody>
 	</table>
 </main>
 <footer>
 	<jsp:include page="/WEB-INF/views/fragments/footer.jsp"/>
 </footer>
+<script src="<c:url value='../js/confimation.js'/>" defer></script>
 </body>
 </html>
