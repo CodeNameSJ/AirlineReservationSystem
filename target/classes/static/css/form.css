@@ -91,7 +91,7 @@ input:-webkit-autofill:focus {
 	font-size: 16px;
 	text-transform: uppercase;
 	letter-spacing: 3px;
-	margin-top: 40px;
+	margin-top: 12px;
 	background: none;
 	border: none;
 	cursor: pointer;
