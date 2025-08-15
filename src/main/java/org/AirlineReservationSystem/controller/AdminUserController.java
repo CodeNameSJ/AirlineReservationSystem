@@ -46,8 +46,8 @@ public class AdminUserController {
 		return "redirect:/admin/users";
 	}
 
-	@GetMapping("/edit/{id}")
-	public String showEditForm(HttpServletRequest req, @PathVariable Long id, Model model) {
+	@GetMapping("/edit")
+	public String showEditForm(HttpServletRequest req, @RequestParam Long id, Model model) {
 		if (isAdmin(req)) return "redirect:/login";
 		var opt = userService.findById(id);
 		if (opt.isEmpty()) return "redirect:/admin/users";
@@ -56,27 +56,14 @@ public class AdminUserController {
 	}
 
 	@PostMapping("/delete")
-	public String deleteUser(HttpServletRequest req,  @RequestParam Long id, @RequestParam(required = false) boolean confirm, Model model, RedirectAttributes redirectAttributes) {
+	public String deleteUser(HttpServletRequest req, @RequestParam Long id, @RequestParam(required = false) boolean confirm, RedirectAttributes redirectAttributes) {
 		if (isAdmin(req)) return "redirect:/login";
 
-
 		if (confirm) {
-			// optionally delete bookings first
-			System.err.println("delete confirm");
 			bookingService.deleteByUserId(id);
-			redirectAttributes.addFlashAttribute("successMessage", "Flight deleted successfully.");
-			return "redirect:/admin/users";
-		}
-
-		if (bookingService.existsByUserId(id)) {
-			model.addAttribute("userId", id);
-			model.addAttribute("user", bookingService.findById(id).orElseThrow());
-			model.addAttribute("hasBookings", true);
-			return "admin/confirmFlightDelete";
-		} else {
 			userService.delete(id);
 			redirectAttributes.addFlashAttribute("successMessage", "User deleted successfully.");
-			return "redirect:/admin/users";
 		}
+		return "redirect:/admin/users";
 	}
 }
