@@ -58,13 +58,6 @@ public class AuthController {
 		return "redirect:/user/home";
 	}
 
-	@GetMapping("/logout")
-	public String logout(HttpServletRequest req) {
-		HttpSession s = req.getSession(false);
-		if (s != null) s.invalidate();
-		return "redirect:/";
-	}
-
 	@GetMapping("/register")
 	public String registerPage(HttpServletRequest req) {
 		HttpSession s = req.getSession(true);
@@ -79,6 +72,9 @@ public class AuthController {
 		if (userService.findByUsername(username).isPresent()) {
 			model.addAttribute("error", "Username taken");
 			return "register";
+		}		if (userService.findByEmail(email).isPresent()) {
+			model.addAttribute("error", "Email already registered");
+			return "register";
 		}
 
 		User user = new User();
@@ -92,8 +88,15 @@ public class AuthController {
 		HttpSession session = req.getSession(true);
 		session.setAttribute("userId", user.getId());
 		session.setAttribute("username", user.getUsername());
-		session.setAttribute("role", user.getRole());
+		session.setAttribute("role", user.getRole().name());
 
 		return "redirect:/user/home";
+	}
+
+	@GetMapping("/logout")
+	public String logout(HttpServletRequest req) {
+		HttpSession s = req.getSession(false);
+		if (s != null) s.invalidate();
+		return "redirect:/";
 	}
 }
