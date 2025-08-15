@@ -3,7 +3,6 @@ package org.AirlineReservationSystem.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import org.AirlineReservationSystem.model.Flight;
 import org.AirlineReservationSystem.service.FlightService;
-import org.AirlineReservationSystem.util.DateUtils;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
+import static org.AirlineReservationSystem.util.DateUtils.addFormattedMaps;
 
 @Controller
 public class PublicController {
@@ -77,20 +76,8 @@ public class PublicController {
 			return "redirect:/flights";
 		}
 		model.addAttribute("flight", f);
-		model.addAttribute("departureMap", DateUtils.formatForDisplay(f.getDepartureTime()));
-		model.addAttribute("arrivalMap", DateUtils.formatForDisplay(f.getArrivalTime()));
+//		model.addAttribute("departureMap", DateUtils.formatForDisplay(f.getDepartureTime()));
+//		model.addAttribute("arrivalMap", DateUtils.formatForDisplay(f.getArrivalTime()));
 		return "flightDetails";
-	}
-
-	private void addFormattedMaps(Model model, List<Flight> flights) {
-		Map<Long, String> departureMap = new HashMap<>();
-		Map<Long, String> arrivalMap = new HashMap<>();
-
-		for (Flight f : flights) {
-			departureMap.put(f.getId(), DateUtils.formatForDisplay(f.getDepartureTime()));
-			arrivalMap.put(f.getId(), DateUtils.formatForDisplay(f.getArrivalTime()));
-		}
-		model.addAttribute("departureMap", departureMap);
-		model.addAttribute("arrivalMap", arrivalMap);
 	}
 }

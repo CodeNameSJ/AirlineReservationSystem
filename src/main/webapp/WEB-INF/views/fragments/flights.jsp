@@ -17,7 +17,7 @@
 			<td><c:out value="${flight.flightNumber}"/></td>
 			<td><c:out value="${flight.origin}"/></td>
 			<td><c:out value="${flight.destination}"/></td>
-			<td><c:out value="${departureMap[flight.id]}"/></td>
+			<td><c:out value="${flight.departureDisplay}" default="-" /></td>
 			<td><c:out value="${flight.priceEconomy}"/></td>
 			<td><c:out value="${flight.priceBusiness}"/></td>
 			<td>

@@ -18,12 +18,15 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static org.AirlineReservationSystem.util.DateUtils.addFormattedMaps;
+
 @Controller
 @RequestMapping("/admin")
 @RequiredArgsConstructor
 public class AdminController {
 	private final FlightService flightService;
 	private final BookingService bookingService;
+
 
 	private boolean isAdmin(HttpServletRequest req) {
 		HttpSession s = req.getSession(false);
@@ -33,7 +36,9 @@ public class AdminController {
 	@GetMapping("/dashboard")
 	public String dashboard(HttpServletRequest req, Model model) {
 		if (isAdmin(req)) return "redirect:/login";
-		model.addAttribute("flights", flightService.findAll());
+		List<Flight> flights = flightService.findAll();
+		addFormattedMaps(model, flights);
+		model.addAttribute("flights", flights);
 		return "admin/dashboard";
 	}
 
@@ -47,7 +52,6 @@ public class AdminController {
 			boolean hasBookings = bookingService.existsByFlightId(f.getId());
 			f.setHasBookings(hasBookings);
 		});
-
 		model.addAttribute("flights", flights);
 		return "admin/flights";
 	}

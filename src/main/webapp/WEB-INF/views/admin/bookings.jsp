@@ -78,7 +78,7 @@
 				<td><c:out value="${b.user.username}"/></td>
 				<td><c:out value="${b.flight.flightNumber}"/></td>
 				<td><c:out value="${b.seats}"/></td>
-				<td><c:out value="${b.bookingTime}"/></td>
+				<td><c:out value="${b.bookingTimeDisplay}"/></td>
 				<td><c:out value="${b.status}"/></td>
 				<td>
 					<c:if test="${b.status == 'BOOKED'}">

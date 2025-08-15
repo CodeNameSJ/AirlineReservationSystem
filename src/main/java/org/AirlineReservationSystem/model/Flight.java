@@ -56,6 +56,16 @@ public class Flight {
 
 	private double price;
 
+	@Transient
+	public String getDepartureDisplay() {
+		return org.AirlineReservationSystem.util.DateUtils.formatForDisplay(this.getDepartureTime());
+	}
+
+	@Transient
+	public String getArrivalDisplay() {
+		return org.AirlineReservationSystem.util.DateUtils.formatForDisplay(this.getArrivalTime());
+	}
+
 	@Override
 	public final boolean equals(Object o) {
 		if (this == o) return true;

@@ -11,13 +11,13 @@
 			padding: 1.3em 3em;
 			font-size: 12px;
 			text-transform: uppercase;
-			letter-spacing: 2.5px;
+			letter-spacing: 3px;
 			font-weight: 500;
 			color: #000;
 			background-color: #fff;
 			border: none;
 			border-radius: 45px;
-			box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+			box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
 			transition: all 0.3s ease 0s;
 			cursor: pointer;
 			outline: none;
@@ -69,7 +69,7 @@
 						<div class="price">Economy: $${f.priceEconomy}</div>
 						<div class="price">Business: $${f.priceBusiness}</div>
 						<div class="description">
-							Departure Time: ${f.departureTime}
+							Departure Time: ${departureMap}
 						</div>
 					</div>
 					<a href="${pageContext.request.contextPath}/user/book?flightId=${f.id}">

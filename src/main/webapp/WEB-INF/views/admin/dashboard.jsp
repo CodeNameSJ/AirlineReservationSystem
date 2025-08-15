@@ -27,8 +27,8 @@
 				<td>${flight.flightNumber}</td>
 				<td>${flight.origin}</td>
 				<td>${flight.destination}</td>
-				<td>${flight.departureTime}</td>
-				<td>${flight.arrivalTime}</td>
+				<td>${flight.departureDisplay}</td>
+				<td>${flight.arrivalDisplay}</td>
 				<td>${flight.economySeatsAvailable}/${flight.totalEconomySeats}</td>
 				<td>${flight.businessSeatsAvailable}/${flight.totalBusinessSeats}</td>
 			</tr>

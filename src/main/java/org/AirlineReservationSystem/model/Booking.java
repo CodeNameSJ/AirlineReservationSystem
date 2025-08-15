@@ -48,6 +48,11 @@ public class Booking {
 	@Column(nullable = false)
 	private BookingStatus status; // "BOOKED" or "CANCELLED"
 
+	@Transient
+	public String getBookingTimeDisplay() {
+		return org.AirlineReservationSystem.util.DateUtils.formatForDisplay(this.getBookingTime());
+	}
+
 	@Override
 	public final boolean equals(Object o) {
 		if (this == o) return true;

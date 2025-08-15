@@ -37,14 +37,14 @@
 		<c:forEach var="flight" items="${flights}">
 			<!-- Main data row -->
 			<tr>
-				<td>${flight.id}</td>
-				<td>${flight.flightNumber}</td>
-				<td>${flight.origin}</td>
-				<td>${flight.destination}</td>
-				<td>${flight.departureTime}</td>
-				<td>${flight.arrivalTime}</td>
-				<td>${flight.economySeatsAvailable}/${flight.totalEconomySeats}</td>
-				<td>${flight.businessSeatsAvailable}/${flight.totalBusinessSeats}</td>
+				<td><c:out value="${flight.id}"/></td>
+				<td><c:out value="${flight.flightNumber}"/></td>
+				<td><c:out value="${flight.origin}"/></td>
+				<td><c:out value="${flight.destination}"/></td>
+				<td><c:out value="${flight.departureDisplay}" default="-" /></td>
+				<td><c:out value="${flight.arrivalDisplay}" default="-" /></td>
+				<td><c:out value="${flight.economySeatsAvailable}/${flight.totalEconomySeats}"/></td>
+				<td><c:out value="${flight.businessSeatsAvailable}/${flight.totalBusinessSeats}"/></td>
 				<td>
 					<!-- Delete triggers the inline confirmation -->
 					<form method="get" action="${pageContext.request.contextPath}/admin/flights/edit"

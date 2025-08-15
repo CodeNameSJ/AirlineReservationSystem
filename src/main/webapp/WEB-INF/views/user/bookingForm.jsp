@@ -14,7 +14,7 @@
 	<h1>Book Flight</h1>
 	<c:if test="${not empty flight}">
 		<p>Flight: ${flight.origin} → ${flight.destination}</p>
-		<p>Departure: ${flight.departureTime}</p>
+		<p>Departure: ${flight.departureDisplay}</p>
 		<form action="${pageContext.request.contextPath}/user/book" method="post">
 			<input type="hidden" name="flightId" value="${flight.id}"/>
 			Seats: <label>

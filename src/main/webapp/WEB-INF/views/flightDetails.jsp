@@ -7,18 +7,29 @@
 	<link rel="stylesheet" href="<c:url value='../css/style.css'/>"/>
 </head>
 <body>
-<header><jsp:include page="/WEB-INF/views/fragments/navbar.jsp"/></header>
+<header>
+	<jsp:include page="/WEB-INF/views/fragments/navbar.jsp"/>
+</header>
 <main>
 	<h1>Flight ${flight.flightNumber}</h1>
 
 	<dl>
-		<dt>Origin</dt><dd><c:out value="${flight.origin}"/></dd>
-		<dt>Destination</dt><dd><c:out value="${flight.destination}"/></dd>
-		<dt>Departure</dt><dd><c:out value="${departureMap}"/></dd>
-		<dt>Economy seats available</dt><dd><c:out value="${flight.economySeatsAvailable}"/></dd>
-		<dt>Business seats available</dt><dd><c:out value="${flight.businessSeatsAvailable}"/></dd>
-		<dt>Price (Economy)</dt><dd><c:out value="${flight.priceEconomy}"/></dd>
-		<dt>Price (Business)</dt><dd><c:out value="${flight.priceBusiness}"/></dd>
+		<dt>Origin</dt>
+		<dd><c:out value="${flight.origin}"/></dd>
+		<dt>Destination</dt>
+		<dd><c:out value="${flight.destination}"/></dd>
+		<dt>Departure</dt>
+		<dd><c:out value="${flight.departureDisplay}"/></dd>
+		<dt>Arrival</dt>
+		<dd><c:out value="${flight.arrivalDisplay}"/></dd>
+		<dt>Economy seats available</dt>
+		<dd><c:out value="${flight.economySeatsAvailable}"/></dd>
+		<dt>Business seats available</dt>
+		<dd><c:out value="${flight.businessSeatsAvailable}"/></dd>
+		<dt>Price (Economy)</dt>
+		<dd><c:out value="${flight.priceEconomy}"/></dd>
+		<dt>Price (Business)</dt>
+		<dd><c:out value="${flight.priceBusiness}"/></dd>
 	</dl>
 
 	<c:choose>
@@ -30,6 +41,8 @@
 		</c:otherwise>
 	</c:choose>
 </main>
-<footer><jsp:include page="/WEB-INF/views/fragments/footer.jsp"/></footer>
+<footer>
+	<jsp:include page="/WEB-INF/views/fragments/footer.jsp"/>
+</footer>
 </body>
 </html>
