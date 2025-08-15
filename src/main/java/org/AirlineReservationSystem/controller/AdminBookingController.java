@@ -8,6 +8,7 @@ import org.AirlineReservationSystem.service.BookingService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/admin/bookings")
@@ -44,17 +45,26 @@ public class AdminBookingController {
 		return "redirect:/admin/bookings";
 	}
 
-	@GetMapping("/delete/{id}")
-	public String deleteBooking(HttpServletRequest req, @PathVariable Long id) {
+	@PostMapping("/delete")
+	public String deleteBooking(HttpServletRequest req, @RequestParam Long id, @RequestParam(required = false) boolean confirm, RedirectAttributes ra) {
 		if (isAdmin(req)) return "redirect:/login";
-		bookingService.delete(id);
+
+		if (confirm) {
+			bookingService.delete(id);
+			ra.addFlashAttribute("successMessage", "Booking deleted successfully.");
+		}
 		return "redirect:/admin/bookings";
 	}
 
+
 	@PostMapping("/cancel")
-	public String cancelBooking(HttpServletRequest req, @RequestParam Long id) {
+	public String cancelBooking(HttpServletRequest req, @RequestParam Long id, @RequestParam(required = false) boolean confirm, RedirectAttributes redirectAttributes) {
 		if (isAdmin(req)) return "redirect:/login";
-		bookingService.cancelBooking(id);
+
+		if (confirm) {
+			bookingService.cancelBooking(id);
+			redirectAttributes.addFlashAttribute("successMessage", "Booking Canceled successfully.");
+		}
 		return "redirect:/admin/bookings";
 	}
 }
