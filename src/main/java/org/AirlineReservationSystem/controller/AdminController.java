@@ -6,12 +6,16 @@ import lombok.RequiredArgsConstructor;
 import org.AirlineReservationSystem.model.Flight;
 import org.AirlineReservationSystem.service.BookingService;
 import org.AirlineReservationSystem.service.FlightService;
+import org.AirlineReservationSystem.util.DateUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -20,7 +24,6 @@ import java.util.List;
 public class AdminController {
 	private final FlightService flightService;
 	private final BookingService bookingService;
-//	private final UserService userService;
 
 	private boolean isAdmin(HttpServletRequest req) {
 		HttpSession s = req.getSession(false);
@@ -34,13 +37,6 @@ public class AdminController {
 		return "admin/dashboard";
 	}
 
-//	@GetMapping("/users")
-//	public String users(HttpServletRequest req, Model model) {
-//		if (isAdmin(req)) return "redirect:/login";
-//		model.addAttribute("users", userService.findAll());
-//		return "admin/users";
-//	}
-
 	@GetMapping("/flights")
 	public String manageFlights(HttpServletRequest req, Model model) {
 		if (isAdmin(req)) return "redirect:/login";
@@ -52,22 +48,63 @@ public class AdminController {
 			f.setHasBookings(hasBookings);
 		});
 
-		model.addAttribute("flights", flights); // <-- use a modified list with hasBookings
+		model.addAttribute("flights", flights);
 		return "admin/flights";
+	}
+
+	@PostMapping("/flights")
+	public String saveFlight(HttpServletRequest req, @RequestParam(required = false) Long id, @RequestParam String flightNumber, @RequestParam String origin, @RequestParam String destination, @RequestParam(required = false) String departureTimeInput, @RequestParam(required = false) String arrivalTimeInput, @RequestParam(required = false, defaultValue = "0") Integer totalEconomySeats, @RequestParam(required = false, defaultValue = "0") Integer totalBusinessSeats, @RequestParam(required = false) java.math.BigDecimal priceEconomy, @RequestParam(required = false) java.math.BigDecimal priceBusiness) {
+		if (isAdmin(req)) return "redirect:/login";
+
+		Flight flight;
+		if (id != null) {
+			flight = flightService.findById(id).orElse(new Flight());
+		} else {
+			flight = new Flight();
+		}
+
+		flight.setFlightNumber(flightNumber);
+		flight.setOrigin(origin);
+		flight.setDestination(destination);
+
+		LocalDateTime dep = null;
+		LocalDateTime arr = null;
+		try {
+			dep = DateUtils.parseFromInput(departureTimeInput);
+		} catch (Exception _) {
+		}
+		try {
+			arr = DateUtils.parseFromInput(arrivalTimeInput);
+		} catch (Exception ex) {
+			// handle parse error
+		}
+		flight.setDepartureTime(dep);
+		flight.setArrivalTime(arr);
+
+		flight.setTotalEconomySeats(totalEconomySeats == null ? 0 : totalEconomySeats);
+		flight.setTotalBusinessSeats(totalBusinessSeats == null ? 0 : totalBusinessSeats);
+		// initialize availability if new flight
+		if (flight.getId() == null) {
+			flight.setEconomySeatsAvailable(flight.getTotalEconomySeats());
+			flight.setBusinessSeatsAvailable(flight.getTotalBusinessSeats());
+		}
+
+		flight.setPriceEconomy(priceEconomy);
+		flight.setPriceBusiness(priceBusiness);
+
+		flightService.save(flight);
+		return "redirect:/admin/flights";
 	}
 
 	@GetMapping("/flights/new")
 	public String showNewFlightForm(HttpServletRequest req, Model model) {
 		if (isAdmin(req)) return "redirect:/login";
-		model.addAttribute("flight", new Flight());
+		Flight flight = new Flight();
+		model.addAttribute("flight", flight);
+		// empty input values for new flight
+		model.addAttribute("departureInput", "");
+		model.addAttribute("arrivalInput", "");
 		return "admin/flightForm";
-	}
-
-	@PostMapping("/flights")
-	public String saveFlight(HttpServletRequest req, @ModelAttribute Flight flight) {
-		if (isAdmin(req)) return "redirect:/login";
-		flightService.save(flight);
-		return "redirect:/admin/flights";
 	}
 
 	@GetMapping("/flights/edit")
@@ -76,9 +113,11 @@ public class AdminController {
 		Flight f = flightService.findById(id).orElseThrow();
 		model.addAttribute("flight", f);
 
-		DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
-		model.addAttribute("departureTimeStr", f.getDepartureTime().format(fmt));
-		model.addAttribute("arrivalTimeStr", f.getArrivalTime().format(fmt));
+		String dep = org.AirlineReservationSystem.util.DateUtils.formatForInput(f.getDepartureTime());
+		String arr = org.AirlineReservationSystem.util.DateUtils.formatForInput(f.getArrivalTime());
+
+		model.addAttribute("departureInput", dep);
+		model.addAttribute("arrivalInput", arr);
 
 		return "admin/flightForm";
 	}
@@ -88,41 +127,14 @@ public class AdminController {
 	 * otherwise delete it immediately.
 	 */
 	@PostMapping("/flights/delete")
-	public String deleteFlightRequest(HttpServletRequest req, @RequestParam Long id, @RequestParam(required = false) boolean confirm, Model model, RedirectAttributes redirectAttributes) {
+	public String deleteFlightRequest(HttpServletRequest req, @RequestParam Long id, @RequestParam(required = false) boolean confirm, RedirectAttributes redirectAttributes) {
 		if (isAdmin(req)) return "redirect:/login";
 
 		if (confirm) {
-			// optionally delete bookings first
 			bookingService.deleteByFlightId(id);
 			flightService.delete(id);
 			redirectAttributes.addFlashAttribute("successMessage", "Flight deleted successfully.");
-			return "redirect:/admin/flights";
 		}
-
-		if (bookingService.existsByFlightId(id)) {
-			model.addAttribute("flightId", id);
-			model.addAttribute("flight", flightService.findById(id).orElseThrow());
-			model.addAttribute("hasBookings", true);
-			return "admin/confirmFlightDelete";
-		} else {
-			flightService.delete(id);
-			redirectAttributes.addFlashAttribute("successMessage", "Flight deleted successfully.");
-			return "redirect:/admin/flights";
-		}
+		return "redirect:/admin/flights";
 	}
-
-//
-//	@GetMapping("/bookings")
-//	public String manageBookings(HttpServletRequest req, Model model) {
-//		if (isAdmin(req)) return "redirect:/login";
-//		model.addAttribute("bookings", bookingService.findAll());
-//		return "admin/bookings";
-//	}
-//
-//	@PostMapping("/bookings/cancel")
-//	public String cancel(HttpServletRequest req, @RequestParam Long id) {
-//		if (isAdmin(req)) return "redirect:/login";
-//		bookingService.cancelBooking(id);
-//		return "redirect:/admin/bookings";
-//	}
 }
