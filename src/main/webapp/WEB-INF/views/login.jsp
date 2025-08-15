@@ -26,7 +26,6 @@
 				Login
 			</button>
 		</form>
-		<span><br></span>
 		<p>Don't have an account?
 			<a href="${pageContext.request.contextPath}/register" class="a2">Signup</a>
 		</p>
