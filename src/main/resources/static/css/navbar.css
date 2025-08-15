@@ -24,7 +24,7 @@ nav {
 	color: white;
 	text-decoration: none;
 	margin: 8px 8px;
-
+	position: relative;
 	display: flex;
 	align-items: center;
 	height: 100%;
@@ -33,6 +33,35 @@ nav {
 
 .navbar a:hover {
 	text-decoration: antiquewhite;
+}
+
+.logo {
+	height: 40px;
+}
+
+.nav-left,
+.nav-center,
+.nav-right {
+	display: flex;
+	align-items: center;
+}
+
+.nav-left {
+	justify-content: left;
+}
+
+.nav-center {
+	justify-content: center;
+	flex: 1 1 auto;
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	display: flex;
+	align-items: center;
+}
+
+.nav-right {
+	justify-content: right;
 }
 
 .hover-decoration {
@@ -75,30 +104,6 @@ nav {
 	transition-property: width, left;
 }
 
-.logo {
-	height: 40px;
-}
-
-.nav-left,
-.nav-center,
-.nav-right {
-	display: flex;
-	align-items: center;
-}
-
-.nav-left {
-	justify-content: left;
-}
-
-.nav-center {
-	justify-content: center;
-	flex: 1 1 auto;
-}
-
-.nav-right {
-	justify-content: right;
-}
-
 /* Links styling */
 .navbar a {
 	display: flex;
@@ -113,6 +118,7 @@ nav {
 .dropdown {
 	position: relative;
 	display: inline-block;
+	z-index: 999;
 }
 
 .drop-btn {
@@ -124,9 +130,17 @@ nav {
 	position: absolute;
 	background-color: #103b6e;
 	min-width: 160px;
-	box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
 	z-index: 1;
 	border-radius: 15px;
+	right: 0;
+	top: calc(100% + 6px);
+	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+	padding: 6px 0;
+	opacity: 0;
+	transform: translateY(-8px);
+	visibility: hidden;
+	pointer-events: none;
+	transition: opacity 220ms ease, transform 220ms cubic-bezier(.2, .8, .2, 1), visibility 220ms;
 }
 
 .dropdown-content a {
@@ -143,6 +157,26 @@ nav {
 
 .dropdown.show .dropdown-content {
 	display: block;
+	visibility: visible;
+	pointer-events: auto;
+	opacity: 1;
+	transform: translateY(0) scale(1);
+}
+
+.dropdown-content a:focus {
+	outline: none;
+	background-color: rgba(255, 255, 255, 0.06);
+}
+
+.glowing-text {
+	color: #fff;
+	text-shadow: none;
+	transition: text-shadow 0.3s ease-in-out;
+}
+
+.glowing-text:hover {
+	text-shadow: 0 0 10px #ffffff,
+	0 0 20px #ffffff;
 }
 
 .signup {
