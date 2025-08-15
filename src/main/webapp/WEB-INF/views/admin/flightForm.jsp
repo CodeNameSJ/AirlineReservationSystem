@@ -23,9 +23,12 @@
 		Destination: <label>
 		<input name="destination" value="${flight.destination}"/>
 	</label><br/>
-		Departure: <label>
-		<input type="datetime-local" name="departureTime" value="${flight.departureTime}"/>
-	</label><br/>
+		<label>
+			Departure Time:<input type="datetime-local" name="departureTime" value="${departureTimeStr}"/>
+		</label>
+		<label>
+			Arrival Time: <input type="datetime-local" name="arrivalTime" value="${arrivalTimeStr}"/>
+		</label>
 		Total Economy Seats: <label>
 		<input type="number" name="totalEconomySeats" value="${flight.totalEconomySeats}"/>
 	</label><br/>
