@@ -171,14 +171,6 @@
 <footer>
 	<jsp:include page="/WEB-INF/views/fragments/footer.jsp"/>
 </footer>
-
-<script>
-	function toggleWarning(id, show) {
-		const row = document.getElementById("warning-" + id);
-		if (row) {
-			row.style.display = show ? "table-row" : "none";
-		}
-	}
-</script>
+<script src="<c:url value='../js/confimation.js'/>" defer></script>
 </body>
 </html>
