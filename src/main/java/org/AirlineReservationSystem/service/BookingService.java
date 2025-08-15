@@ -17,7 +17,6 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class BookingService {
 	private final BookingRepository bookingRepo;
 	private final UserRepository userRepo;
@@ -38,7 +37,6 @@ public class BookingService {
 
 	@Transactional
 	public Booking createBooking(Long userId, Long flightId, SeatClass seatClass, int seats) {
-		// load user and flight via repositories/services
 		var userOpt = userRepo.findById(userId);
 		var flightOpt = flightRepo.findById(flightId);
 
@@ -47,13 +45,12 @@ public class BookingService {
 
 		var flight = flightOpt.get();
 
-		// check availability
 		if (seatClass == SeatClass.ECONOMY && flight.getEconomySeatsAvailable() < seats)
 			throw new IllegalArgumentException("Not enough economy seats");
 		if (seatClass == SeatClass.BUSINESS && flight.getBusinessSeatsAvailable() < seats)
 			throw new IllegalArgumentException("Not enough business seats");
 
-		// adjust availability
+		// adjust availability via flightService (should be transactional too)
 		int econDelta = seatClass == SeatClass.ECONOMY ? -seats : 0;
 		int busDelta = seatClass == SeatClass.BUSINESS ? -seats : 0;
 		flightService.updateAvailability(flightId, econDelta, busDelta);
@@ -73,22 +70,19 @@ public class BookingService {
 	@Transactional
 	public void cancelBooking(Long bookingId) {
 		var opt = bookingRepo.findById(bookingId);
-
 		if (opt.isEmpty()) return;
 
 		Booking booking = opt.get();
-
 		if (booking.getStatus() == BookingStatus.CANCELLED) return;
 
 		Flight flight = booking.getFlight();
-		// restore seats
 		if (booking.getSeatClass() == SeatClass.ECONOMY) {
 			flight.setEconomySeatsAvailable(flight.getEconomySeatsAvailable() + booking.getSeats());
 		} else {
 			flight.setBusinessSeatsAvailable(flight.getBusinessSeatsAvailable() + booking.getSeats());
 		}
 		flightRepo.save(flight);
-		// update status
+
 		booking.setStatus(BookingStatus.CANCELLED);
 		bookingRepo.save(booking);
 	}
@@ -97,7 +91,25 @@ public class BookingService {
 		return bookingRepo.existsByFlightId(flightId);
 	}
 
+	@Transactional
 	public void deleteByFlightId(Long flightId) {
 		bookingRepo.deleteByFlightId(flightId);
 	}
+
+	@Transactional
+	public void delete(Long bookingId) {
+		bookingRepo.deleteById(bookingId);
+	}
+
+	@Transactional
+	public Booking save(Booking b) {
+		return bookingRepo.save(b);
+	}
+
+	@Transactional
+	public void deleteByUserId(Long userId) {
+		bookingRepo.deleteByUserId(userId);
+	}
+
+	public boolean existsByUserId(Long userId) {return bookingRepo.existsByUserId(userId);}
 }
