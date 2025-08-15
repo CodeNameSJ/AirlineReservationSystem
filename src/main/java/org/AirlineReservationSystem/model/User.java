@@ -8,6 +8,7 @@ import lombok.ToString;
 import org.AirlineReservationSystem.model.enums.Role;
 import org.hibernate.proxy.HibernateProxy;
 
+import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -21,6 +22,12 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
+	@Transient
+	private List<Booking> bookings;
+
+	@Transient
+	private boolean hasBookings;
 
 	@Column(nullable = false, unique = true)
 	private String username;
