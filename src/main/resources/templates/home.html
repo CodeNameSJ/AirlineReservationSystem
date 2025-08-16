@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+	<title>Airline Reservation - Home</title>
+<<<<<<< Updated upstream:src/main/webapp/WEB-INF/views/home.jsp
+	<link rel="stylesheet" href="<c:url value='./css/style.css'/>">
+</head>
+<body>
+<header>
+
+
+	<jsp:include page="/WEB-INF/views/fragments/navbar.jsp"/>
+=======
+
+	<link rel="stylesheet" th:href="@{/css/style.css}">
+	<link rel="stylesheet" th:href="@{/css/card.css}">
+	<link rel="stylesheet" th:href="@{/css/search.css}">
+
+	<style>
+		.button {
+			padding: 1.3em 3em;
+			font-size: 12px;
+			text-transform: uppercase;
+			letter-spacing: 3px;
+			font-weight: 500;
+			color: #000;
+			background-color: #fff;
+			border: none;
+			border-radius: 45px;
+			box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+			transition: all 0.3s ease 0s;
+			cursor: pointer;
+			outline: none;
+		}
+
+		.button:hover {
+			background-color: #23c483;
+			box-shadow: 0 15px 20px rgba(46, 229, 157, 0.4);
+			color: #fff;
+			transform: translateY(-7px);
+		}
+
+		.button:active {
+			transform: translateY(-1px);
+		}
+	</style>
+</head>
+<body>
+<header>
+	<div th:replace="fragments/navbar :: navbar"></div>
+>>>>>>> Stashed changes:src/main/resources/templates/home.html
+</header>
+<main>
+
+	<script>
+		document.querySelector('#flightSearchForm').addEventListener('submit', function (e) {
+			e.preventDefault();
+			const form = e.target;
+			const params = new URLSearchParams(new FormData(form));
+			params.set('ajax', 'true');
+			fetch(form.action + '?' + params.toString(), {headers: {'X-Requested-With': 'XMLHttpRequest'}})
+					.then(r => r.text())
+					.then(html => {
+						document.getElementById('searchResults').innerHTML = html;
+					})
+					.catch(err => console.error(err));
+		});
+	</script>
+
+<<<<<<< Updated upstream:src/main/webapp/WEB-INF/views/home.jsp
+	<h1>Welcome</h1>
+
+	<h1>Search Flights</h1>
+
+	<form action="${pageContext.request.contextPath}/flights" method="get">
+		Origin: <label>
+		<input type="text" name="origin" value="${param.origin}"/>
+	</label>
+		Destination: <label>
+		<input type="text" name="destination" value="${param.destination}"/>
+	</label>
+		Date: <label>
+		<input type="date" name="date" value="${param.date}"/>
+	</label>
+		<button type="submit">Search</button>
+	</form>
+
+
+	<hr/>
+	<h2>Featured Flights</h2>
+	<c:if test="${not empty flights}">
+		<ul>
+			<c:forEach var="f" items="${flights}">
+				<li>
+					<a href="${pageContext.request.contextPath}/flight/${f.id}">${f.origin} → ${f.destination}</a>
+					&nbsp;|&nbsp; ${f.departureTime} &nbsp;|&nbsp; ${f.price} | <a
+						href="${pageContext.request.contextPath}/user/book?flightId=${f.id}">Book</a>
+				</li>
+			</c:forEach>
+		</ul>
+	</c:if>
+=======
+	<div th:replace="fragments/searchForm :: searchForm"></div>
+
+	<hr/>
+	<h2>Featured Flights</h2>
+
+	<div th:if="${flights != null and !#lists.isEmpty(flights)}" class="card-container">
+		<div th:each="f : ${flights}" class="card">
+			<div class="content">
+				<div class="title">
+					<span th:text="${f.origin}"></span>
+					<span class="form-separator">&#8594;</span>
+					<span th:text="${f.destination}"></span>
+				</div>
+				<div class="price">Economy: $<span th:text="${f.priceEconomy}"></span></div>
+				<div class="price">Business: $<span th:text="${f.priceBusiness}"></span></div>
+				<div class="description">
+					Departure Time: <span th:text="${departureMap[f.id]}"></span>
+				</div>
+			</div>
+			<a th:href="@{/user/book(flightId=${f.id})}">
+				<button class="button">Book Now</button>
+			</a>
+		</div>
+	</div>
+
+>>>>>>> Stashed changes:src/main/resources/templates/home.html
+</main>
+<footer>
+	<div th:replace="fragments/footer :: footer"></div>
+</footer>
+</body>
+</html>

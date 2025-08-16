@@ -1,9 +1,17 @@
+<<<<<<< Updated upstream:src/main/webapp/WEB-INF/views/user/bookingBill.jsp
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
+=======
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+	<meta charset="utf-8"/>
+>>>>>>> Stashed changes:src/main/resources/templates/user/bookingBill.html
 	<title>Booking Bill</title>
+	<link rel="stylesheet" th:href="@{/css/style.css}"/>
 	<style>
 		body {
 			font-family: Arial, sans-serif;
@@ -65,6 +73,7 @@
 	</style>
 </head>
 <body>
+<<<<<<< Updated upstream:src/main/webapp/WEB-INF/views/user/bookingBill.jsp
 <div class="bill-container">
 	<h1>Booking Invoice</h1>
 
@@ -134,5 +143,81 @@
 	<!-- Print Button -->
 	<button class="print-btn" onclick="window.print()">Print Bill</button>
 </div>
+=======
+<main>
+	<div class="bill-container" th:if="${booking != null}">
+		<h1>Booking Invoice</h1>
+
+		<!-- Passenger Info -->
+		<div class="section-title">Passenger Details</div>
+		<table>
+			<tr>
+				<th>Name</th>
+				<td th:text="${booking.user.username}">Username</td>
+			</tr>
+			<tr>
+				<th>Email</th>
+				<td th:text="${booking.user.email}">user@example.com</td>
+			</tr>
+		</table>
+
+		<!-- Flight Info -->
+		<div class="section-title">Flight Details</div>
+		<table>
+			<tr>
+				<th>Flight Number</th>
+				<td th:text="${booking.flight.flightNumber}">FL123</td>
+			</tr>
+			<tr>
+				<th>From</th>
+				<td th:text="${booking.flight.origin}">Origin City</td>
+			</tr>
+			<tr>
+				<th>To</th>
+				<td th:text="${booking.flight.destination}">Destination City</td>
+			</tr>
+			<tr>
+				<th>Departure</th>
+				<td th:text="${booking.flight.departureTime}">2025-08-17 08:00</td>
+			</tr>
+			<tr>
+				<th>Arrival</th>
+				<td th:text="${booking.flight.arrivalTime}">2025-08-17 12:00</td>
+			</tr>
+			<tr>
+				<th>Class</th>
+				<td th:text="${booking.seatClass}">Economy</td>
+			</tr>
+		</table>
+
+		<!-- Payment Info -->
+		<div class="section-title">Payment Details</div>
+		<table>
+			<tr>
+				<th>Base Fare</th>
+				<td th:text="'₹' + ${booking.baseFare}">₹0</td>
+			</tr>
+			<tr>
+				<th>Taxes</th>
+				<td th:text="'₹' + ${booking.taxes}">₹0</td>
+			</tr>
+			<tr>
+				<th>Other Charges</th>
+				<td th:text="'₹' + ${booking.otherCharges}">₹0</td>
+			</tr>
+		</table>
+
+		<div class="total">
+			<strong>Total Amount:</strong> <span th:text="'₹' + ${booking.totalAmount}">₹0</span>
+		</div>
+
+		<!-- Print Button -->
+		<button class="print-btn" onclick="window.print()">Print Bill</button>
+	</div>
+</main>
+<footer>
+	<div th:replace="fragments/footer :: footer"></div>
+</footer>
+>>>>>>> Stashed changes:src/main/resources/templates/user/bookingBill.html
 </body>
 </html>
