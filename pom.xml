@@ -12,10 +12,11 @@
 	</parent>
 
 	<groupId>org.airline</groupId>
-	<artifactId>AirlineReservationSystem</artifactId>
+	<artifactId>Airline-Reservation-System</artifactId>
 	<version>1.0.0</version>
+	<packaging>jar</packaging>
 
-	<name>AirlineReservationSystem</name>
+	<name>Airline Reservation System</name>
 	<description>Spring Boot-based Airline Reservation System</description>
 
 	<properties>
@@ -29,11 +30,18 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
+		<!-- Thymeleaf for templates -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 
+		<!-- password hashing utility -->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-crypto</artifactId>
@@ -44,29 +52,15 @@
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 
-		<!-- JSP / JSTL Support -->
+		<!-- Flyway for DB migrations -->
 		<dependency>
-			<groupId>org.apache.tomcat.embed</groupId>
-			<artifactId>tomcat-embed-jasper</artifactId>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-core</artifactId>
 		</dependency>
 
 		<dependency>
-			<groupId>jakarta.servlet.jsp.jstl</groupId>
-			<artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
-			<version>3.0.2</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.glassfish.web</groupId>
-			<artifactId>jakarta.servlet.jsp.jstl</artifactId>
-			<version>3.0.1</version>
-		</dependency>
-
-		<dependency>
-			<groupId>jakarta.servlet.jsp</groupId>
-			<artifactId>jakarta.servlet.jsp-api</artifactId>
-			<version>3.0.0</version>
-			<scope>provided</scope>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-mysql</artifactId>
 		</dependency>
 
 		<!-- Database: MySQL Connector -->
@@ -75,24 +69,6 @@
 			<artifactId>mysql-connector-j</artifactId>
 			<version>9.4.0</version>
 			<scope>runtime</scope>
-		</dependency>
-
-		<!-- Hibernate Core -->
-		<dependency>
-			<groupId>jakarta.persistence</groupId>
-			<artifactId>jakarta.persistence-api</artifactId>
-			<version>3.1.0</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.hibernate.orm</groupId>
-			<artifactId>hibernate-core</artifactId>
-		</dependency>
-
-		<!-- Jakarta Validation -->
-		<dependency>
-			<groupId>jakarta.validation</groupId>
-			<artifactId>jakarta.validation-api</artifactId>
 		</dependency>
 
 		<!-- Lombok -->

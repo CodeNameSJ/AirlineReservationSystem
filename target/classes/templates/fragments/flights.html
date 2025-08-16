@@ -1,0 +1,29 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<table style="border:1px solid black; width:100%; border-collapse:collapse;">
+	<thead>
+	<tr>
+		<th>Flight No</th>
+		<th>Origin</th>
+		<th>Destination</th>
+		<th>Departure</th>
+		<th>Price (Economy)</th>
+		<th>Price (Business)</th>
+		<th>Action</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr th:each="flight : ${flights}">
+		<td th:text="${flight.flightNumber}">FL123</td>
+		<td th:text="${flight.origin}">Origin</td>
+		<td th:text="${flight.destination}">Destination</td>
+		<td th:text="${flight.departureDisplay != null ? flight.departureDisplay : '-'}">-</td>
+		<td th:text="${flight.priceEconomy}">1000</td>
+		<td th:text="${flight.priceBusiness}">2000</td>
+		<td>
+			<a th:if="${session.userId != null}" th:href="@{/user/book(flightId=${flight.id})}">Book</a>
+			<a th:unless="${session.userId != null}" th:href="@{/login}">Book</a>
+		</td>
+	</tr>
+	</tbody>
+</table>
+</html>
