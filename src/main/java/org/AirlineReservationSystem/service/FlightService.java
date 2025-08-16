@@ -1,8 +1,8 @@
-package org.AirlineReservationSystem.service;
+package org.airlinereservationsystem.service;
 
 import lombok.RequiredArgsConstructor;
-import org.AirlineReservationSystem.model.Flight;
-import org.AirlineReservationSystem.repository.FlightRepository;
+import org.airlinereservationsystem.model.Flight;
+import org.airlinereservationsystem.repository.FlightRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

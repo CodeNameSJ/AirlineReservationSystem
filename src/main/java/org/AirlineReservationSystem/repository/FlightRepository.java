@@ -1,6 +1,6 @@
-package org.AirlineReservationSystem.repository;
+package org.airlinereservationsystem.repository;
 
-import org.AirlineReservationSystem.model.Flight;
+import org.airlinereservationsystem.model.Flight;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

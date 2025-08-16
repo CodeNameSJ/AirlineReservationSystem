@@ -1,11 +1,12 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
 	<title>Airline Reservation - Home</title>
-	<link rel="stylesheet" href="<c:url value='./css/style.css'/>">
-	<link rel="stylesheet" href="<c:url value='./css/card.css'/>">
-	<link rel="stylesheet" href="<c:url value='../css/search.css'/>">
+
+	<link rel="stylesheet" th:href="@{/css/style.css}">
+	<link rel="stylesheet" th:href="@{/css/card.css}">
+	<link rel="stylesheet" th:href="@{/css/search.css}">
+
 	<style>
 		.button {
 			padding: 1.3em 3em;
@@ -37,7 +38,7 @@
 </head>
 <body>
 <header>
-	<jsp:include page="/WEB-INF/views/fragments/navbar.jsp"/>
+	<div th:replace="fragments/navbar :: navbar"></div>
 </header>
 <main>
 
@@ -56,33 +57,34 @@
 		});
 	</script>
 
-	<jsp:include page="/WEB-INF/views/fragments/searchForm.jsp"/>
+	<div th:replace="fragments/searchForm :: searchForm"></div>
 
 	<hr/>
 	<h2>Featured Flights</h2>
-	<c:if test="${not empty flights}">
-		<div class="card-container">
-			<c:forEach var="f" items="${flights}">
-				<div class="card">
-					<div class="content">
-						<div class="title">${f.origin} <span class="form-separator">&#8594;</span> ${f.destination}</div>
-						<div class="price">Economy: $${f.priceEconomy}</div>
-						<div class="price">Business: $${f.priceBusiness}</div>
-						<div class="description">
-							Departure Time: ${departureMap}
-						</div>
-					</div>
-					<a href="${pageContext.request.contextPath}/user/book?flightId=${f.id}">
-						<button class="button">Book Now</button>
-					</a>
+
+	<div th:if="${flights != null and !#lists.isEmpty(flights)}" class="card-container">
+		<div th:each="f : ${flights}" class="card">
+			<div class="content">
+				<div class="title">
+					<span th:text="${f.origin}"></span>
+					<span class="form-separator">&#8594;</span>
+					<span th:text="${f.destination}"></span>
 				</div>
-			</c:forEach>
+				<div class="price">Economy: $<span th:text="${f.priceEconomy}"></span></div>
+				<div class="price">Business: $<span th:text="${f.priceBusiness}"></span></div>
+				<div class="description">
+					Departure Time: <span th:text="${departureMap[f.id]}"></span>
+				</div>
+			</div>
+			<a th:href="@{/user/book(flightId=${f.id})}">
+				<button class="button">Book Now</button>
+			</a>
 		</div>
-	</c:if>
+	</div>
 
 </main>
 <footer>
-	<jsp:include page="/WEB-INF/views/fragments/footer.jsp"/>
+	<div th:replace="fragments/footer :: footer"></div>
 </footer>
 </body>
 </html>

@@ -1,13 +1,13 @@
-package org.AirlineReservationSystem.service;
+package org.airlinereservationsystem.service;
 
 import lombok.RequiredArgsConstructor;
-import org.AirlineReservationSystem.model.Booking;
-import org.AirlineReservationSystem.model.Flight;
-import org.AirlineReservationSystem.model.enums.BookingStatus;
-import org.AirlineReservationSystem.model.enums.SeatClass;
-import org.AirlineReservationSystem.repository.BookingRepository;
-import org.AirlineReservationSystem.repository.FlightRepository;
-import org.AirlineReservationSystem.repository.UserRepository;
+import org.airlinereservationsystem.model.Booking;
+import org.airlinereservationsystem.model.Flight;
+import org.airlinereservationsystem.model.enums.BookingStatus;
+import org.airlinereservationsystem.model.enums.SeatClass;
+import org.airlinereservationsystem.repository.BookingRepository;
+import org.airlinereservationsystem.repository.FlightRepository;
+import org.airlinereservationsystem.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

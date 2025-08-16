@@ -1,11 +1,9 @@
-<%@ page contentType="text/html;charset=UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
 	<meta charset="utf-8"/>
-	<link rel="stylesheet" href="<c:url value='../css/style.css'/>"/>
 	<title>Booking Bill</title>
+	<link rel="stylesheet" th:href="@{/css/style.css}"/>
 	<style>
 		body {
 			font-family: Arial, sans-serif;
@@ -77,7 +75,7 @@
 </head>
 <body>
 <main>
-	<div class="bill-container">
+	<div class="bill-container" th:if="${booking != null}">
 		<h1>Booking Invoice</h1>
 
 		<!-- Passenger Info -->
@@ -85,11 +83,11 @@
 		<table>
 			<tr>
 				<th>Name</th>
-				<td>${booking.user.username}</td>
+				<td th:text="${booking.user.username}">Username</td>
 			</tr>
 			<tr>
 				<th>Email</th>
-				<td>${booking.user.email}</td>
+				<td th:text="${booking.user.email}">user@example.com</td>
 			</tr>
 		</table>
 
@@ -98,27 +96,27 @@
 		<table>
 			<tr>
 				<th>Flight Number</th>
-				<td>${booking.flight.flightNumber}</td>
+				<td th:text="${booking.flight.flightNumber}">FL123</td>
 			</tr>
 			<tr>
 				<th>From</th>
-				<td>${booking.flight.origin}</td>
+				<td th:text="${booking.flight.origin}">Origin City</td>
 			</tr>
 			<tr>
 				<th>To</th>
-				<td>${booking.flight.destination}</td>
+				<td th:text="${booking.flight.destination}">Destination City</td>
 			</tr>
 			<tr>
 				<th>Departure</th>
-				<td>${booking.flight.departureTime}</td>
+				<td th:text="${booking.flight.departureTime}">2025-08-17 08:00</td>
 			</tr>
 			<tr>
 				<th>Arrival</th>
-				<td>${booking.flight.arrivalTime}</td>
+				<td th:text="${booking.flight.arrivalTime}">2025-08-17 12:00</td>
 			</tr>
 			<tr>
 				<th>Class</th>
-				<td>${booking.seatClass}</td>
+				<td th:text="${booking.seatClass}">Economy</td>
 			</tr>
 		</table>
 
@@ -127,20 +125,20 @@
 		<table>
 			<tr>
 				<th>Base Fare</th>
-				<td>₹${booking.baseFare}</td>
+				<td th:text="'₹' + ${booking.baseFare}">₹0</td>
 			</tr>
 			<tr>
 				<th>Taxes</th>
-				<td>₹${booking.taxes}</td>
+				<td th:text="'₹' + ${booking.taxes}">₹0</td>
 			</tr>
 			<tr>
 				<th>Other Charges</th>
-				<td>₹${booking.otherCharges}</td>
+				<td th:text="'₹' + ${booking.otherCharges}">₹0</td>
 			</tr>
 		</table>
 
 		<div class="total">
-			<strong>Total Amount:</strong> ₹${booking.totalAmount}
+			<strong>Total Amount:</strong> <span th:text="'₹' + ${booking.totalAmount}">₹0</span>
 		</div>
 
 		<!-- Print Button -->
@@ -148,7 +146,7 @@
 	</div>
 </main>
 <footer>
-	<jsp:include page="/WEB-INF/views/fragments/footer.jsp"/>
+	<div th:replace="fragments/footer :: footer"></div>
 </footer>
 </body>
 </html>

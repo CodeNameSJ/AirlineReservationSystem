@@ -1,12 +1,12 @@
-package org.AirlineReservationSystem.controller;
+package org.airlinereservationsystem.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.AirlineReservationSystem.model.Flight;
-import org.AirlineReservationSystem.service.BookingService;
-import org.AirlineReservationSystem.service.FlightService;
-import org.AirlineReservationSystem.util.DateUtils;
+import org.airlinereservationsystem.model.Flight;
+import org.airlinereservationsystem.service.BookingService;
+import org.airlinereservationsystem.service.FlightService;
+import org.airlinereservationsystem.util.DateUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.AirlineReservationSystem.util.DateUtils.addFormattedMaps;
+import static org.airlinereservationsystem.util.DateUtils.addFormattedMaps;
 
 @Controller
 @RequestMapping("/admin")
@@ -117,8 +117,8 @@ public class AdminController {
 		Flight f = flightService.findById(id).orElseThrow();
 		model.addAttribute("flight", f);
 
-		String dep = org.AirlineReservationSystem.util.DateUtils.formatForInput(f.getDepartureTime());
-		String arr = org.AirlineReservationSystem.util.DateUtils.formatForInput(f.getArrivalTime());
+		String dep = org.airlinereservationsystem.util.DateUtils.formatForInput(f.getDepartureTime());
+		String arr = org.airlinereservationsystem.util.DateUtils.formatForInput(f.getArrivalTime());
 
 		model.addAttribute("departureInput", dep);
 		model.addAttribute("arrivalInput", arr);

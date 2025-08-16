@@ -1,11 +1,11 @@
-package org.AirlineReservationSystem.model;
+package org.airlinereservationsystem.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.AirlineReservationSystem.model.enums.Role;
+import org.airlinereservationsystem.model.enums.Role;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.util.List;

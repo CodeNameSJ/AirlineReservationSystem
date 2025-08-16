@@ -1,4 +1,4 @@
-package org.AirlineReservationSystem.model;
+package org.airlinereservationsystem.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -58,12 +58,12 @@ public class Flight {
 
 	@Transient
 	public String getDepartureDisplay() {
-		return org.AirlineReservationSystem.util.DateUtils.formatForDisplay(this.getDepartureTime());
+		return org.airlinereservationsystem.util.DateUtils.formatForDisplay(this.getDepartureTime());
 	}
 
 	@Transient
 	public String getArrivalDisplay() {
-		return org.AirlineReservationSystem.util.DateUtils.formatForDisplay(this.getArrivalTime());
+		return org.airlinereservationsystem.util.DateUtils.formatForDisplay(this.getArrivalTime());
 	}
 
 	@Override

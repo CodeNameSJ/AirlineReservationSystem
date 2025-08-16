@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+	<title>Manage Bookings</title>
+	<link rel="stylesheet" th:href="@{/css/style.css}"/>
+	<style>
+		button {
+			border: none;
+			border-radius: 1rem;
+			transition: all 0.5s linear;
+			padding: 0.8em 1.2em;
+			background-color: #ACB1D6;
+			cursor: pointer;
+		}
+
+		.warning-row {
+			background-color: #fff3cd;
+		}
+
+		.warning-row td {
+			padding: 10px;
+		}
+
+		.tooltip {
+			position: relative;
+			display: inline-block;
+		}
+
+		.tooltip .tooltip-text {
+			visibility: hidden;
+			background-color: #AAAAAA;
+			color: white;
+			border-radius: 10px;
+			padding: 5px 8px;
+			position: absolute;
+			z-index: 1;
+			left: 50%;
+			transform: translateX(-50%);
+			bottom: 130%;
+			white-space: nowrap;
+		}
+
+		.tooltip:hover .tooltip-text {
+			visibility: visible;
+		}
+	</style>
+</head>
+<body>
+<header>
+	<div th:replace="fragments/navbar :: navbar"></div>
+</header>
+
+<main>
+	<h1>Manage Bookings</h1>
+
+	<!-- for a success message -->
+	<!-- <div class="flash-success" th:text="${successMessage}" th:if="${successMessage != null}"></div> -->
+
+	<table style="border:1px solid black; border-collapse: collapse; width:100%;">
+		<thead>
+		<tr>
+			<th>ID</th>
+			<th>User</th>
+			<th>Flight</th>
+			<th>Seats</th>
+			<th>Date</th>
+			<th>Status</th>
+			<th style="width:220px;">Action</th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr th:each="b : ${bookings}">
+			<!-- Main row -->
+			<td th:text="${b.id}">1</td>
+			<td th:text="${b.user.username}">username</td>
+			<td th:text="${b.flight.flightNumber}">FL123</td>
+			<td th:text="${b.seats}">2</td>
+			<td th:text="${b.bookingTimeDisplay}">2025-08-17</td>
+			<td th:text="${b.status}">BOOKED</td>
+			<td>
+				<button class="tooltip" type="button" th:if="${b.status == 'BOOKED'}"
+				        th:onclick="'toggleWarning(' + ${b.id} + ', true)'">
+					<span class="tooltip-text">Cancel</span>
+					Cancel
+				</button>
+				<button class="tooltip" type="button" th:onclick="'toggleWarning(' + ${b.id} + ', true)'">
+					<span class="tooltip-text">Delete</span>
+					Delete
+				</button>
+			</td>
+		</tr>
+
+		<!-- Inline confirmation row -->
+		<tr th:id="'warning-' + ${b.id}" class="warning-row" style="display:none;">
+			<td colspan="7">
+				<strong>&#9888;
+					<span th:if="${b.status == 'BOOKED'}">
+             This booking is still active. You can cancel it (restore seats) or delete it permanently.
+           </span>
+					<span th:unless="${b.status == 'BOOKED'}">
+             This will permanently delete the booking. Are you sure?
+           </span>
+				</strong>
+				<br/><br/>
+
+				<form th:method="post" th:action="@{/admin/bookings/cancel}" style="display:inline;"
+				      th:if="${b.status == 'BOOKED'}">
+					<input type="hidden" name="id" th:value="${b.id}"/>
+					<input type="hidden" name="confirm" value="true"/>
+					<button type="submit" style="background-color:#f0ad4e; color:white;">
+						Yes, Cancel
+					</button>
+				</form>
+
+				<form th:method="post" th:action="@{/admin/bookings/delete}" style="display:inline;">
+					<input type="hidden" name="id" th:value="${b.id}"/>
+					<input type="hidden" name="confirm" value="true"/>
+					<button type="submit" style="background-color:#d9534f; color:white;">
+						Yes, Delete
+					</button>
+				</form>
+
+				<button type="button" th:onclick="'toggleWarning(' + ${b.id} + ', false)'">No, Keep</button>
+			</td>
+		</tr>
+		</tbody>
+	</table>
+</main>
+
+<footer>
+	<div th:replace="fragments/footer :: footer"></div>
+</footer>
+<script th:src="@{/js/confirmation.js}" defer></script>
+</body>
+</html>

@@ -1,12 +1,12 @@
-package org.AirlineReservationSystem.model;
+package org.airlinereservationsystem.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.AirlineReservationSystem.model.enums.BookingStatus;
-import org.AirlineReservationSystem.model.enums.SeatClass;
+import org.airlinereservationsystem.model.enums.BookingStatus;
+import org.airlinereservationsystem.model.enums.SeatClass;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.time.LocalDateTime;
@@ -50,7 +50,7 @@ public class Booking {
 
 	@Transient
 	public String getBookingTimeDisplay() {
-		return org.AirlineReservationSystem.util.DateUtils.formatForDisplay(this.getBookingTime());
+		return org.airlinereservationsystem.util.DateUtils.formatForDisplay(this.getBookingTime());
 	}
 
 	@Override
