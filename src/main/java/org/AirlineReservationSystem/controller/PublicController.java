@@ -1,8 +1,8 @@
-package org.AirlineReservationSystem.controller;
+package org.airlinereservationsystem.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
-import org.AirlineReservationSystem.model.Flight;
-import org.AirlineReservationSystem.service.FlightService;
+import org.airlinereservationsystem.model.Flight;
+import org.airlinereservationsystem.service.FlightService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
-import static org.AirlineReservationSystem.util.DateUtils.addFormattedMaps;
+import static org.airlinereservationsystem.util.DateUtils.addFormattedMaps;
 
 @Controller
 public class PublicController {

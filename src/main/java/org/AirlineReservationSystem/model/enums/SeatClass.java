@@ -1,4 +1,4 @@
-package org.AirlineReservationSystem.model.enums;
+package org.airlinereservationsystem.model.enums;
 
 public enum SeatClass {
 	ECONOMY, BUSINESS

@@ -1,11 +1,11 @@
-package org.AirlineReservationSystem.controller;
+package org.airlinereservationsystem.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.AirlineReservationSystem.model.User;
-import org.AirlineReservationSystem.service.BookingService;
-import org.AirlineReservationSystem.service.UserService;
+import org.airlinereservationsystem.model.User;
+import org.airlinereservationsystem.service.BookingService;
+import org.airlinereservationsystem.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;

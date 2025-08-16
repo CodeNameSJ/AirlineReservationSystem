@@ -1,9 +1,9 @@
-package org.AirlineReservationSystem.service;
+package org.airlinereservationsystem.service;
 
 import lombok.RequiredArgsConstructor;
-import org.AirlineReservationSystem.model.User;
-import org.AirlineReservationSystem.model.enums.Role;
-import org.AirlineReservationSystem.repository.UserRepository;
+import org.airlinereservationsystem.model.User;
+import org.airlinereservationsystem.model.enums.Role;
+import org.airlinereservationsystem.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

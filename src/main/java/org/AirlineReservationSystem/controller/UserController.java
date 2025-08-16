@@ -1,12 +1,12 @@
-package org.AirlineReservationSystem.controller;
+package org.airlinereservationsystem.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.AirlineReservationSystem.model.Flight;
-import org.AirlineReservationSystem.model.enums.SeatClass;
-import org.AirlineReservationSystem.service.BookingService;
-import org.AirlineReservationSystem.service.FlightService;
+import org.airlinereservationsystem.model.Flight;
+import org.airlinereservationsystem.model.enums.SeatClass;
+import org.airlinereservationsystem.service.BookingService;
+import org.airlinereservationsystem.service.FlightService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
