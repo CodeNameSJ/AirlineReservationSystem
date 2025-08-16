@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+	<meta charset="utf-8"/>
+	<title>Booking Bill</title>
+	<link rel="stylesheet" th:href="@{/css/style.css}"/>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			margin: 20px;
+			background: #f5f5f5;
+		}
+
+		.bill-container {
+			max-width: 800px;
+			margin: auto;
+			background: white;
+			padding: 20px 30px;
+			border-radius: 10px;
+			box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+		}
+
+		h1 {
+			text-align: center;
+			margin-bottom: 30px;
+		}
+
+		.section-title {
+			background: #333;
+			color: white;
+			padding: 8px 10px;
+			margin-top: 20px;
+			border-radius: 5px;
+			font-size: 18px;
+		}
+
+		table {
+			width: 100%;
+			border-collapse: collapse;
+			margin-top: 10px;
+		}
+
+		th, td {
+			border: 1px solid #ccc;
+			padding: 8px 12px;
+			text-align: left;
+		}
+
+		th {
+			background: #f0f0f0;
+		}
+
+		.total {
+			text-align: right;
+			font-size: 18px;
+			margin-top: 15px;
+		}
+
+		.print-btn {
+			display: block;
+			margin: 20px auto 0;
+			padding: 8px 20px;
+			background: #28a745;
+			color: white;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+			font-size: 16px;
+		}
+
+		.print-btn:hover {
+			background: #218838;
+		}
+	</style>
+</head>
+<body>
+<main>
+	<div class="bill-container" th:if="${booking != null}">
+		<h1>Booking Invoice</h1>
+
+		<!-- Passenger Info -->
+		<div class="section-title">Passenger Details</div>
+		<table>
+			<tr>
+				<th>Name</th>
+				<td th:text="${booking.user.username}">Username</td>
+			</tr>
+			<tr>
+				<th>Email</th>
+				<td th:text="${booking.user.email}">user@example.com</td>
+			</tr>
+		</table>
+
+		<!-- Flight Info -->
+		<div class="section-title">Flight Details</div>
+		<table>
+			<tr>
+				<th>Flight Number</th>
+				<td th:text="${booking.flight.flightNumber}">FL123</td>
+			</tr>
+			<tr>
+				<th>From</th>
+				<td th:text="${booking.flight.origin}">Origin City</td>
+			</tr>
+			<tr>
+				<th>To</th>
+				<td th:text="${booking.flight.destination}">Destination City</td>
+			</tr>
+			<tr>
+				<th>Departure</th>
+				<td th:text="${booking.flight.departureTime}">2025-08-17 08:00</td>
+			</tr>
+			<tr>
+				<th>Arrival</th>
+				<td th:text="${booking.flight.arrivalTime}">2025-08-17 12:00</td>
+			</tr>
+			<tr>
+				<th>Class</th>
+				<td th:text="${booking.seatClass}">Economy</td>
+			</tr>
+		</table>
+
+		<!-- Payment Info -->
+		<div class="section-title">Payment Details</div>
+		<table>
+			<tr>
+				<th>Base Fare</th>
+				<td th:text="'₹' + ${booking.baseFare}">₹0</td>
+			</tr>
+			<tr>
+				<th>Taxes</th>
+				<td th:text="'₹' + ${booking.taxes}">₹0</td>
+			</tr>
+			<tr>
+				<th>Other Charges</th>
+				<td th:text="'₹' + ${booking.otherCharges}">₹0</td>
+			</tr>
+		</table>
+
+		<div class="total">
+			<strong>Total Amount:</strong> <span th:text="'₹' + ${booking.totalAmount}">₹0</span>
+		</div>
+
+		<!-- Print Button -->
+		<button class="print-btn" onclick="window.print()">Print Bill</button>
+	</div>
+</main>
+<footer>
+	<div th:replace="fragments/footer :: footer"></div>
+</footer>
+</body>
+</html>
