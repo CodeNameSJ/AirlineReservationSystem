@@ -1,54 +1,37 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin-layout}" lang="en">
 <head>
-	<meta charset="utf-8"/>
-	<title>User Details</title>
-	<link rel="stylesheet" th:href="@{/css/style.css}"/>
+	<div layout:fragment="head">
+		<meta charset="utf-8"/>
+		<title>User Details</title>
+	</div>
 </head>
 <body>
-<header>
-	<div th:replace="fragments/navbar :: navbar"></div>
-</header>
-<main>
+<div layout:fragment="content">
 	<h2 th:text="${user.id != null} ? 'Edit User' : 'Add User'"></h2>
-
 	<form th:action="@{/admin/users/save}" method="post">
 		<input type="hidden" name="id" th:if="${user.id != null}" th:value="${user.id}"/>
-
 		Username:
-		<label>
-			<input type="text" name="username" th:value="${user.username}" required/>
-		</label>
-		<br/>
-
+		<label><input type="text" name="username" th:value="${user.username}" required/></label><br/>
 		Email:
-		<label>
-			<input type="email" name="email" th:value="${user.email}" required/>
-		</label>
-		<br/>
-
+		<label><input type="email" name="email" th:value="${user.email}" required/></label><br/>
 		Password:
-		<label>
-			<input type="password" name="password"
-			       th:attr="required=${user.id == null}" value=""/>
-		</label>
-		<br/>
-
+		<label><input type="password" name="password" th:attr="required=${user.id == null}" value=""/></label><br/>
 		Role:
 		<label>
 			<select name="role">
 				<option th:value="USER" th:selected="${user.role == 'USER'}">USER</option>
 				<option th:value="ADMIN" th:selected="${user.role == 'ADMIN'}">ADMIN</option>
 			</select>
-		</label>
-		<br/>
-
+		</label><br/>
 		<button type="submit">Save</button>
 	</form>
-</main>
-<footer>
-	<div th:replace="fragments/footer :: footer"></div>
-</footer>
-<script th:src="@{/js/confirmation.js}" defer></script>
+</div>
+
+<div layout:fragment="scripts">
+	<script th:src="@{/js/confirmation.js}" defer></script>
+</div>
 </body>
 </html>
