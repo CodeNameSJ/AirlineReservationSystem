@@ -1,78 +1,43 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}" lang="en">
 <head>
-	<title>Airline Reservation - Home</title>
-
-	<link rel="stylesheet" th:href="@{/css/style.css}">
-	<link rel="stylesheet" th:href="@{/css/card.css}">
-	<link rel="stylesheet" th:href="@{/css/search.css}">
-
-	<style>
-		.button {
-			padding: 1.3em 3em;
-			font-size: 12px;
-			text-transform: uppercase;
-			letter-spacing: 3px;
-			font-weight: 500;
-			color: #000;
-			background-color: #fff;
-			border: none;
-			border-radius: 45px;
-			box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-			transition: all 0.3s ease 0s;
-			cursor: pointer;
-			outline: none;
-		}
-
-		.button:hover {
-			background-color: #23c483;
-			box-shadow: 0 15px 20px rgba(46, 229, 157, 0.4);
-			color: #fff;
-			transform: translateY(-7px);
-		}
-
-		.button:active {
-			transform: translateY(-1px);
-		}
-	</style>
-</head>
-<body>
-<header>
-	<div th:replace="fragments/navbar :: navbar"></div>
-</header>
-<main>
-
-	<script>
-		document.querySelector('#flightSearchForm').addEventListener('submit', function (e) {
-			e.preventDefault();
-			const form = e.target;
-
-			// Convert FormData into URLSearchParams manually (safe for all inputs)
-			const formData = new FormData(form);
-			const params = new URLSearchParams();
-			for (const [key, value] of formData.entries()) {
-				if (value instanceof File) {
-					// Skip files if you’re doing GET requests (files can't go in query params)
-					continue;
-				}
-				params.append(key, value);
+	<div layout:fragment="head">
+		<title>Home - Airline Reservation</title>
+		<style>
+			.button {
+				padding: 1.3em 3em;
+				font-size: 12px;
+				text-transform: uppercase;
+				letter-spacing: 3px;
+				font-weight: 500;
+				color: #000;
+				background-color: #fff;
+				border: none;
+				border-radius: 45px;
+				box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+				transition: all 0.3s ease 0s;
+				cursor: pointer;
+				outline: none;
 			}
 
-			params.set('ajax', 'true');
+			.button:hover {
+				background-color: #23c483;
+				box-shadow: 0 15px 20px rgba(46, 229, 157, 0.4);
+				color: #fff;
+				transform: translateY(-7px);
+			}
 
-			fetch(form.action + '?' + params.toString(), {
-				headers: {'X-Requested-With': 'XMLHttpRequest'}
-			})
-					.then(r => r.text())
-					.then(html => {
-						document.getElementById('searchResults').innerHTML = html;
-					})
-					.catch(err => console.error(err));
-		});
-	</script>
-
+			.button:active {
+				transform: translateY(-1px);
+			}
+		</style>
+	</div>
+</head>
+<body>
+<div layout:fragment="content">
 	<div th:replace="fragments/searchForm :: searchForm"></div>
-
 	<hr/>
 	<h2>Featured Flights</h2>
 
@@ -86,19 +51,15 @@
 				</div>
 				<div class="price">Economy: $<span th:text="${f.priceEconomy}"></span></div>
 				<div class="price">Business: $<span th:text="${f.priceBusiness}"></span></div>
-				<div class="description">
-					Departure Time: <span th:text="${f.departureTime}"></span>
-				</div>
+				<div class="description">Departure Time: <span th:text="${f.departureTime}"></span></div>
 			</div>
 			<a th:href="@{/user/book(flightId=${f.id})}">
 				<button class="button">Book Now</button>
 			</a>
 		</div>
 	</div>
+</div>
 
-</main>
-<footer>
-	<div th:replace="fragments/footer :: footer"></div>
-</footer>
+<div layout:fragment="scripts"></div>
 </body>
 </html>
