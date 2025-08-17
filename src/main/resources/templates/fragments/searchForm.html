@@ -1,49 +1,37 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
-
-<link rel="stylesheet" th:href="@{/css/search.css}"/>
-<link rel="stylesheet" th:href="@{/css/form.css}"/>
-
-<body>
 <div class="flight-search-card" th:fragment="searchForm">
 	<form id="flightSearchForm" th:action="@{/flights}" method="get" class="flight-search-form">
 		<div class="inline">
 			<!-- Origin -->
 			<div class="form-group">
-				<label>Origin</label>
-				<label>
+				<label>Origin
 					<select name="origin">
 						<option value="">Select Airport</option>
-						<option th:value="New Delhi" th:selected="${param.origin == 'New Delhi'}">New Delhi</option>
-						<option th:value="Mumbai" th:selected="${param.origin == 'Mumbai'}">Mumbai</option>
-						<option th:value="Bengaluru" th:selected="${param.origin == 'Bengaluru'}">Bengaluru</option>
-						<option th:value="Chennai" th:selected="${param.origin == 'Chennai'}">Chennai</option>
+						<option th:value="'New Delhi'" th:selected="${param.origin == 'New Delhi'}">New Delhi</option>
+						<option th:value="'Mumbai'" th:selected="${param.origin == 'Mumbai'}">Mumbai</option>
+						<option th:value="'Bengaluru'" th:selected="${param.origin == 'Bengaluru'}">Bengaluru</option>
+						<option th:value="'Chennai'" th:selected="${param.origin == 'Chennai'}">Chennai</option>
 					</select>
 				</label>
 			</div>
 
-			<!-- Arrow Separator -->
 			<span class="form-separator">&#8594;</span>
 
 			<!-- Destination -->
 			<div class="form-group">
-				<label>Destination</label>
-				<label>
+				<label>Destination
 					<select name="destination">
 						<option value="">Select Airport</option>
-						<option th:value="New Delhi" th:selected="${param.destination == 'New Delhi'}">New Delhi</option>
-						<option th:value="Mumbai" th:selected="${param.destination == 'Mumbai'}">Mumbai</option>
-						<option th:value="Bengaluru" th:selected="${param.destination == 'Bengaluru'}">Bengaluru</option>
-						<option th:value="Chennai" th:selected="${param.destination == 'Chennai'}">Chennai</option>
+						<option th:value="'New Delhi'" th:selected="${param.destination == 'New Delhi'}">New Delhi</option>
+						<option th:value="'Mumbai'" th:selected="${param.destination == 'Mumbai'}">Mumbai</option>
+						<option th:value="'Bengaluru'" th:selected="${param.destination == 'Bengaluru'}">Bengaluru</option>
+						<option th:value="'Chennai'" th:selected="${param.destination == 'Chennai'}">Chennai</option>
 					</select>
 				</label>
 			</div>
 		</div>
 
-		<!-- Date (optional) -->
 		<div class="form-group">
-			<label>Date</label>
-			<label>
+			<label>Date
 				<input type="date" name="date" th:value="${param.date}"/>
 			</label>
 		</div>
@@ -51,5 +39,3 @@
 		<button type="submit" class="animated-button">Search Flights</button>
 	</form>
 </div>
-</body>
-</html>
