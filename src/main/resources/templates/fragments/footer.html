@@ -1,7 +1,5 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
-<body>
 <footer th:fragment="footer">
+	<div style="text-align:center; padding:12px; font-size:0.9rem; color:#666;">
+		&copy; <span th:text="${T(java.time.Year).now().value}"></span> Airline Reservation System
+	</div>
 </footer>
-</body>
-</html>

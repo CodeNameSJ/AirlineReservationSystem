@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      lang="en">
+<head>
+	<meta charset="utf-8"/>
+	<title th:text="${pageTitle} ?: 'Admin - Airline Reservation'">Admin</title>
+
+	<!-- Admin CSS; include common CSS too if you want -->
+	<link rel="stylesheet" th:href="@{/css/style.css}"/>
+	<link rel="stylesheet" th:href="@{/css/admin.css}"/>
+
+	<div layout:fragment="head"></div>
+</head>
+<body>
+<!-- Reuse the same navbar (or create admin-specific nav) -->
+<header>
+	<div th:replace="fragments/navbar :: navbar"></div>
+</header>
+
+<main>
+	<section layout:fragment="content"></section>
+</main>
+
+<footer>
+	<div th:replace="fragments/footer :: footer"></div>
+</footer>
+
+<script th:src="@{/js/confirmation.js}" defer></script>
+<div layout:fragment="scripts"></div>
+</body>
+</html>

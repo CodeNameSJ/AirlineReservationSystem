@@ -1,31 +1,19 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" lang="en">
-<head>
-	<link rel="stylesheet" th:href="@{/css/navbar.css}"/>
-	<title></title>
-</head>
-<body>
 <nav class="navbar" th:fragment="navbar">
-	<!-- Logo -->
 	<div class="nav-left">
 		<a th:href="@{/}">
 			<img th:src="@{/images/logo.png}" class="logo" alt="Logo"/>
 		</a>
 		<span th:if="${session.username != null}">
-            Welcome, <span th:text="${session.username}"></span>
-        </span>
+      Welcome, <span th:text="${session.username}"></span>
+    </span>
 	</div>
 
-	<!-- Center Links -->
 	<div class="nav-center">
 		<a class="hover-decoration" th:href="@{/}">Home</a>
 		<a class="hover-decoration" th:href="@{/flights}">Flights</a>
 	</div>
 
-	<!-- Right Links -->
 	<div class="nav-right">
-
-		<!-- If ADMIN -->
 		<div th:if="${session.role != null} and ${session.role} == 'ADMIN'">
 			<div class="dropdown">
 				<a href="#" class="drop-btn" role="button" aria-expanded="false" aria-controls="admin-menu">
@@ -41,26 +29,15 @@
 			<a th:href="@{/logout}">Logout</a>
 		</div>
 
-		<!-- If logged-in user (not ADMIN) -->
 		<div th:if="${session.userId != null} and (${session.role} == null or ${session.role} != 'ADMIN')">
 			<a th:href="@{/user/home}">My Bookings</a>
 			<span>|</span>
 			<a th:href="@{/logout}">Logout</a>
 		</div>
 
-		<!-- If not logged-in -->
 		<div th:if="${session.userId == null}">
 			<a th:href="@{/login}" class="glowing-text">LOGIN</a>
-			<a th:href="@{/register}" class="signup">
-				SIGN UP
-				<div class="arrow-wrapper">
-					<div class="arrow"></div>
-				</div>
-			</a>
+			<a th:href="@{/register}" class="signup">SIGN UP</a>
 		</div>
 	</div>
 </nav>
-
-<script th:src="@{/js/navbar.js}" defer></script>
-</body>
-</html>

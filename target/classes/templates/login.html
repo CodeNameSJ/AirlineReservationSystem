@@ -1,17 +1,16 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}" lang="en">
 <head>
-	<title>Login</title>
-	<link rel="stylesheet" th:href="@{/css/form.css}">
+	<div layout:fragment="head">
+		<title>Login</title>
+	</div>
 </head>
 <body>
-<header>
-	<div th:replace="fragments/navbar :: navbar"></div>
-</header>
-<main>
+<div layout:fragment="content">
 	<div class="login-box">
 		<p>Login</p>
-
 		<form th:action="@{/login}" method="post">
 			<div class="user-box">
 				<input required type="text" id="username" name="username" autocomplete="on">
@@ -22,22 +21,16 @@
 				<input required type="password" id="password" name="password">
 				<label for="password">Password</label>
 			</div>
-
-			<button type="submit" class="animated-button">
-				<span></span><span></span><span></span><span></span>
-				Login
-			</button>
+			<span></span>
+			<span></span>
+			<span></span>
+			<span></span>
+			<button type="submit" class="animated-button">Login</button>
 		</form>
 
-		<p>Don't have an account?
-			<a th:href="@{/register}" class="a2">Signup</a>
-		</p>
-
+		<p>Don't have an account? <a th:href="@{/register}" class="a2">Signup</a></p>
 		<p th:if="${error}" th:text="${error}" style="color:red"></p>
 	</div>
-</main>
-<footer>
-	<div th:replace="fragments/footer :: footer"></div>
-</footer>
+</div>
 </body>
 </html>

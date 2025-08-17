@@ -1,29 +1,24 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}" lang="en">
 <head>
-	<meta charset="utf-8"/>
-	<title>Booking Success</title>
-	<link rel="stylesheet" th:href="@{/css/style.css}">
+	<div layout:fragment="head">
+		<meta charset="utf-8"/>
+		<title>Booking Success</title>
+	</div>
 </head>
 <body>
-<header>
-	<div th:replace="fragments/navbar :: navbar"></div>
-</header>
-<main>
+<div layout:fragment="content">
 	<h1>Booking Confirmed</h1>
 	<div th:if="${booking != null}">
 		<p>Your booking ID is: <strong th:text="${booking.id}"></strong></p>
 		<p>Flight: <span th:text="${booking.flight.flightNumber}"></span></p>
-		<p>Departure:
-			<span th:text="${booking.flight.origin}"></span> &rarr;
-			<span th:text="${booking.flight.destination}"></span>
-		</p>
+		<p>Departure: <span th:text="${booking.flight.origin}"></span> &rarr; <span
+				th:text="${booking.flight.destination}"></span></p>
 		<p>Seats: <span th:text="${booking.seats}"></span></p>
 		<p>Status: <span th:text="${booking.status}"></span></p>
 	</div>
-</main>
-<footer>
-	<div th:replace="fragments/footer :: footer"></div>
-</footer>
+</div>
 </body>
 </html>
