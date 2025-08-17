@@ -1,10 +1,41 @@
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head th:fragment="layout">
-	<title>Login</title>
-	<link rel="stylesheet" th:href="@{/css/form.css}">
-	<link rel="stylesheet" th:href="@{/css/navbar.css}">
-	<link rel="stylesheet" th:href="@{/css/card.css}">
-	<link rel="stylesheet" th:href="@{/css/search.css}">
-	<link rel="stylesheet" th:href="@{/css/style.css}">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      lang="en">
+<head>
+	<meta charset="utf-8"/>
+	<title th:text="${pageTitle} ?: 'Airline Reservation System'">Airline Reservation</title>
+
+	<!-- Global CSS (load once) -->
+	<link rel="stylesheet" th:href="@{/css/style.css}"/>
+	<link rel="stylesheet" th:href="@{/css/card.css}"/>
+	<link rel="stylesheet" th:href="@{/css/search.css}"/>
+	<link rel="stylesheet" th:href="@{/css/form.css}"/>
+	<link rel="stylesheet" th:href="@{/css/navbar.css}"/>
+
+	<!-- Children can insert Page-specific head -->
+	<div layout:fragment="head"></div>
 </head>
+<body>
+<header>
+	<div th:replace="fragments/navbar :: navbar"></div>
+</header>
+
+<main>
+	<!-- Default content placeholder: child pages decorate this layout and define layout:fragment="content" -->
+	<section layout:fragment="content"></section>
+</main>
+
+<footer>
+	<div th:replace="fragments/footer :: footer"></div>
+</footer>
+
+<!-- Global scripts -->
+<script th:src="@{/js/search.js}" defer></script>
+<script th:src="@{/js/confirmation.js}" defer></script>
+<script th:src="@{/js/navbar.js}" defer></script>
+
+<!-- Page-specific scripts -->
+<div layout:fragment="scripts"></div>
+</body>
 </html>
