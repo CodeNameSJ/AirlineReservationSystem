@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}" lang="en">
 <head>
-	<meta charset="utf-8"/>
-	<title>Book Flight</title>
-	<link rel="stylesheet" th:href="@{/css/style.css}"/>
+	<div layout:fragment="head">
+		<meta charset="utf-8"/>
+		<title>Book Flight</title>
+	</div>
 </head>
 <body>
-<header>
-	<div th:replace="fragments/navbar :: navbar"></div>
-</header>
-<main>
+<div layout:fragment="content">
 	<h1>Book Flight</h1>
 	<div th:if="${flight != null}">
 		<p>Flight: <span th:text="${flight.origin}"></span> → <span th:text="${flight.destination}"></span></p>
@@ -17,15 +17,10 @@
 		<form th:action="@{/user/book}" method="post">
 			<input type="hidden" name="flightId" th:value="${flight.id}"/>
 			Seats:
-			<label>
-				<input type="number" name="seats" value="1" min="1" required/>
-			</label>
+			<label><input type="number" name="seats" value="1" min="1" required/></label>
 			<button type="submit">Confirm Booking</button>
 		</form>
 	</div>
-</main>
-<footer>
-	<div th:replace="fragments/footer :: footer"></div>
-</footer>
+</div>
 </body>
 </html>
