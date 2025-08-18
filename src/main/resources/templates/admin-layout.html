@@ -6,16 +6,18 @@
 	<meta charset="utf-8"/>
 	<title th:text="${pageTitle} ?: 'Admin - Airline Reservation'">Admin</title>
 
-	<!-- Admin CSS; include common CSS too if you want -->
+	<!-- Admin CSS -->
 	<link rel="stylesheet" th:href="@{/css/style.css}"/>
-	<link rel="stylesheet" th:href="@{/css/admin.css}"/>
+	<link rel="stylesheet" th:href="@{/css/card.css}"/>
+	<link rel="stylesheet" th:href="@{/css/search.css}"/>
+	<link rel="stylesheet" th:href="@{/css/form.css}"/>
+	<link rel="stylesheet" th:href="@{/css/navbar.css}"/>
 
 	<div layout:fragment="head"></div>
 </head>
 <body>
-<!-- Reuse the same navbar (or create admin-specific nav) -->
 <header>
-	<div th:replace="fragments/navbar :: navbar"></div>
+	<div th:replace="~{fragments/navbar :: navbar}"></div>
 </header>
 
 <main>
@@ -23,10 +25,12 @@
 </main>
 
 <footer>
-	<div th:replace="fragments/footer :: footer"></div>
+	<div th:replace="~{fragments/footer :: footer}"></div>
 </footer>
 
+<script th:src="@{/js/search.js}" defer></script>
 <script th:src="@{/js/confirmation.js}" defer></script>
+<script th:src="@{/js/navbar.js}" defer></script>
 <div layout:fragment="scripts"></div>
 </body>
 </html>

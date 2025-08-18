@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.proxy.HibernateProxy;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -38,10 +39,13 @@ public class Flight {
 	private String destination;
 
 	@Column(nullable = false)
+	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
 	private LocalDateTime departureTime;
 
 	@Column(nullable = false)
+	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
 	private LocalDateTime arrivalTime;
+
 
 	private int totalEconomySeats;
 	private int totalBusinessSeats;
@@ -53,8 +57,6 @@ public class Flight {
 
 	@Column(nullable = false)
 	private BigDecimal priceBusiness;
-
-	private double price;
 
 	@Transient
 	public String getDepartureDisplay() {

@@ -4,45 +4,66 @@
       layout:decorate="~{admin-layout}" lang="en">
 <head>
 	<div layout:fragment="head">
-		<title>Flight Details</title>
+		<title th:text="${flight.id != null} ? 'Edit Flight' : 'New Flight'">Flight Details</title>
 	</div>
 </head>
 <body>
 <div layout:fragment="content">
 	<h1 th:text="${flight.id != null} ? 'Edit Flight' : 'New Flight'"></h1>
-	<form th:action="@{/admin/flights}" method="post">
-		<input type="hidden" name="id" th:value="${flight.id}"/>
 
-		Flight Number:
-		<label><input name="flightNumber" th:value="${flight.flightNumber}"/></label><br/>
+	<!-- bind the form to the flight model attribute -->
+	<form th:object="${flight}" th:action="@{/admin/flights}" method="post">
+		<input type="hidden" th:field="*{id}"/>
 
-		Origin:
-		<label><input name="origin" th:value="${flight.origin}"/></label><br/>
+		<label>Flight Number:
+			<input type="text" th:field="*{flightNumber}" required/>
+		</label>
+		<br/>
 
-		Destination:
-		<label><input name="destination" th:value="${flight.destination}"/></label><br/>
+		<label>Origin:
+			<input type="text" th:field="*{origin}" required/>
+		</label>
+		<br/>
+
+		<label>Destination:
+			<input type="text" th:field="*{destination}" required/>
+		</label>
+		<br/>
 
 		<label>Departure Time:
-			<input type="datetime-local" name="departureTime" th:value="${departureInput != null ? departureInput : ''}"/>
-		</label><br/>
+			<input type="datetime-local" th:field="*{departureTime}"/>
+		</label>
+		<br/>
 
 		<label>Arrival Time:
-			<input type="datetime-local" name="arrivalTime" th:value="${arrivalInput != null ? arrivalInput : ''}"/>
-		</label><br/>
+			<input type="datetime-local" th:field="*{arrivalTime}"/>
+		</label>
+		<br/>
 
-		Total Economy Seats:
-		<label><input type="number" name="totalEconomySeats" th:value="${flight.totalEconomySeats}"/></label><br/>
+		<label>Total Economy Seats:
+			<input type="number" th:field="*{totalEconomySeats}" min="0"/>
+		</label>
+		<br/>
 
-		Total Business Seats:
-		<label><input type="number" name="totalBusinessSeats" th:value="${flight.totalBusinessSeats}"/></label><br/>
+		<label>Total Business Seats:
+			<input type="number" th:field="*{totalBusinessSeats}" min="0"/>
+		</label>
+		<br/>
 
-		Price Economy:
-		<label><input name="priceEconomy" th:value="${flight.priceEconomy}"/></label><br/>
+		<label>Price Economy:
+			<input type="number" step="0.01" th:field="*{priceEconomy}"/>
+		</label>
+		<br/>
 
-		Price Business:
-		<label><input name="priceBusiness" th:value="${flight.priceBusiness}"/></label><br/>
+		<label>Price Business:
+			<input type="number" step="0.01" th:field="*{priceBusiness}"/>
+		</label>
+		<br/>
 
 		<button type="submit">Save</button>
+		<a th:href="@{/admin/flights}">
+			<button type="button">Cancel</button>
+		</a>
 	</form>
 </div>
 </body>

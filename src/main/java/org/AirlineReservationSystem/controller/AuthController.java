@@ -31,6 +31,7 @@ public class AuthController {
 
 	@PostMapping("/login")
 	public String doLogin(@RequestParam String username, @RequestParam String password, HttpServletRequest req, Model model) {
+
 		var opt = userService.findByUsername(username);
 		if (opt.isEmpty()) {
 			model.addAttribute("error", "Invalid username or password");
@@ -45,9 +46,8 @@ public class AuthController {
 		HttpSession s = req.getSession(true);
 		s.setAttribute("userId", user.getId());
 		s.setAttribute("username", user.getUsername());
-		s.setAttribute("role", user.getRole());
+		s.setAttribute("role", user.getRole().name());
 
-		// redirect to saved URL if set
 		String saved = (String) s.getAttribute("redirectAfterLogin");
 		if (saved != null) {
 			s.removeAttribute("redirectAfterLogin");
@@ -72,7 +72,8 @@ public class AuthController {
 		if (userService.findByUsername(username).isPresent()) {
 			model.addAttribute("error", "Username taken");
 			return "register";
-		}		if (userService.findByEmail(email).isPresent()) {
+		}
+		if (userService.findByEmail(email).isPresent()) {
 			model.addAttribute("error", "Email already registered");
 			return "register";
 		}
