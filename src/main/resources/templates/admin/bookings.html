@@ -82,7 +82,7 @@
 			</td>
 		</tr>
 
-		<tr th:id="'warning-' + ${b.id}" class="warning-row" style="display:none;">
+		<tr th:each="b : ${bookings}" th:id="'warning-' + ${b.id}" class="warning-row" style="display:none;">
 			<td colspan="7">
 				<strong>&#9888;
 					<span th:if="${b.status == 'BOOKED'}">This booking is still active. You can cancel it (restore seats) or delete it permanently.</span>

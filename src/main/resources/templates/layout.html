@@ -6,7 +6,7 @@
 	<meta charset="utf-8"/>
 	<title th:text="${pageTitle} ?: 'Airline Reservation System'">Airline Reservation</title>
 
-	<!-- Global CSS (load once) -->
+	<!-- Global CSS -->
 	<link rel="stylesheet" th:href="@{/css/style.css}"/>
 	<link rel="stylesheet" th:href="@{/css/card.css}"/>
 	<link rel="stylesheet" th:href="@{/css/search.css}"/>
@@ -18,7 +18,7 @@
 </head>
 <body>
 <header>
-	<div th:replace="fragments/navbar :: navbar"></div>
+	<div th:replace="~{fragments/navbar :: navbar}"></div>
 </header>
 
 <main>
@@ -27,7 +27,7 @@
 </main>
 
 <footer>
-	<div th:replace="fragments/footer :: footer"></div>
+	<div th:replace="~{fragments/footer :: footer}"></div>
 </footer>
 
 <!-- Global scripts -->

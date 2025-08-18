@@ -50,8 +50,13 @@
 	</div>
 </head>
 <body>
+
 <div layout:fragment="content">
 	<h2>Registered Users</h2>
+	<div class="action-bar">
+		<!-- Add User: points to admin user creation page. Adjust URL if your controller uses a different path. -->
+		<a th:href="@{/admin/users/new}" class="btn">Add User</a>
+	</div>
 	<table border="1" cellpadding="5">
 		<thead>
 		<tr>
@@ -75,7 +80,7 @@
 			</td>
 		</tr>
 
-		<tr th:id="'warning-' + ${user.id}" class="warning-row" style="display:none;">
+		<tr th:each="user : ${users}" th:id="'warning-' + ${user.id}" class="warning-row" style="display:none;">
 			<td colspan="5">
 				<strong>&#9888; Are you sure you want to delete this user? Deleting it will also remove all related
 					bookings.</strong>

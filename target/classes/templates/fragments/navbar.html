@@ -14,30 +14,31 @@
 	</div>
 
 	<div class="nav-right">
-		<div th:if="${session.role != null} and ${session.role} == 'ADMIN'">
+		<div th:if="${session.role != null and session.role == 'ADMIN'}" class="nav-right">
 			<div class="dropdown">
-				<a href="#" class="drop-btn" role="button" aria-expanded="false" aria-controls="admin-menu">
+				<a th:href="@{/admin/dashboard}" class="drop-btn" role="button" aria-expanded="false"
+				   aria-controls="admin-menu">
 					Admin Dashboard <span class="arrow">&#9662;</span>
 				</a>
-				<div id="admin-menu" class="dropdown-content" role="menu" aria-label="Admin options">
-					<a th:href="@{/admin/flights}">Manage Flights</a>
-					<a th:href="@{/admin/users}">Manage Users</a>
-					<a th:href="@{/admin/bookings}">Manage Bookings</a>
-				</div>
+				<span id="admin-menu" class="dropdown-content" role="menu" aria-label="Admin options">
+				<a th:href="@{/admin/flights}">Manage Flights</a>
+				<a th:href="@{/admin/users}">Manage Users</a>
+				<a th:href="@{/admin/bookings}">Manage Bookings</a>
+			</span>
 			</div>
 			<span>|</span>
 			<a th:href="@{/logout}">Logout</a>
 		</div>
 
-		<div th:if="${session.userId != null} and (${session.role} == null or ${session.role} != 'ADMIN')">
-			<a th:href="@{/user/home}">My Bookings</a>
-			<span>|</span>
-			<a th:href="@{/logout}">Logout</a>
-		</div>
+		<span th:if="${session.userId != null and session.role != 'ADMIN'}"  class="nav-right">
+        <a th:href="@{/user/home}">My Bookings</a>
+        <span>|</span>
+        <a th:href="@{/logout}">Logout</a>
+      </span>
 
-		<div th:if="${session.userId == null}">
-			<a th:href="@{/login}" class="glowing-text">LOGIN</a>
-			<a th:href="@{/register}" class="signup">SIGN UP</a>
-		</div>
+		<span th:if="${session.userId == null}"  class="nav-right">
+        <a th:href="@{/login}" class="glowing-text">LOGIN</a>
+        <a th:href="@{/register}" class="signup">SIGN UP</a>
+      </span>
 	</div>
 </nav>
