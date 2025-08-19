@@ -46,6 +46,9 @@
 			.tooltip:hover .tooltip-text {
 				visibility: visible;
 			}
+
+			.action-bar { margin-bottom: 12px; }
+			.btn { display:inline-block; padding:8px 12px; background:#3b82f6; color:#fff; border-radius:6px; text-decoration:none; }
 		</style>
 	</div>
 </head>
@@ -54,13 +57,14 @@
 <div layout:fragment="content">
 	<h2>Registered Users</h2>
 	<div class="action-bar">
-		<!-- Add User: points to admin user creation page. Adjust URL if your controller uses a different path. -->
-		<a th:href="@{/admin/users/new}" class="btn">Add User</a>
+		<!-- Add User -->
+		<a th:href="@{/admin/users/add}" class="btn">Add User</a>
 	</div>
-	<table border="1" cellpadding="5">
+	<table border="1" cellpadding="5" style="border-collapse:collapse; width:100%;">
 		<thead>
 		<tr>
 			<th>ID</th>
+			<th>Role</th>
 			<th>Username</th>
 			<th>Email</th>
 			<th>Actions</th>
@@ -69,28 +73,28 @@
 		<tbody>
 		<tr th:each="user : ${users}">
 			<td th:text="${user.id}">1</td>
+			<td th:text="${user.role}">User</td>
 			<td th:text="${user.username}">Username</td>
 			<td th:text="${user.email}">email@example.com</td>
 			<td>
-				<form th:method="get" th:action="@{/admin/users/edit}" style="display:inline;">
-					<input type="hidden" name="id" th:value="${user.id}"/>
+				<form th:action="@{/admin/users/edit/{id}(id=${user.id})}" method="get" style="display:inline;">
 					<button type="submit">Edit</button>
-					<button type="button" th:onclick="'toggleWarning(' + ${user.id} + ', true)'">Delete</button>
 				</form>
+
+				<button type="button" th:onclick="'toggleWarning(' + ${user.id} + ', \'user\', true)'">Delete</button>
 			</td>
 		</tr>
 
-		<tr th:each="user : ${users}" th:id="'warning-' + ${user.id}" class="warning-row" style="display:none;">
+		<tr th:each="user : ${users}" th:id="'warning-user-' + ${user.id}" class="warning-row" style="display:none;">
 			<td colspan="5">
-				<strong>&#9888; Are you sure you want to delete this user? Deleting it will also remove all related
-					bookings.</strong>
+				<strong>&#9888; Are you sure you want to delete this user? Deleting it will also remove all related bookings.</strong>
 				<br/>
 				<form th:method="post" th:action="@{/admin/users/delete}" style="display:inline;">
 					<input type="hidden" name="id" th:value="${user.id}"/>
 					<input type="hidden" name="confirm" value="true"/>
 					<button type="submit" style="background-color:red; color:white;">Yes, Delete</button>
 				</form>
-				<button type="button" th:onclick="'toggleWarning(' + ${user.id} + ', false)'">Cancel</button>
+				<button type="button" th:onclick="'toggleWarning(' + ${user.id} + ', \'user\', false)'">Cancel</button>
 			</td>
 		</tr>
 		</tbody>
