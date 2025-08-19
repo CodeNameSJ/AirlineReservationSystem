@@ -93,11 +93,13 @@ public class BookingService {
 
 	@Transactional
 	public void deleteByFlightId(Long flightId) {
+		new Booking().setStatus(BookingStatus.CANCELLED);
 		bookingRepo.deleteByFlightId(flightId);
 	}
 
 	@Transactional
 	public void delete(Long bookingId) {
+		new Booking().setStatus(BookingStatus.CANCELLED);
 		bookingRepo.deleteById(bookingId);
 	}
 
@@ -108,6 +110,7 @@ public class BookingService {
 
 	@Transactional
 	public void deleteByUserId(Long userId) {
+		new Booking().setStatus(BookingStatus.CANCELLED);
 		bookingRepo.deleteByUserId(userId);
 	}
 
