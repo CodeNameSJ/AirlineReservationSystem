@@ -4,6 +4,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.airlinereservationsystem.model.Booking;
+import org.airlinereservationsystem.model.enums.BookingStatus;
+import org.airlinereservationsystem.model.enums.SeatClass;
 import org.airlinereservationsystem.service.BookingService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,12 +31,14 @@ public class AdminBookingController {
 		return "admin/bookings";
 	}
 
-	@GetMapping("/view/{id}")
+	@GetMapping("/edit/{id}")
 	public String viewBooking(HttpServletRequest req, @PathVariable Long id, Model model) {
 		if (isAdmin(req)) return "redirect:/login";
 		var opt = bookingService.findById(id);
 		if (opt.isEmpty()) return "redirect:/admin/bookings";
 		model.addAttribute("booking", opt.get());
+		model.addAttribute("bookingStatus", BookingStatus.values());
+		model.addAttribute("seatClasses", SeatClass.values());
 		return "admin/booking-form";
 	}
 

@@ -39,11 +39,12 @@ public class UserController {
 		}
 		Flight f = flightService.findById(flightId).orElseThrow();
 		model.addAttribute("flight", f);
+		model.addAttribute("seatClasses", SeatClass.values());
 		return "user/bookingForm";
 	}
 
 	@PostMapping("/book")
-	public String doBook(@RequestParam Long flightId, @RequestParam int seats, HttpServletRequest req, Model model) {
+	public String doBook(@RequestParam Long flightId, @RequestParam int seats, @RequestParam SeatClass seatClass, HttpServletRequest req, Model model) {
 		HttpSession s = req.getSession(false);
 		if (s == null || s.getAttribute("userId") == null) {
 			req.getSession(true).setAttribute("redirectAfterLogin", "/user/book?flightId=" + flightId);
@@ -51,7 +52,7 @@ public class UserController {
 		}
 		Long userId = (Long) s.getAttribute("userId");
 		// call the updated booking method that requires userId
-		var booking = bookingService.createBooking(userId, flightId, SeatClass.ECONOMY, seats);
+		var booking = bookingService.createBooking(userId, flightId, seatClass, seats);
 		model.addAttribute("booking", booking);
 		return "user/bookingSuccess";
 	}

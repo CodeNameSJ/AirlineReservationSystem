@@ -13,18 +13,41 @@
 	<h2>Booking</h2>
 	<form th:action="@{/admin/bookings/update}" method="post">
 		<input type="hidden" name="id" th:value="${booking.id}"/>
+
 		User: <span th:text="${booking.user.username}">username</span> <br/>
+
 		Flight: <span th:text="${booking.flight.flightNumber}">FL123</span> <br/>
-		Seats: <label><input type="number" name="seats" th:value="${booking.seats}" min="1"/></label><br/>
-		Status:
-		<label>
+
+		<label>Seats:
+			<input type="number" name="seats" th:value="${booking.seats}" min="1"/>
+		</label><br/>
+
+		<label>Seat Class:
+			<select name="seatClass">
+				<option th:each="seatClass : ${seatClasses}"
+				        th:value="${seatClass}"
+				        th:text="${seatClass}"
+				        th:selected="${seatClass} == ${booking.seatClass}">
+				</option>
+			</select>
+		</label>
+
+		<label>Status:
 			<select name="status">
+				<option th:each="status : ${bookingStatus}"
+				        th:value="${status}"
+				        th:text="${status}"
+				        th:selected="${status} == ${booking.status}">
+				</option>
 				<option value="BOOKED" th:selected="${booking.status == 'BOOKED'}">BOOKED</option>
 				<option value="CANCELLED" th:selected="${booking.status == 'CANCELLED'}">CANCELLED</option>
 			</select>
 		</label>
 		<br/>
 		<button type="submit">Save</button>
+		<a th:href="@{/admin/bookings}">
+			<button type="button">Cancel</button>
+		</a>
 	</form>
 </div>
 

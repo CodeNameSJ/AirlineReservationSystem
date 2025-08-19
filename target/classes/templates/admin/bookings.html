@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{admin-layout}" lang="en">
+      layout:decorate="~{admin-layout}"
+      lang="en">
 <head>
 	<div layout:fragment="head">
 		<title>Manage Bookings</title>
@@ -9,7 +10,6 @@
 			button {
 				border: none;
 				border-radius: 1rem;
-				transition: all 0.5s linear;
 				padding: 0.8em 1.2em;
 				background-color: #ACB1D6;
 				cursor: pointer;
@@ -51,16 +51,18 @@
 <body>
 <div layout:fragment="content">
 	<h1>Manage Bookings</h1>
-	<table>
+	<table style="border:1px solid black; border-collapse: collapse; width:100%;">
 		<thead>
 		<tr>
 			<th>ID</th>
 			<th>User</th>
 			<th>Flight</th>
+			<th>Seat Class</th>
+			<th>Departure</th>
 			<th>Seats</th>
 			<th>Date</th>
 			<th>Status</th>
-			<th style="width:220px;">Action</th>
+			<th style="width:260px;">Action</th>
 		</tr>
 		</thead>
 		<tbody>
@@ -68,41 +70,56 @@
 			<td th:text="${b.id}">1</td>
 			<td th:text="${b.user.username}">username</td>
 			<td th:text="${b.flight.flightNumber}">FL123</td>
+			<td th:text="${b.seatClass}">ECONOMY</td>
+			<td th:text="${b.flight.departureDisplay}">Now</td>
 			<td th:text="${b.seats}">2</td>
 			<td th:text="${b.bookingTimeDisplay}">2025-08-17</td>
 			<td th:text="${b.status}">BOOKED</td>
 			<td>
-				<button class="tooltip" type="button" th:if="${b.status == 'BOOKED'}"
-				        th:onclick="'toggleWarning(' + ${b.id} + ', true)'">
-					<span class="tooltip-text">Cancel</span> Cancel
+				<form th:action="@{/admin/bookings/edit/{id}(id=${b.id})}" method="get" style="display:inline;">
+					<button type="submit">Edit</button>
+				</form>
+
+				<button type="button" class="tooltip"
+				        th:if="${b.status != null and #strings.equalsIgnoreCase(b.status.toString(), 'BOOKED')}"
+				        th:onclick="'toggleWarning(' + ${b.id} + ', \'cancel\', true)'">
+					<span class="tooltip-text">Cancel</span>
+					Cancel
 				</button>
-				<button class="tooltip" type="button" th:onclick="'toggleWarning(' + ${b.id} + ', true)'">
-					<span class="tooltip-text">Delete</span> Delete
+
+				<button type="button" class="tooltip"
+				        th:if="${b.status != null and (#strings.equalsIgnoreCase(b.status.toString(), 'BOOKED') or #strings.equalsIgnoreCase(b.status.toString(), 'CANCELLED'))}"
+				        th:onclick="'toggleWarning(' + ${b.id} + ', \'delete\', true)'">
+					<span class="tooltip-text">Delete</span>
+					Delete
 				</button>
 			</td>
 		</tr>
 
-		<tr th:each="b : ${bookings}" th:id="'warning-' + ${b.id}" class="warning-row" style="display:none;">
+		<tr th:each="b : ${bookings}" th:id="'warning-cancel-' + ${b.id}" class="warning-row" style="display:none;"
+		    th:if="${b.status != null and #strings.equalsIgnoreCase(b.status.toString(), 'BOOKED')}">
 			<td colspan="7">
-				<strong>&#9888;
-					<span th:if="${b.status == 'BOOKED'}">This booking is still active. You can cancel it (restore seats) or delete it permanently.</span>
-					<span th:unless="${b.status == 'BOOKED'}">This will permanently delete the booking. Are you sure?</span>
-				</strong>
+				<strong>&#9888; This booking is currently active. Canceling will restore seats. Are you sure?</strong>
 				<br/><br/>
-				<form th:method="post" th:action="@{/admin/bookings/cancel}" style="display:inline;"
-				      th:if="${b.status == 'BOOKED'}">
+				<form th:method="post" th:action="@{/admin/bookings/cancel}" style="display:inline;">
 					<input type="hidden" name="id" th:value="${b.id}"/>
 					<input type="hidden" name="confirm" value="true"/>
 					<button type="submit" style="background-color:#f0ad4e; color:white;">Yes, Cancel</button>
 				</form>
+				<button type="button" th:onclick="'toggleWarning(' + ${b.id} + ', \'cancel\', false)'">No, Keep</button>
+			</td>
+		</tr>
 
+		<tr th:each="b : ${bookings}" th:id="'warning-delete-' + ${b.id}" class="warning-row" style="display:none;">
+			<td colspan="7">
+				<strong>&#9888; This will permanently delete the booking (and cannot be undone). Proceed?</strong>
+				<br/><br/>
 				<form th:method="post" th:action="@{/admin/bookings/delete}" style="display:inline;">
 					<input type="hidden" name="id" th:value="${b.id}"/>
 					<input type="hidden" name="confirm" value="true"/>
 					<button type="submit" style="background-color:#d9534f; color:white;">Yes, Delete</button>
 				</form>
-
-				<button type="button" th:onclick="'toggleWarning(' + ${b.id} + ', false)'">No, Keep</button>
+				<button type="button" th:onclick="'toggleWarning(' + ${b.id} + ', \'delete\', false)'">No, Keep</button>
 			</td>
 		</tr>
 
@@ -110,6 +127,8 @@
 	</table>
 </div>
 
-<div layout:fragment="scripts"></div>
+<div layout:fragment="scripts">
+	<script th:src="@{/js/confirmation.js}" defer></script>
+</div>
 </body>
 </html>

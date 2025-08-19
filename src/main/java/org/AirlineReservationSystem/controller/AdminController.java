@@ -73,19 +73,16 @@ public class AdminController {
 		model.addAttribute("departureTime", null);
 		model.addAttribute("arrivalTime", null);
 
-		return "admin/flightForm";
+		return "admin/flight-form";
 	}
 
 	@GetMapping("/flights/edit/{id}")
 	public String showEditFlightForm(@PathVariable Long id, HttpServletRequest req, Model model) {
 		if (isAdmin(req)) return "redirect:/login";
 		var opt = flightService.findById(id);
-		if (opt.isEmpty()) {
-			// flight not found — redirect back with a flash or just back to list
-			return "redirect:/admin/flights";
-		}
+		if (opt.isEmpty()) return "redirect:/admin/flights";
 		model.addAttribute("flight", opt.get());
-		return "admin/flightForm";
+		return "admin/flight-form";
 	}
 
 	@PostMapping("/flights/delete")

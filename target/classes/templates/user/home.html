@@ -5,10 +5,52 @@
       layout:decorate="~{layout}">
 
 <head>
-	<title>Airline Reservation - Home</title>
-
 	<div layout:fragment="head">
-		<!-- <link rel="stylesheet" th:href="@{/css/home.css}"/> -->
+		<title>My Bookings</title>
+		<style>
+			.booking-table {
+				border-collapse: collapse;
+				width: 100%;
+				margin-top: 1rem;
+			}
+
+			.booking-table th, .booking-table td {
+				border: 1px solid #ddd;
+				padding: 8px;
+			}
+
+			.booking-table th {
+				background-color: #f4f6fb;
+				text-align: left;
+			}
+
+			.tooltip {
+				position: relative;
+				display: inline-block;
+			}
+
+			.tooltip .tooltip-text {
+				visibility: hidden;
+				background-color: #AAA;
+				color: white;
+				border-radius: 6px;
+				padding: 4px 6px;
+				position: absolute;
+				z-index: 2;
+				bottom: 130%;
+				left: 50%;
+				transform: translateX(-50%);
+				white-space: nowrap;
+			}
+
+			.tooltip:hover .tooltip-text {
+				visibility: visible;
+			}
+
+			.warning-row {
+				background-color: #fff3cd;
+			}
+		</style>
 	</div>
 </head>
 
@@ -24,6 +66,7 @@
 			<th>Flight</th>
 			<th>Class</th>
 			<th>Seats</th>
+			<th>Departure</th>
 			<th>Status</th>
 			<th>Action</th>
 		</tr>
@@ -31,33 +74,50 @@
 		<tbody>
 		<tr th:each="booking : ${bookings}">
 			<td th:text="${booking.id}">1</td>
-			<td th:text="${booking.flight.flightNumber}">FL123</td>
+			<td th:text="${booking.flight != null ? booking.flight.flightNumber : '-'}">FL123</td>
 			<td th:text="${booking.seatClass}">Economy</td>
+			<td th:text="${booking.flight.departureDisplay}"></td>
 			<td th:text="${booking.seats}">2</td>
 			<td th:text="${booking.status}">BOOKED</td>
 			<td>
-				<form th:if="${booking.status == 'BOOKED'}"
-				      th:action="@{/user/bookings/cancel}" method="post" style="display:inline;">
-					<input type="hidden" name="id" th:value="${booking.id}"/>
-					<button class="tooltip" type="submit" aria-label="Cancel booking">
-						<span class="tooltip-text">Cancel</span>
-						<svg xmlns="http://www.w3.org/2000/svg" fill="none"
-						     viewBox="0 0 24 24" stroke-width="1.5"
-						     stroke="currentColor" width="24" height="24" aria-hidden="true">
-							<path stroke-linecap="round" stroke-linejoin="round"
-							      d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166
-                                     m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077
-                                     L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114
-                                     1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916
-                                     c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0
-                                     c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667
-                                     48.667 0 00-7.5 0"/>
-						</svg>
-					</button>
-				</form>
-				<span th:unless="${booking.status == 'BOOKED'}">—</span>
+				<!-- null-safe check for BOOKED -->
+				<button type="button" class="tooltip"
+				        th:if="${booking.status != null and #strings.equalsIgnoreCase(booking.status.toString(), 'BOOKED')}"
+				        th:onclick="'toggleWarning(' + ${booking.id} + ', \'cancel\', true)'">
+					<span class="tooltip-text">Cancel booking</span>
+					Cancel
+				</button>
+
+				<span th:unless="${booking.status != null and #strings.equalsIgnoreCase(booking.status.toString(), 'BOOKED')}">—</span>
 			</td>
 		</tr>
+
+		<tr th:each="booking : ${bookings}"
+		    th:id="'warning-cancel-' + ${booking.id}"
+		    class="warning-row"
+		    style="display:none;"
+		    th:if="${booking.status != null and #strings.equalsIgnoreCase(booking.status.toString(), 'BOOKED')}">
+			<td colspan="6">
+				<strong>&#9888; Cancel booking?</strong>
+				<p>This will cancel the booking and restore available seats for the flight.</p>
+
+				<form th:method="post" th:action="@{/user/bookings/cancel}" style="display:inline;">
+					<input type="hidden" name="id" th:value="${booking.id}"/>
+					<input type="hidden" name="confirm" value="true"/>
+					<button type="submit"
+					        style="background-color:#f0ad4e; color:#fff; border:none; padding:8px 12px; border-radius:6px;">
+						Yes, Cancel
+					</button>
+				</form>
+
+				<button type="button"
+				        th:onclick="'toggleWarning(' + ${booking.id} + ', \'cancel\', false)'"
+				        style="margin-left:8px; padding:8px 12px; border-radius:6px;">
+					No, Keep
+				</button>
+			</td>
+		</tr>
+
 		<tr th:if="${bookings == null or #lists.isEmpty(bookings)}">
 			<td colspan="6" style="text-align:center; padding:12px;">You have no bookings.</td>
 		</tr>
@@ -65,9 +125,8 @@
 	</table>
 </div>
 
-<!-- Optional page-specific scripts -->
 <div layout:fragment="scripts">
-	<!--  JS for this page if required -->
+	<script th:src="@{/js/confirmation.js}" defer></script>
 </div>
 
 </html>

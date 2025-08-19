@@ -43,19 +43,19 @@ public class PublicController {
 	}
 
 	@GetMapping("/flights")
-	public String flights(@RequestParam(required = false) String origin, @RequestParam(required = false) String destination, @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date, HttpServletRequest request, Model model) {
+	public String showFlights(@RequestParam(required = false) String origin, @RequestParam(required = false) String destination, @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date, HttpServletRequest request, Model model) {
 
-		List<Flight> results;
+		List<Flight> flights;
 		if (date == null) {
-			results = flightService.search(origin, destination, null, null);
+			flights = flightService.search(origin, destination, null, null);
 		} else {
 			LocalDateTime start = date.atStartOfDay();
 			LocalDateTime end = date.atTime(LocalTime.MAX);
-			results = flightService.search(origin, destination, start, end);
+			flights = flightService.search(origin, destination, start, end);
 		}
 
-		addFormattedMaps(model, results);
-		model.addAttribute("flights", results);
+		addFormattedMaps(model, flights);
+		model.addAttribute("flights", flights);
 		model.addAttribute("origin", origin);
 		model.addAttribute("destination", destination);
 		model.addAttribute("date", date);
@@ -66,9 +66,6 @@ public class PublicController {
 		return "flights";
 	}
 
-	/**
-	 * Flight details page — shows single flight details and a Book button.
-	 */
 	@GetMapping("/flight/{id}")
 	public String flightDetails(@PathVariable("id") Long id, Model model) {
 		Flight f = flightService.findById(id).orElse(null);

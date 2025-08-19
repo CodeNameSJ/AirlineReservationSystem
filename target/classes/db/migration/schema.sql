@@ -27,8 +27,8 @@ CREATE TABLE flights (
 								price DOUBLE
 );
 
--- create booking
-CREATE TABLE booking (
+-- create bookings
+CREATE TABLE bookings (
 								id BIGINT AUTO_INCREMENT PRIMARY KEY,
 								user_id BIGINT NOT NULL,
 								flight_id BIGINT NOT NULL,
