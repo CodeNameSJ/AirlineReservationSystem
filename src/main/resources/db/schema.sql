@@ -10,7 +10,7 @@ CREATE TABLE users (
 							 role VARCHAR(20) NOT NULL
 );
 
--- create flights (simple)
+-- create showFlights (simple)
 CREATE TABLE flights (
 								id BIGINT AUTO_INCREMENT PRIMARY KEY,
 								flight_number VARCHAR(50) UNIQUE,
