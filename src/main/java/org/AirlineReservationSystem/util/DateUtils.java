@@ -33,7 +33,7 @@ public final class DateUtils {
 	/**
 	 * Build and add departure/arrival formatted maps into the model.
 	 * Attribute names used: "departureMap" and "arrivalMap".
-	 * Usage: DateUtils.addFormattedMaps(model, flights);
+	 * Usage: DateUtils.addFormattedMaps(model, showFlights);
 	 */
 	public static void addFormattedMaps(org.springframework.ui.Model model, List<Flight> flights) {
 		Map<Long, String> departureMap = new HashMap<>();
