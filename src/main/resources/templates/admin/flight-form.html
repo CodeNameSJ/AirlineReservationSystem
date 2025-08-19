@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin-layout}" lang="en">
+<head>
+	<div layout:fragment="head">
+		<title>Flight Details</title>
+	</div>
+</head>
+<body>
+<div layout:fragment="content">
+	<h1 th:text="${flight.id != null} ? 'Edit Flight' : 'New Flight'"></h1>
+
+	<!-- bind the form to the flight model attribute -->
+	<form th:object="${flight}" th:action="@{/admin/flights}" method="post">
+		<input type="hidden" th:field="*{id}"/>
+
+		<label>Flight Number:
+			<input type="text" th:field="*{flightNumber}" required/>
+		</label>
+		<br/>
+
+		<label>Origin:
+			<input type="text" th:field="*{origin}" required/>
+		</label>
+		<br/>
+
+		<label>Destination:
+			<input type="text" th:field="*{destination}" required/>
+		</label>
+		<br/>
+
+		<label>Departure Time:
+			<input type="datetime-local" th:field="*{departureTime}"/>
+		</label>
+		<br/>
+
+		<label>Arrival Time:
+			<input type="datetime-local" th:field="*{arrivalTime}"/>
+		</label>
+		<br/>
+
+		<label>Total Economy Seats:
+			<input type="number" th:field="*{totalEconomySeats}" min="0"/>
+		</label>
+		<br/>
+
+		<label>Total Business Seats:
+			<input type="number" th:field="*{totalBusinessSeats}" min="0"/>
+		</label>
+		<br/>
+
+		<label>Price Economy:
+			<input type="number" step="0.01" th:field="*{priceEconomy}"/>
+		</label>
+		<br/>
+
+		<label>Price Business:
+			<input type="number" step="0.01" th:field="*{priceBusiness}"/>
+		</label>
+		<br/>
+
+		<button type="submit">Save</button>
+		<a th:href="@{/admin/flights}">
+			<button type="button">Cancel</button>
+		</a>
+	</form>
+</div>
+</body>
+</html>
