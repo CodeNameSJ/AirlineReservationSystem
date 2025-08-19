@@ -11,22 +11,35 @@
 <body>
 <div layout:fragment="content">
 	<h2 th:text="${user.id != null} ? 'Edit User' : 'Add User'"></h2>
-	<form th:action="@{/admin/users/save}" method="post">
-		<input type="hidden" name="id" th:if="${user.id != null}" th:value="${user.id}"/>
-		Username:
-		<label><input type="text" name="username" th:value="${user.username}" required/></label><br/>
-		Email:
-		<label><input type="email" name="email" th:value="${user.email}" required/></label><br/>
-		Password:
-		<label><input type="password" name="password" th:attr="required=${user.id == null}" value=""/></label><br/>
-		Role:
-		<label>
+
+	<form th:object="${user}" th:action="@{/admin/users/save}" method="post">
+		<input type="hidden" name="id" th:field="*{id}"/>
+
+		<label>Username:
+			<input type="text" name="username" th:value="${user.username}" required/>
+		</label><br/>
+
+		<label>Email:
+			<input type="email" name="email" th:value="${user.email}" required/>
+		</label><br/>
+
+		<label>Password:
+			<input type="password" name="password" th:attr="required=${user.id == null}" value=""/>
+		</label><br/>
+
+		<label>Role:
 			<select name="role">
-				<option th:value="USER" th:selected="${user.role == 'USER'}">USER</option>
-				<option th:value="ADMIN" th:selected="${user.role == 'ADMIN'}">ADMIN</option>
+				<option th:each="role : ${roles}"
+				        th:value="${role}"
+				        th:text="${role}"
+				        th:selected="${role} == ${user.role}">
+				</option>
 			</select>
 		</label><br/>
 		<button type="submit">Save</button>
+		<a th:href="@{/admin/users}">
+			<button type="button">Cancel</button>
+		</a>
 	</form>
 </div>
 
