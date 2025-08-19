@@ -4,6 +4,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.airlinereservationsystem.model.User;
+import org.airlinereservationsystem.model.enums.Role;
+import org.airlinereservationsystem.model.enums.SeatClass;
 import org.airlinereservationsystem.service.BookingService;
 import org.airlinereservationsystem.service.UserService;
 import org.springframework.stereotype.Controller;
@@ -36,6 +38,7 @@ public class AdminUserController {
 	public String showAddForm(HttpServletRequest req, Model model) {
 		if (isAdmin(req)) return "redirect:/login";
 		model.addAttribute("user", new User());
+		model.addAttribute("roles", Role.values());
 		return "admin/user-form";
 	}
 
@@ -46,12 +49,13 @@ public class AdminUserController {
 		return "redirect:/admin/users";
 	}
 
-	@GetMapping("/edit")
-	public String showEditForm(HttpServletRequest req, @RequestParam Long id, Model model) {
+	@GetMapping("/edit/{id}")
+	public String showEditForm(HttpServletRequest req, @PathVariable Long id, Model model) {
 		if (isAdmin(req)) return "redirect:/login";
 		var opt = userService.findById(id);
 		if (opt.isEmpty()) return "redirect:/admin/users";
 		model.addAttribute("user", opt.get());
+		model.addAttribute("roles", Role.values());
 		return "admin/user-form";
 	}
 
