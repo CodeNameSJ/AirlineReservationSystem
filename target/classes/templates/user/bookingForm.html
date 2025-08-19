@@ -12,12 +12,28 @@
 <div layout:fragment="content">
 	<h1>Book Flight</h1>
 	<div th:if="${flight != null}">
-		<p>Flight: <span th:text="${flight.origin}"></span> → <span th:text="${flight.destination}"></span></p>
-		<p>Departure: <span th:text="${flight.departureDisplay}"></span></p>
+		<p>Flight:
+			<span th:text="${flight.origin}"></span> → <span th:text="${flight.destination}"></span>
+		</p>
+		<p>Departure:
+			<span th:text="${flight.departureDisplay}"></span>
+		</p>
 		<form th:action="@{/user/book}" method="post">
 			<input type="hidden" name="flightId" th:value="${flight.id}"/>
-			Seats:
-			<label><input type="number" name="seats" value="1" min="1" required/></label>
+
+			<label>Seats:
+				<input type="number" name="seats" value="1" min="1" required/>
+			</label><br>
+
+			<label>Seat Class:
+				<select name="seatClass" required>
+					<option th:each="seatClass : ${seatClasses}"
+					        th:value="${seatClass}"
+					        th:text="${seatClass}">
+					</option>
+				</select>
+
+			</label>
 			<button type="submit">Confirm Booking</button>
 		</form>
 	</div>

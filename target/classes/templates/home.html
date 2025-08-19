@@ -51,7 +51,7 @@
 				</div>
 				<div class="price">Economy: $<span th:text="${f.priceEconomy}"></span></div>
 				<div class="price">Business: $<span th:text="${f.priceBusiness}"></span></div>
-				<div class="description">Departure Time: <span th:text="${f.departureTime}"></span></div>
+				<div class="description">Departure Time: <span th:text="${f.departureDisplay}"></span></div>
 			</div>
 			<a th:href="@{/user/book(flightId=${f.id})}">
 				<button class="button">Book Now</button>
