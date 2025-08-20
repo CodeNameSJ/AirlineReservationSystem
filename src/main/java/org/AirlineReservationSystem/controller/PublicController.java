@@ -6,14 +6,15 @@ import org.airlinereservationsystem.service.FlightService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.airlinereservationsystem.util.DateUtils.addFormattedMaps;
 
@@ -42,6 +43,14 @@ public class PublicController {
 		return "flights";
 	}
 
+	@ModelAttribute("airports")
+	public List<String> populateAirports() {
+		List<String> origins = flightService.originAirports();
+		List<String> destinations = flightService.destinationAirports();
+
+		return Stream.concat(origins == null ? Stream.empty() : origins.stream(), destinations == null ? Stream.empty() : destinations.stream()).filter(s -> s != null && !s.isBlank()).map(String::trim).distinct().sorted(Comparator.naturalOrder()).collect(Collectors.toList());
+	}
+
 	@GetMapping("/flights")
 	public String showFlights(@RequestParam(required = false) String origin, @RequestParam(required = false) String destination, @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date, HttpServletRequest request, Model model) {
 
@@ -61,8 +70,9 @@ public class PublicController {
 		model.addAttribute("date", date);
 
 		if ("true".equalsIgnoreCase(request.getParameter("ajax"))) {
-			return "fragments/flights";
+			return "fragments/flights :: results";
 		}
+
 		return "flights";
 	}
 

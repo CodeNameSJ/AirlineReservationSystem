@@ -32,6 +32,10 @@
 			.button:active {
 				transform: translateY(-1px);
 			}
+
+			input[type="date"]::placeholder {
+				text-transform: uppercase;
+			}
 		</style>
 	</div>
 </head>
@@ -53,7 +57,8 @@
 				<div class="price">Business: $<span th:text="${f.priceBusiness}"></span></div>
 				<div class="description">Departure Time: <span th:text="${f.departureDisplay}"></span></div>
 			</div>
-			<a th:href="@{/user/book(flightId=${f.id})}">
+<!--			<a th:href="@{/user/book(flightId=${f.id})}">-->
+			<a th:href="@{/flight/{id}(id=${f.id})}">
 				<button class="button">Book Now</button>
 			</a>
 		</div>

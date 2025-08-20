@@ -60,6 +60,14 @@ public class FlightService {
 		return flightRepo.findById(id);
 	}
 
+	public List<String> originAirports() {
+		return flightRepo.findDistinctOrigins();
+	}
+
+	public List<String> destinationAirports() {
+		return flightRepo.findDistinctDestinations();
+	}
+
 	@Transactional
 	public void save(Flight flight) {
 		if (flight.getEconomySeatsAvailable() == 0 && flight.getBusinessSeatsAvailable() == 0) {

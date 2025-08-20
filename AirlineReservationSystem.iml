@@ -20,13 +20,7 @@
       </configuration>
     </facet>
     <facet type="Spring" name="Spring">
-      <configuration>
-        <fileset id="fileset" name="Spring Application Context" removed="false">
-          <dependency>spring_boot_org.AirlineReservationSystem.AirlineReservationSystemApplication</dependency>
-          <file>file://$MODULE_DIR$/src/main/java/org/AirlineReservationSystem/AirlineReservationSystemApplication.java</file>
-          <file>file://$MODULE_DIR$/src/main/java/org/AirlineReservationSystem/config/SecurityConfig.java</file>
-        </fileset>
-      </configuration>
+      <configuration />
     </facet>
   </component>
 </module>
