@@ -21,15 +21,18 @@
 				<input required type="password" id="password" name="password">
 				<label for="password">Password</label>
 			</div>
-			<span></span>
-			<span></span>
-			<span></span>
-			<span></span>
-			<button type="submit" class="animated-button">Login</button>
+
+			<button type="submit" class="animated-button">
+				<span></span>
+				<span></span>
+				<span></span>
+				<span></span>
+				Login
+			</button>
 		</form>
 
 		<p>Don't have an account? <a th:href="@{/register}" class="a2">Signup</a></p>
-		<p th:if="${error}" th:text="${error}" style="color:red"></p>
+		<p th:if="${error}" th:text="${error}" style="color:red" class="a2"></p>
 	</div>
 </div>
 </body>
