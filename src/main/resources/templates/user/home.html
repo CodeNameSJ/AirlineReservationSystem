@@ -81,10 +81,10 @@
 			<td th:text="${booking.status}">BOOKED</td>
 			<td>
 				<!-- null-safe check for BOOKED -->
-				<button type="button" class="tooltip"
+				<button type="button" class="tooltip button"
 				        th:if="${booking.status != null and #strings.equalsIgnoreCase(booking.status.toString(), 'BOOKED')}"
 				        th:onclick="'toggleWarning(' + ${booking.id} + ', \'cancel\', true)'">
-					<span class="tooltip-text">Cancel booking</span>
+<!--					<span class="tooltip-text">Cancel booking</span>-->
 					Cancel
 				</button>
 
@@ -97,9 +97,9 @@
 		    class="warning-row"
 		    style="display:none;"
 		    th:if="${booking.status != null and #strings.equalsIgnoreCase(booking.status.toString(), 'BOOKED')}">
-			<td colspan="6">
+			<td colspan="7">
 				<strong>&#9888; Cancel booking?</strong>
-				<p>This will cancel the booking and restore available seats for the flight.</p>
+				<p>This cannot be undone.</p>
 
 				<form th:method="post" th:action="@{/user/bookings/cancel}" style="display:inline;">
 					<input type="hidden" name="id" th:value="${booking.id}"/>
