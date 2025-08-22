@@ -3,41 +3,41 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout}" lang="en">
 <head>
-	<div layout:fragment="head">
-		<title>Home - Airline Reservation</title>
-		<style>
-			.button {
-				padding: 1.3em 3em;
-				font-size: 12px;
-				text-transform: uppercase;
-				letter-spacing: 3px;
-				font-weight: 500;
-				color: #000;
-				background-color: #fff;
-				border: none;
-				border-radius: 45px;
-				box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-				transition: all 0.3s ease 0s;
-				cursor: pointer;
-				outline: none;
-			}
+	<th:block layout:fragment="head">
+	</th:block>
+	<title>Home - Airline Reservation</title>
+	<style>
+		.button {
+			padding: 1.3em 3em;
+			font-size: 12px;
+			text-transform: uppercase;
+			letter-spacing: 3px;
+			font-weight: 500;
+			color: #000;
+			background-color: #fff;
+			border: none;
+			border-radius: 45px;
+			box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+			transition: all 0.3s ease 0s;
+			cursor: pointer;
+			outline: none;
+		}
 
-			.button:hover {
-				background-color: #23c483;
-				box-shadow: 0 15px 20px rgba(46, 229, 157, 0.4);
-				color: #fff;
-				transform: translateY(-7px);
-			}
+		.button:hover {
+			background-color: #23c483;
+			box-shadow: 0 15px 20px rgba(46, 229, 157, 0.4);
+			color: #fff;
+			transform: translateY(-7px);
+		}
 
-			.button:active {
-				transform: translateY(-1px);
-			}
+		.button:active {
+			transform: translateY(-1px);
+		}
 
-			input[type="date"]::placeholder {
-				text-transform: uppercase;
-			}
-		</style>
-	</div>
+		input[type="date"]::placeholder {
+			text-transform: uppercase;
+		}
+	</style>
 </head>
 <body>
 <div layout:fragment="content">
@@ -57,7 +57,7 @@
 				<div class="price">Business: $<span th:text="${f.priceBusiness}"></span></div>
 				<div class="description">Departure Time: <span th:text="${f.departureDisplay}"></span></div>
 			</div>
-<!--			<a th:href="@{/user/book(flightId=${f.id})}">-->
+			<!--			<a th:href="@{/user/book(flightId=${f.id})}">-->
 			<a th:href="@{/flight/{id}(id=${f.id})}">
 				<button class="button">Book Now</button>
 			</a>

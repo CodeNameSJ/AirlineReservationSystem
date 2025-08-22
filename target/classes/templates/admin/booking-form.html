@@ -60,20 +60,20 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{admin-layout}" lang="en">
 <head>
-	<div layout:fragment="head">
-		<meta charset="utf-8"/>
-		<title th:text="${booking.id != null} ? 'Edit Booking' : 'New Booking'">Booking</title>
-		<style>
-			form label {
-				display: block;
-				margin: 8px 0;
-			}
+	<th:block layout:fragment="head">
+	</th:block>
+	<meta charset="utf-8"/>
+	<title th:text="${booking.id != null} ? 'Edit Booking' : 'New Booking'">Booking</title>
+	<style>
+		form label {
+			display: block;
+			margin: 8px 0;
+		}
 
-			.form-row {
-				margin-bottom: 10px;
-			}
-		</style>
-	</div>
+		.form-row {
+			margin-bottom: 10px;
+		}
+	</style>
 </head>
 <body>
 <div layout:fragment="content">
