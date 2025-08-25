@@ -1,0 +1,49 @@
+// _base.scss
+@import 'SCSS/tokens';
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html {
+	font-size: 100%;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+body {
+	margin: 0;
+	font-family: $font-sans;
+	font-size: $text-base;
+	line-height: $line-height;
+	color: $text;
+	background: $background;
+	padding: $space-md;
+	transition: background 180ms ease, color 180ms ease;
+}
+
+h1, h2, h3, h4, h5 {
+	margin: 0 0 $space-sm 0;
+	font-family: $font-sans;
+	color: $text;
+}
+
+h1 {
+	font-weight: 700;
+	font-size: clamp(2rem, 3.5vw, 4.21rem);
+}
+
+h2 {
+	font-weight: 700;
+	font-size: clamp(1.6rem, 2.8vw, 3.158rem);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	* {
+		transition: none !important;
+		animation-duration: 0.001ms !important;
+		animation-iteration-count: 1 !important;
+	}
+}
