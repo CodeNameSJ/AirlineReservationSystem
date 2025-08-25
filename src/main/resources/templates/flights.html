@@ -3,20 +3,18 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout}" lang="en">
 <head>
+	<title>Search Flights</title>
 	<div layout:fragment="head">
 		<meta charset="utf-8"/>
-		<title>Search Flights</title>
 	</div>
 </head>
 <body>
 <div layout:fragment="content">
 	<h1 class="page-title">Search Flights</h1>
 	<div th:replace="~{fragments/searchForm :: searchForm}"></div>
-	<br/>
 	<hr/>
-
 	<div id="searchResults">
-		<table style="border:1px solid black; width:100%; border-collapse:collapse;">
+		<table class="data-table">
 			<thead>
 			<tr>
 				<th>Flight No</th>
@@ -39,17 +37,18 @@
 				<td th:text="${flight.priceEconomy}"></td>
 				<td th:text="${flight.priceBusiness}"></td>
 				<td>
-<!--					<a th:if="${session.userId != null}" th:href="@{/user/book(flightId=${flight.id})}">Book</a>-->
-<!--					<a th:unless="${session.userId != null}" th:href="@{/login}">Book</a>-->
-					<a th:if="${session.userId != null}" th:href="@{/flight/{id}(id=${flight.id})}">Book</a>
-					<a th:unless="${session.userId != null}" th:href="@{/login}">Book</a>
+					<a th:if="${session.userId != null}" th:href="@{/flight/{id}(id=${flight.id})}">
+						<button class="button">Book</button>
+					</a>
+					<a th:unless="${session.userId != null}" th:href="@{/login}">
+						<button class="button">Login to Book</button>
+					</a>
 				</td>
 			</tr>
 			</tbody>
 		</table>
 	</div>
 </div>
-
 <div layout:fragment="scripts"></div>
 </body>
 </html>

@@ -1,0 +1,18 @@
+<div th:fragment="themeHead">
+	<!-- Inline early-theme script: place at top of <head> to avoid FOUC -->
+	<script>
+		(function () {
+			try {
+				const saved = localStorage.getItem('theme'); // 'light' | 'dark'
+				if (saved === 'dark' || saved === 'light') {
+					document.documentElement.dataset.theme = saved;
+					return;
+				}
+				const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+				document.documentElement.dataset.theme = prefersDark ? 'dark' : 'light';
+			} catch (e) {
+				// silent
+			}
+		})();
+	</script>
+</div>

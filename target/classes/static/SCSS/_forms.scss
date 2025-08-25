@@ -1,0 +1,36 @@
+// _forms.scss
+@import 'SCSS/tokens';
+
+.form-group {
+	margin-bottom: $space-md;
+}
+
+label {
+	display: block;
+	font-weight: 600;
+	margin-bottom: 6px;
+	color: $text;
+}
+
+input[type="text"], input[type="date"], input[type="email"], select, textarea {
+	width: 100%;
+	padding: 0.65rem 0.8rem;
+	border-radius: $r-sm;
+	border: 1px solid rgba(0, 0, 0, 0.08);
+	background: $surface;
+	color: $text;
+	font-size: 1rem;
+	box-shadow: $shadow-sm;
+}
+
+input:focus, select:focus, textarea:focus {
+	outline: none;
+	border-color: $primary;
+	box-shadow: 0 6px 20px rgba(0, 127, 255, 0.08);
+	transform: translateY(-2px);
+}
+
+select {
+	appearance: none;
+	padding-right: 2.6rem;
+}

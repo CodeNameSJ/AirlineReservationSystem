@@ -1,0 +1,97 @@
+/* THEME TOGGLE - floating button */
+.theme-toggle-container {
+	position: fixed;
+	right: 20px;
+	bottom: 20px;
+	z-index: 9999;
+	pointer-events: auto;
+}
+
+/* circular toggle wrapper */
+.toggle {
+	width: 56px;
+	height: 56px;
+	border-radius: 50%;
+	display: grid;
+	place-items: center;
+	cursor: pointer;
+	line-height: 1;
+	background: var(--background-50, rgba(255,255,255,0.85));
+	box-shadow: 0 8px 24px rgba(14, 20, 28, 0.18);
+	border: 1px solid rgba(0,0,0,0.06);
+	transition: transform 180ms ease, box-shadow 180ms ease;
+	backdrop-filter: blur(6px);
+}
+
+/* hover/focus affordance */
+.toggle:hover,
+.toggle:focus-within {
+	transform: translateY(-3px);
+	box-shadow: 0 12px 30px rgba(14, 20, 28, 0.24);
+}
+
+/* keep input accessible but visually hidden */
+.theme-switch-input {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	clip: rect(0 0 0 0);
+	clip-path: inset(50%);
+	overflow: hidden;
+	white-space: nowrap;
+	border: 0;
+	padding: 0;
+	margin: 0;
+}
+
+/* Icon stacking (both icons occupy same grid cell) */
+.icon {
+	grid-column: 1 / 1;
+	grid-row: 1 / 1;
+	transition: transform 500ms cubic-bezier(.2,.9,.2,1), opacity 320ms ease;
+	line-height: 0;
+	display: inline-grid;
+	place-items: center;
+}
+
+/* colors from theme variables */
+.icon--moon { color: var(--text-400, #b4b4b4); transform-origin: center; }
+.icon--sun  { color: var(--accent, #ffa500); transform-origin: center; }
+
+/* initial states */
+.icon--sun { transform: scale(0); opacity: 0; }
+
+/* checked state animations */
+#theme-switch:checked + .icon--moon,
+.theme-switch-input:checked + .icon--moon {
+	transform: rotate(360deg) scale(0);
+	opacity: 0;
+}
+
+#theme-switch:checked ~ .icon--sun,
+.theme-switch-input:checked ~ .icon--sun {
+	transform: scale(1) rotate(360deg);
+	opacity: 1;
+}
+
+/* focus-visible ring for keyboard users */
+.toggle:focus-within {
+	outline: none;
+}
+.theme-switch-input:focus-visible + .icon--moon,
+.theme-switch-input:focus-visible ~ .icon--sun {
+	box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.06);
+	border-radius: 50%;
+}
+
+/* respects user reduced motion */
+@media (prefers-reduced-motion: reduce) {
+	.icon, .toggle { transition: none !important; }
+}
+
+/* small-screen spacing adjustment */
+@media (max-width: 480px) {
+	.theme-toggle-container { right: 12px; bottom: 12px; }
+	.toggle { width: 48px; height: 48px; }
+	.icon svg { width: 20px; height: 20px; }
+}

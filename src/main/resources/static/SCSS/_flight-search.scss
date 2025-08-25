@@ -1,0 +1,26 @@
+// _flight-search.scss
+@import 'SCSS/tokens';
+
+.flight-search-card {
+	max-width: 980px;
+	margin: $space-xl auto;
+	border-radius: $r-lg;
+	padding: 26px;
+	color: white;
+	background: linear-gradient(135deg, $primary, $secondary);
+	box-shadow: $shadow-lg;
+}
+
+.flight-search-form {
+	display: flex;
+	gap: 12px;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+}
+
+.form-separator {
+	font-size: 1.35rem;
+	color: rgba(255, 255, 255, 0.85);
+	font-weight: 700;
+}
