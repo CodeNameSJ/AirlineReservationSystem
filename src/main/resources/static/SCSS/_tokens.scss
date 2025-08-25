@@ -1,0 +1,26 @@
+// _tokens.scss - design tokens
+$font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+$text-base: 1rem;
+$line-height: 1.5;
+$space-xs: 4px;
+$space-sm: 8px;
+$space-md: 16px;
+$space-lg: 24px;
+$space-xl: 40px;
+$r-xs: 6px;
+$r-sm: 10px;
+$r-md: 12px;
+$r-lg: 20px;
+$r-pill: 9999px;
+$shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+$shadow-md: 0 6px 20px rgba(0,0,0,0.12);
+$shadow-lg: 0 12px 40px rgba(0,0,0,0.18);
+$text: #333333;
+$background: #f6f8f9;
+$primary: #003366;
+$secondary: #117c8d;
+$accent: #ff713d;
+$muted: #808080;
+$surface: #ffffff;
+$glass: rgba(255,255,255,0.6);
+$focus-ring: rgba(0,127,255,0.22);
