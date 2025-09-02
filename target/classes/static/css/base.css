@@ -18,6 +18,10 @@ body {
 	padding: 20px;
 }
 
+tr{
+	text-align: center;
+}
+
 .page-title {
 	text-align: center;
 	font-size: 2rem;
