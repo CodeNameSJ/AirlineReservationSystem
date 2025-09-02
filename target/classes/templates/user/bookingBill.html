@@ -1,80 +1,82 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout}" lang="en">
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-	<div layout:fragment="head">
-		<meta charset="utf-8"/>
-		<title>Booking Bill</title>
-		<style>
-
-		</style>
-	</div>
+	<meta charset="utf-8"/>
+	<title>Booking Invoice</title>
+	<link rel="stylesheet" th:href="@{/styles/css/theme.css}">
+	<link rel="stylesheet" th:href="@{/styles/css/theme-with-animations.css}">
+	<style>
+		.receipt {
+			max-width: 360px;
+			margin: 28px auto;
+			background: white;
+			border: 2px dashed #ddd;
+			padding: 18px;
+			border-radius: 8px;
+			box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+			font-size: 14px;
+			color: #222;
+		}
+		.receipt .shop-name { font-size: 1.1rem; font-weight:700; text-align:center; margin-bottom:8px; color: var(--primary); }
+		.receipt .info { text-align:center; font-size:0.85rem; color:#666; margin-bottom:12px; }
+		.receipt table { width:100%; border-collapse: collapse; font-size:0.95rem; margin-bottom:8px; }
+		.receipt table th, .receipt table td { padding:6px 4px; text-align:left; border-bottom:1px solid #eee; }
+		.receipt .total { display:flex; justify-content:space-between; font-weight:700; font-size:1rem; margin-top:12px; }
+		.receipt .thanks { text-align:center; margin-top:10px; font-size:0.9rem; color:#444; }
+		.print-btn { display:block; width:100%; margin-top:12px; text-align:center; }
+		@media print {
+			body { background: #fff; }
+			.print-btn { display:none; }
+			.receipt { box-shadow:none; border: none; }
+		}
+	</style>
 </head>
 <body>
-<div layout:fragment="content">
-	<div class="bill-container" th:if="${booking != null}">
-		<h1>Booking Invoice</h1>
-		<div class="section-title">Passenger Details</div>
-		<table>
-			<tr>
-				<th>Name</th>
-				<td th:text="${booking.user.username}">Username</td>
-			</tr>
-			<tr>
-				<th>Email</th>
-				<td th:text="${booking.user.email}">user@example.com</td>
-			</tr>
-		</table>
+<div class="receipt" th:if="${booking != null}">
+	<p class="shop-name">Your Airline Name</p>
+	<p class="info">
+		<span th:text="${booking.user.username}">Passenger Name</span><br/>
+		<span th:text="${booking.user.email}">email@example.com</span><br/>
+		<span>Date: </span><span th:text="${#dates.format(booking.bookedAt, 'dd/MM/yyyy')}">01/01/2025</span>
+		&nbsp;&nbsp;
+		<span th:text="${#dates.format(booking.bookedAt, 'hh:mm a')}">12:00 PM</span>
+	</p>
 
-		<div class="section-title">Flight Details</div>
-		<table>
-			<tr>
-				<th>Flight Number</th>
-				<td th:text="${booking.flight.flightNumber}">FL123</td>
-			</tr>
-			<tr>
-				<th>From</th>
-				<td th:text="${booking.flight.origin}">Origin City</td>
-			</tr>
-			<tr>
-				<th>To</th>
-				<td th:text="${booking.flight.destination}">Destination City</td>
-			</tr>
-			<tr>
-				<th>Departure</th>
-				<td th:text="${booking.flight.departureTime}">2025-08-17 08:00</td>
-			</tr>
-			<tr>
-				<th>Arrival</th>
-				<td th:text="${booking.flight.arrivalTime}">2025-08-17 12:00</td>
-			</tr>
-			<tr>
-				<th>Class</th>
-				<td th:text="${booking.seatClass}">Economy</td>
-			</tr>
-		</table>
+	<table aria-label="booking items">
+		<thead>
+		<tr><th>Item</th><th style="text-align:center">Qty</th><th style="text-align:right">Amount</th></tr>
+		</thead>
+		<tbody>
+		<!-- base fare row -->
+		<tr>
+			<td>Base Fare (<span th:text="${booking.flight.flightNumber}">FL###</span>)</td>
+			<td style="text-align:center" th:text="${booking.seats}">1</td>
+			<td style="text-align:right" th:text="${'₹' + booking.baseFare}">₹0.00</td>
+		</tr>
+		<tr>
+			<td>Taxes</td>
+			<td style="text-align:center">-</td>
+			<td style="text-align:right" th:text="${'₹' + booking.taxes}">₹0.00</td>
+		</tr>
+		<tr>
+			<td>Other Charges</td>
+			<td style="text-align:center">-</td>
+			<td style="text-align:right" th:text="${'₹' + booking.otherCharges}">₹0.00</td>
+		</tr>
+		</tbody>
+	</table>
 
-		<div class="section-title">Payment Details</div>
-		<table>
-			<tr>
-				<th>Base Fare</th>
-				<td th:text="'₹' + ${booking.baseFare}">₹0</td>
-			</tr>
-			<tr>
-				<th>Taxes</th>
-				<td th:text="'₹' + ${booking.taxes}">₹0</td>
-			</tr>
-			<tr>
-				<th>Other Charges</th>
-				<td th:text="'₹' + ${booking.otherCharges}">₹0</td>
-			</tr>
-		</table>
-
-		<div class="total"><strong>Total Amount:</strong> <span th:text="'₹' + ${booking.totalAmount}">₹0</span></div>
-
-		<button class="print-btn" onclick="window.print()">Print Bill</button>
+	<div class="total">
+		<div>Total</div>
+		<div th:text="${'₹' + booking.totalAmount}">₹0.00</div>
 	</div>
+
+	<button class="button primary print-btn" onclick="window.print()">Print / Save PDF</button>
+	<p class="thanks">Thank you for booking with us!</p>
+</div>
+
+<div th:if="${booking == null}">
+	<p>No booking was found.</p>
 </div>
 </body>
 </html>
