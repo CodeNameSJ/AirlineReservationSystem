@@ -9,6 +9,7 @@ import org.airlinereservationsystem.model.enums.BookingStatus;
 import org.airlinereservationsystem.model.enums.SeatClass;
 import org.hibernate.proxy.HibernateProxy;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -40,6 +41,9 @@ public class Booking {
 
 	@Column(nullable = false)
 	private int seats;
+
+	@Column(nullable = false)
+	private BigDecimal totalAmount;
 
 	@Column(nullable = false)
 	private LocalDateTime bookingTime;

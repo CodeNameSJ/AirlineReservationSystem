@@ -11,6 +11,7 @@ import org.airlinereservationsystem.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -63,8 +64,16 @@ public class BookingService {
 		booking.setSeats(seats);
 		booking.setBookingTime(LocalDateTime.now());
 		booking.setStatus(BookingStatus.BOOKED);
+		booking.setTotalAmount(calculateTotal(booking));
 
 		return bookingRepo.save(booking);
+	}
+
+	public BigDecimal calculateTotal(Booking booking) {
+		BigDecimal base = booking.getBaseFare();
+		BigDecimal taxes = booking.getTaxes();
+		BigDecimal other = booking.getOtherCharges();
+		return base.add(taxes).add(other);
 	}
 
 	@Transactional
