@@ -10,7 +10,7 @@ CREATE TABLE users (
 							 role VARCHAR(20) NOT NULL
 );
 
--- create showFlights (simple)
+-- create flights (simple)
 CREATE TABLE flights (
 								id BIGINT AUTO_INCREMENT PRIMARY KEY,
 								flight_number VARCHAR(50) UNIQUE,
@@ -27,8 +27,8 @@ CREATE TABLE flights (
 								price DOUBLE
 );
 
--- create booking
-CREATE TABLE booking (
+-- create bookings
+CREATE TABLE bookings (
 								id BIGINT AUTO_INCREMENT PRIMARY KEY,
 								user_id BIGINT NOT NULL,
 								flight_id BIGINT NOT NULL,
