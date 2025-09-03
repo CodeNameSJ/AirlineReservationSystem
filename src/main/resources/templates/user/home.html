@@ -37,10 +37,9 @@
 			<td th:text="${booking.status}">BOOKED</td>
 			<td>
 				<!-- null-safe check for BOOKED -->
-				<button type="button" class="tooltip button"
+				<button type="button" class="btn-cancel crud-button"
 				        th:if="${booking.status != null and #strings.equalsIgnoreCase(booking.status.toString(), 'BOOKED')}"
 				        th:onclick="'toggleWarning(' + ${booking.id} + ', \'cancel\', true)'">
-<!--					<span class="tooltip-text">Cancel booking</span>-->
 					Cancel
 				</button>
 
