@@ -15,7 +15,7 @@
 	<groupId>org.airline</groupId>
 	<artifactId>Airline-Reservation-System</artifactId>
 	<version>1.0.0</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 
 	<name>Airline Reservation System</name>
 	<description>Spring Boot-based Airline Reservation System</description>
