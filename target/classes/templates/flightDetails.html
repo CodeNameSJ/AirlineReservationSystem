@@ -25,9 +25,9 @@
 		<dt>Business seats available</dt>
 		<dd th:text="${flight.businessSeatsAvailable}">20</dd>
 		<dt>Price (Economy)</dt>
-		<dd>$<span th:text="${flight.priceEconomy}">150</span></dd>
+		<dd>₹<span th:text="${flight.priceEconomy}">150</span></dd>
 		<dt>Price (Business)</dt>
-		<dd>$<span th:text="${flight.priceBusiness}">300</span></dd>
+		<dd>₹<span th:text="${flight.priceBusiness}">300</span></dd>
 	</dl>
 
 	<a th:if="${session.userId != null}" th:href="@{/user/book(flightId=${flight.id})}">Book this flight</a>

@@ -1,5 +1,5 @@
 <div th:fragment="results">
-	<table style="border:1px solid black; width:100%; border-collapse:collapse;">
+	<table class="data-table">
 		<thead>
 		<tr>
 			<th>Flight No</th>
@@ -22,8 +22,12 @@
 			<td th:text="${flight.priceEconomy}"></td>
 			<td th:text="${flight.priceBusiness}"></td>
 			<td>
-				<a th:if="${session.userId != null}" th:href="@{/user/book(flightId=${flight.id})}">Book</a>
-				<a th:unless="${session.userId != null}" th:href="@{/login}">Book</a>
+				<a th:if="${session.userId != null}" th:href="@{/user/book(flightId=${flight.id})}">
+					<button class="button">Book</button>
+				</a>
+				<a th:unless="${session.userId != null}" th:href="@{/login}">
+					<button class="button">Book</button>
+				</a>
 			</td>
 		</tr>
 		</tbody>
