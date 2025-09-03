@@ -1,9 +1,3 @@
-#searchResults {
-	display: flex;
-	flex-direction: column;
-	justify-content: space-around;
-	align-items: center;
-}
 .flight-search-card {
 	text-align: center;
 	max-width: 900px;
