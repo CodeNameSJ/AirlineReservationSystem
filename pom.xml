@@ -21,7 +21,7 @@
 	<description>Spring Boot-based Airline Reservation System</description>
 
 	<properties>
-		<java.version>25</java.version>
+		<java.version>24</java.version>
 	</properties>
 
 	<dependencies>
