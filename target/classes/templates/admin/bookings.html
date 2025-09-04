@@ -41,19 +41,19 @@
 			<td th:text="${b.status}">BOOKED</td>
 			<td>
 				<form th:action="@{/admin/bookings/edit/{id}(id=${b.id})}" method="get" style="display:inline;">
-					<button type="submit">Edit</button>
+					<button class="btn-edit crud-button" type="submit">Edit</button>
 				</form>
 
-				<button type="button" class="tooltip"
+				<button type="button" class="btn-cancel crud-button"
 				        th:if="${b.status != null and #strings.equalsIgnoreCase(b.status.toString(), 'BOOKED')}"
 				        th:onclick="'toggleWarning(' + ${b.id} + ', \'cancel\', true)'">
-					<span class="tooltip-text">Cancel</span>Cancel
+					Cancel
 				</button>
 
-				<button type="button" class="tooltip"
+				<button type="button" class="btn-delete crud-button"
 				        th:if="${b.status != null and (#strings.equalsIgnoreCase(b.status.toString(), 'BOOKED') or #strings.equalsIgnoreCase(b.status.toString(), 'CANCELLED'))}"
 				        th:onclick="'toggleWarning(' + ${b.id} + ', \'delete\', true)'">
-					<span class="tooltip-text">Delete</span>Delete
+					Delete
 				</button>
 			</td>
 		</tr>
