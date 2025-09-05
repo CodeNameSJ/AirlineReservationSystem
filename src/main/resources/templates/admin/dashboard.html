@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout}" lang="en">
+<html lang="en"
+      layout:decorate="~{layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
 <head>
 	<div layout:fragment="head">
 		<meta charset="utf-8"/>
@@ -10,9 +10,9 @@
 </head>
 <body>
 <div layout:fragment="content">
-	<h1>Admin Dashboard</h1>
-	<h2>All-Flights Overview</h2>
-	<table class="data-table">
+	<h2>Admin Dashboard</h2>
+	<h3>All-Flights Overview</h3>
+	<table class="booking-table">
 		<thead>
 		<tr>
 			<th>Flight No</th>
