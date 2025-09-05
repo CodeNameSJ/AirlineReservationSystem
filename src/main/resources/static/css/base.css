@@ -1,39 +1,65 @@
+/* Base / page wrapper (expects theme.css to define tokens like --background, --text, --primary) */
 @import url('theme.css');
 
-* {
+*,
+*::before,
+*::after {
 	box-sizing: border-box;
 	margin: 0;
 	padding: 0;
 }
 
+/* root font scaling - safe default but easy to override via theme */
 html {
-	font-size: 16px;
+	font-size: 16px; /* 1rem = 16px */
+	-webkit-text-size-adjust: 100%;
 }
 
+/* comfortable body layout */
 body {
-	font-family: 'Inter', Arial, sans-serif;
-	background: var(--background);
-	color: var(--text);
+	font-family: 'Inter', Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+	font-weight: 400;
 	line-height: 1.6;
-	padding: 20px;
+	padding: clamp(12px, 2.5vw, 32px); /* responsive padding */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	background: var(--site-bg);
+	color: var(--site-text);
 }
 
+/* Page title */
 .page-title {
 	text-align: center;
-	font-size: 2rem;
+	font-size: clamp(1.5rem, 2.5vw, 2rem);
 	margin-bottom: 1.5rem;
-	color: var(--primary);
+	color: var(--site-primary);
 	font-weight: 700;
 }
 
+/* Links - inherit color but show accessible focus */
 a {
 	color: inherit;
+	text-decoration: underline;
+	text-underline-offset: 3px;
 }
 
-.data-table {
+/*a:focus,*/
+/*a:focus-visible {*/
+/*	outline: 3px solid color-mix(in srgb, var(--primary, #007fff) 30%, transparent);*/
+/*	outline-offset: 3px;*/
+/*}*/
+
+/* Utility: center block content */
+.center {
 	display: flex;
-	flex-direction: column;
-	justify-content: space-around;
 	align-items: center;
-	text-align: center;
+	justify-content: center;
+}
+
+/* Respect users with reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+	* {
+		transition: none !important;
+		animation: none !important;
+	}
 }
