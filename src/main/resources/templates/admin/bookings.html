@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html lang="en"
       layout:decorate="~{layout}"
-      lang="en">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
 	<div layout:fragment="head">
 		<title>Manage Bookings</title>
@@ -12,10 +12,10 @@
 <div layout:fragment="content">
 	<h1>Manage Bookings</h1>
 	<div class="action-bar">
-		<a th:href="@{/admin/bookings/new}" class="btn secondary">New Booking</a>
+		<a class="btn secondary" th:href="@{/admin/bookings/new}">New Booking</a>
 	</div>
 
-	<table class="data-table">
+	<table class="booking-table">
 		<thead>
 		<tr>
 			<th>ID</th>
@@ -40,46 +40,46 @@
 			<td th:text="${b.bookingTimeDisplay}">2025-08-17</td>
 			<td th:text="${b.status}">BOOKED</td>
 			<td>
-				<form th:action="@{/admin/bookings/edit/{id}(id=${b.id})}" method="get" style="display:inline;">
+				<form method="get" style="display:inline;" th:action="@{/admin/bookings/edit/{id}(id=${b.id})}">
 					<button class="btn-edit crud-button" type="submit">Edit</button>
 				</form>
 
-				<button type="button" class="btn-cancel crud-button"
-				        th:if="${b.status != null and #strings.equalsIgnoreCase(b.status.toString(), 'BOOKED')}"
-				        th:onclick="'toggleWarning(' + ${b.id} + ', \'cancel\', true)'">
+				<button class="btn-cancel crud-button" th:if="${b.status != null and #strings.equalsIgnoreCase(b.status.toString(), 'BOOKED')}"
+				        th:onclick="'toggleWarning(' + ${b.id} + ', \'cancel\', true)'"
+				        type="button">
 					Cancel
 				</button>
 
-				<button type="button" class="btn-delete crud-button"
-				        th:if="${b.status != null and (#strings.equalsIgnoreCase(b.status.toString(), 'BOOKED') or #strings.equalsIgnoreCase(b.status.toString(), 'CANCELLED'))}"
-				        th:onclick="'toggleWarning(' + ${b.id} + ', \'delete\', true)'">
+				<button class="btn-delete crud-button" th:if="${b.status != null and (#strings.equalsIgnoreCase(b.status.toString(), 'BOOKED') or #strings.equalsIgnoreCase(b.status.toString(), 'CANCELLED'))}"
+				        th:onclick="'toggleWarning(' + ${b.id} + ', \'delete\', true)'"
+				        type="button">
 					Delete
 				</button>
 			</td>
 		</tr>
 
-		<tr th:each="b : ${bookings}" th:id="'warning-cancel-' + ${b.id}" class="warning-row" style="display:none;"
+		<tr class="warning-row" style="display:none;" th:each="b : ${bookings}" th:id="'warning-cancel-' + ${b.id}"
 		    th:if="${b.status != null and #strings.equalsIgnoreCase(b.status.toString(), 'BOOKED')}">
 			<td colspan="9">
 				<strong>&#9888; This booking is active. Canceling will restore seats. Proceed?</strong><br/><br/>
-				<form th:method="post" th:action="@{/admin/bookings/cancel}" style="display:inline;">
-					<input type="hidden" name="id" th:value="${b.id}"/>
-					<input type="hidden" name="confirm" value="true"/>
-					<button type="submit" style="background:#f0ad4e;color:white;">Yes, Cancel</button>
+				<form style="display:inline;" th:action="@{/admin/bookings/cancel}" th:method="post">
+					<input name="id" th:value="${b.id}" type="hidden"/>
+					<input name="confirm" type="hidden" value="true"/>
+					<button style="background:#f0ad4e;color:white;" type="submit">Yes, Cancel</button>
 				</form>
-				<button type="button" th:onclick="'toggleWarning(' + ${b.id} + ', \'cancel\', false)'">No, Keep</button>
+				<button th:onclick="'toggleWarning(' + ${b.id} + ', \'cancel\', false)'" type="button">No, Keep</button>
 			</td>
 		</tr>
 
-		<tr th:each="b : ${bookings}" th:id="'warning-delete-' + ${b.id}" class="warning-row" style="display:none;">
+		<tr class="warning-row" style="display:none;" th:each="b : ${bookings}" th:id="'warning-delete-' + ${b.id}">
 			<td colspan="9">
 				<strong>&#9888; This will permanently delete the booking. Proceed?</strong><br/><br/>
-				<form th:method="post" th:action="@{/admin/bookings/delete}" style="display:inline;">
-					<input type="hidden" name="id" th:value="${b.id}"/>
-					<input type="hidden" name="confirm" value="true"/>
-					<button type="submit" style="background:#d9534f;color:white;">Yes, Delete</button>
+				<form style="display:inline;" th:action="@{/admin/bookings/delete}" th:method="post">
+					<input name="id" th:value="${b.id}" type="hidden"/>
+					<input name="confirm" type="hidden" value="true"/>
+					<button style="background:#d9534f;color:white;" type="submit">Yes, Delete</button>
 				</form>
-				<button type="button" th:onclick="'toggleWarning(' + ${b.id} + ', \'delete\', false)'">No, Keep</button>
+				<button th:onclick="'toggleWarning(' + ${b.id} + ', \'delete\', false)'" type="button">No, Keep</button>
 			</td>
 		</tr>
 		</tbody>
@@ -87,7 +87,7 @@
 </div>
 
 <div layout:fragment="scripts">
-	<script th:src="@{/js/confirmation.js}" defer></script>
+	<script defer th:src="@{/js/confirmation.js}"></script>
 </div>
 </body>
 </html>

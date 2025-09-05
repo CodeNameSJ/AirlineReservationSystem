@@ -1,0 +1,71 @@
+.card-container {
+	display: grid;
+	gap: 1.125rem; /* 18px */
+	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+	align-items: start;
+}
+
+/* Individual card */
+.card {
+	background: var(--card-bg);
+	color: var(--card-text);
+	box-shadow: 0 6px 18px var(--surface-elev-1);
+	padding: 1rem;
+	border-radius: 12px;
+	transition: transform 200ms ease, box-shadow 200ms ease;
+	overflow: hidden;
+	min-height: 1px; /* prevent collapse in some grid scenarios */
+}
+
+/* subtle hover/focus lift for keyboard & pointer users */
+.card:hover,
+.card:focus-within {
+	transform: translateY(-4px);
+	box-shadow: 0 12px 30px rgba(17, 24, 39, 0.09);
+	outline: none;
+}
+
+/* media inside cards */
+.card img,
+.card .media {
+	width: 100%;
+	height: auto;
+	display: block;
+	border-radius: 8px;
+	object-fit: cover;
+}
+
+/* content spacing inside card */
+.card .card-body {
+	margin-top: 0.75rem;
+}
+
+/* generic small button used in action-bar (optional) */
+.card .btn {
+	padding: 6px 10px;
+	border-radius: 8px;
+	border: 1px solid var(--btn-border, rgba(0, 0, 0, 0.08));
+	background: var(--btn-bg, #fff);
+	color: var(--btn-text, #111);
+	font-size: 0.875rem;
+	cursor: pointer;
+	transition: background 160ms ease, transform 120ms ease;
+}
+
+.card .btn:active {
+	transform: translateY(1px);
+}
+
+.card .btn:focus-visible {
+	outline: 3px solid rgba(0, 157, 255, 0.18);
+	outline-offset: 2px;
+}
+
+.container {
+	max-width: 1200px;
+	margin-left: auto;
+	margin-right: auto;
+	padding-left: 16px;
+	padding-right: 16px;
+	box-sizing: border-box;
+}

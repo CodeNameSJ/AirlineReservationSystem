@@ -1,0 +1,59 @@
+/* theme-sync.css
+   Must be loaded after theme.css (so --primary / --accent / --linearCustom exist).
+   Provides stable tokens for components to consume.
+*/
+
+:root {
+	/* Core semantic tokens (map to your existing theme tokens if present) */
+	--site-primary: var(--primary, #007fff);
+	--site-secondary: var(--secondary, #117c8d);
+	--site-accent: var(--accent, #ff713d);
+	--site-bg: var(--background, #ffffff);
+	--site-text: var(--text, #111111);
+	--site-gradient: var(--linearPrimarySecondary, linear-gradient(45deg, #d63645, #e8b391));
+	--site-dropdown-bg: var(--dropdown-bg, linear-gradient(45deg, #d63645, #deb05c));
+
+	/* Component-level tokens (use these everywhere in components) */
+	--surface: color-mix(in srgb, var(--site-bg) 92%, #fff 8%); /* subtle surface */
+	--surface-elev-1: rgba(17, 24, 39, 0.06); /* shadow tint */
+	--surface-elev-2: rgba(17, 24, 39, 0.09);
+
+	--card-bg: var(--surface, #fff);
+	--card-text: var(--site-text, #111);
+
+	--on-surface: color-contrast(var(--card-text, #111) vs #fff, #fff, #111); /* fallback idea */
+	--muted: rgba(0, 0, 0, 0.45);
+
+	--input-bg: rgba(255, 255, 255, 0.03);
+	--input-border: rgba(0, 0, 0, 0.12);
+	--input-text: var(--site-text, #111);
+
+	--btn-primary-bg: var(--site-accent);
+	--btn-primary-hover: var(--site-primary);
+	--btn-secondary-bg: var(--site-secondary);
+	--btn-text-on-accent: #fff;
+
+	--table-head-bg: rgba(0, 0, 0, 0.03);
+	--table-row-odd: rgba(0, 0, 0, 0.01);
+	--table-row-hover: rgba(0, 0, 0, 0.03);
+
+	/* gradients, preserved from theme when present */
+	--gradient-primary: var(--site-gradient);
+	--gradient-secondary: linear-gradient(45deg, var(--site-primary), var(--site-secondary));
+}
+
+/* OPTIONAL: map for explicit light/dark overrides if needed */
+:root[data-theme="light"] {
+	/* tie component tokens to light-mode decisions (they will override if necessary) */
+	--card-bg: var(--background, #f6f8f9);
+	--card-text: var(--text, #333);
+	--btn-primary-bg: var(--accent, #ff713d);
+	--btn-primary-hover: var(--primary, #003366);
+}
+
+:root[data-theme="dark"] {
+	--card-bg: color-mix(in srgb, var(--background, #060809) 88%, #0a0a0a 12%);
+	--card-text: var(--text, #e6e6e6);
+	--btn-primary-bg: var(--accent, #c23400);
+	--btn-primary-hover: var(--primary, #99ccff);
+}

@@ -1,41 +1,78 @@
-.card-container {
-	display: grid;
-	gap: 18px;
-	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+/* Cards / Booking table / Container — standalone, theme-friendly */
+
+/* Action bar (right aligned controls) */
+.action-bar {
+	display: flex;
+	justify-content: flex-end;
+	gap: 0.5rem; /* 8px */
+	margin-bottom: 0.75rem;
+	align-items: center;
 }
 
-.card {
-	background: #fff;
-	padding: 16px;
-	border-radius: 12px;
-	box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+/* Booking table — responsive-friendly */
+.table-wrap {
+	width: 100%;
+	overflow-x: auto; /* horizontal scrolling on small screens */
+	-webkit-overflow-scrolling: touch;
 }
 
 .booking-table {
 	border-collapse: collapse;
 	width: 100%;
 	margin-top: 1rem;
+	min-width: 600px; /* helps keep column proportions on wide tables */
+	background: transparent;
 }
 
+/* cells */
 .booking-table th,
 .booking-table td {
-	border: 1px solid #ddd;
-	padding: 8px;
-}
-
-.booking-table th {
-	background-color: #f4f6fb;
+	border: 1px solid var(--table-border, #e6e9ef);
+	padding: 0.5rem 0.75rem; /* 8px 12px */
 	text-align: left;
+	vertical-align: middle;
+	font-size: 0.95rem;
 }
 
-.action-bar {
-	display: flex;
-	justify-content: flex-end;
-	gap: 8px;
-	margin-bottom: 12px;
+/* header */
+.booking-table th {
+	background-color: var(--table-head-bg, #f4f6fb);
+	color: var(--table-head-text, #222);
+	font-weight: 700;
+	white-space: nowrap;
 }
-.container {
-	max-width: 1200px;
-	margin: 0 auto;
-	padding: 0 16px;
+
+/* zebra rows for readability */
+.booking-table tbody tr:nth-child(odd) {
+	background-color: var(--table-row-odd, rgba(0, 0, 0, 0.01));
+}
+
+/* hover row highlight */
+.booking-table tbody tr:hover {
+	background-color: var(--table-row-hover, rgba(0, 0, 0, 0.03));
+}
+
+/* compact variant for small screens */
+@media (max-width: 640px) {
+	.booking-table {
+		min-width: 0;
+		font-size: 0.88rem;
+	}
+
+	.booking-table th,
+	.booking-table td {
+		padding: 0.45rem 0.6rem;
+	}
+
+	.card {
+		padding: 0.875rem;
+	}
+}
+
+/* reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+	.card,
+	.card .btn {
+		transition: none !important;
+	}
 }

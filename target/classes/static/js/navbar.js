@@ -53,3 +53,17 @@ document.addEventListener('DOMContentLoaded', () => {
 		if (e.key === 'Escape') closeAll();
 	});
 });
+
+(function () {
+	const navbar = document.querySelector('.navbar');
+	if (!navbar) return;
+
+	function updateBodyOffset() {
+		const h = navbar.getBoundingClientRect().height || 0;
+		document.documentElement.style.setProperty('--navbar-offset', h + 'px');
+		document.body.style.paddingTop = h + 'px'; // keep content visible below fixed navbar
+	}
+
+	updateBodyOffset();
+	window.addEventListener('resize', updateBodyOffset);
+})();

@@ -1,4 +1,5 @@
-/* THEME TOGGLE - floating button */
+/* THEME TOGGLE - floating button (use after theme.css / theme-sync.css) */
+
 .theme-toggle-container {
 	position: fixed;
 	right: 20px;
@@ -7,30 +8,33 @@
 	pointer-events: auto;
 }
 
-/* circular toggle wrapper */
+/* circular toggle wrapper (label) */
 .toggle {
+	display: grid;
+	place-items: center;
 	width: 56px;
 	height: 56px;
 	border-radius: 50%;
-	display: grid;
-	place-items: center;
 	cursor: pointer;
 	line-height: 1;
-	background: var(--background-50, rgba(255,255,255,0.85));
+	background: var(--background-50, rgba(255, 255, 255, 0.85));
 	box-shadow: 0 8px 24px rgba(14, 20, 28, 0.18);
-	border: 1px solid rgba(0,0,0,0.06);
-	transition: transform 180ms ease, box-shadow 180ms ease;
+	border: 1px solid rgba(0, 0, 0, 0.06);
+	transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
 	backdrop-filter: blur(6px);
+	-webkit-backdrop-filter: blur(6px);
+	-webkit-tap-highlight-color: transparent;
+	user-select: none;
 }
 
 /* hover/focus affordance */
 .toggle:hover,
-.toggle:focus-within {
+.toggle:focus {
 	transform: translateY(-3px);
 	box-shadow: 0 12px 30px rgba(14, 20, 28, 0.24);
 }
 
-/* keep input accessible but visually hidden */
+/* visually hidden but focusable checkbox */
 .theme-switch-input {
 	position: absolute;
 	width: 1px;
@@ -44,24 +48,34 @@
 	margin: 0;
 }
 
-/* Icon stacking (both icons occupy same grid cell) */
+/* icon stacking */
 .icon {
 	grid-column: 1 / 1;
 	grid-row: 1 / 1;
-	transition: transform 500ms cubic-bezier(.2,.9,.2,1), opacity 320ms ease;
-	line-height: 0;
 	display: inline-grid;
 	place-items: center;
+	line-height: 0;
+	transition: transform 500ms cubic-bezier(.2, .9, .2, 1), opacity 320ms ease;
 }
 
-/* colors from theme variables */
-.icon--moon { color: var(--text-400, #b4b4b4); transform-origin: center; }
-.icon--sun  { color: var(--accent, #ffa500); transform-origin: center; }
+/* theme-driven colors (fallbacks provided) */
+.icon--moon {
+	color: var(--text-400, #b4b4b4);
+	transform-origin: center;
+}
 
-/* initial states */
-.icon--sun { transform: scale(0); opacity: 0; }
+.icon--sun {
+	color: var(--accent, #ffa500);
+	transform-origin: center;
+}
 
-/* checked state animations */
+/* initial states: sun hidden */
+.icon--sun {
+	transform: scale(0);
+	opacity: 0;
+}
+
+/* animations when checked (dark mode) */
 #theme-switch:checked + .icon--moon,
 .theme-switch-input:checked + .icon--moon {
 	transform: rotate(360deg) scale(0);
@@ -74,24 +88,35 @@
 	opacity: 1;
 }
 
-/* focus-visible ring for keyboard users */
-.toggle:focus-within {
+/* focus-visible ring for the toggle when keyboard focusing the visible label */
+.toggle:focus-visible {
 	outline: none;
-}
-.theme-switch-input:focus-visible + .icon--moon,
-.theme-switch-input:focus-visible ~ .icon--sun {
-	box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.06);
+	box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12), 0 0 0 4px color-mix(in srgb, var(--site-primary, var(--primary, #007fff)) 18%, transparent);
 	border-radius: 50%;
+}
+
+/* small-screen adjustments */
+@media (max-width: 480px) {
+	.theme-toggle-container {
+		right: 12px;
+		bottom: 12px;
+	}
+
+	.toggle {
+		width: 48px;
+		height: 48px;
+	}
+
+	.icon svg {
+		width: 20px;
+		height: 20px;
+	}
 }
 
 /* respects user reduced motion */
 @media (prefers-reduced-motion: reduce) {
-	.icon, .toggle { transition: none !important; }
-}
-
-/* small-screen spacing adjustment */
-@media (max-width: 480px) {
-	.theme-toggle-container { right: 12px; bottom: 12px; }
-	.toggle { width: 48px; height: 48px; }
-	.icon svg { width: 20px; height: 20px; }
+	.icon, .toggle {
+		transition: none !important;
+		transform: none !important;
+	}
 }

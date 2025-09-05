@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout}" lang="en">
+<html lang="en"
+      layout:decorate="~{layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
 <head>
 	<div layout:fragment="head">
 		<meta charset="utf-8"/>
@@ -13,9 +13,9 @@
 <div layout:fragment="content">
 	<h2>Registered Users</h2>
 	<div class="action-bar">
-		<a th:href="@{/admin/users/add}" class="btn secondary">Add User</a>
+		<a class="btn secondary" th:href="@{/admin/users/add}">Add User</a>
 	</div>
-	<table class="data-table">
+	<table class="booking-table">
 		<thead>
 		<tr>
 			<th>ID</th>
@@ -32,32 +32,32 @@
 			<td th:text="${user.username}">Username</td>
 			<td th:text="${user.email}">email@example.com</td>
 			<td>
-				<form th:action="@{/admin/users/edit/{id}(id=${user.id})}" method="get" style="display:inline;">
+				<form method="get" style="display:inline;" th:action="@{/admin/users/edit/{id}(id=${user.id})}">
 					<button type="submit">Edit</button>
 				</form>
 
-				<button type="button" th:onclick="'toggleWarning(' + ${user.id} + ', \'user\', true)'">Delete</button>
+				<button th:onclick="'toggleWarning(' + ${user.id} + ', \'user\', true)'" type="button">Delete</button>
 			</td>
 		</tr>
 
-		<tr th:each="user : ${users}" th:id="'warning-user-' + ${user.id}" class="warning-row" style="display:none;">
+		<tr class="warning-row" style="display:none;" th:each="user : ${users}" th:id="'warning-user-' + ${user.id}">
 			<td colspan="5">
 				<strong>&#9888; Are you sure you want to delete this user? Deleting it will also remove all related
-					bookings.</strong>
+				        bookings.</strong>
 				<br/>
-				<form th:method="post" th:action="@{/admin/users/delete}" style="display:inline;">
-					<input type="hidden" name="id" th:value="${user.id}"/>
-					<input type="hidden" name="confirm" value="true"/>
-					<button type="submit" style="background-color:red; color:white;">Yes, Delete</button>
+				<form style="display:inline;" th:action="@{/admin/users/delete}" th:method="post">
+					<input name="id" th:value="${user.id}" type="hidden"/>
+					<input name="confirm" type="hidden" value="true"/>
+					<button style="background-color:red; color:white;" type="submit">Yes, Delete</button>
 				</form>
-				<button type="button" th:onclick="'toggleWarning(' + ${user.id} + ', \'user\', false)'">Cancel</button>
+				<button th:onclick="'toggleWarning(' + ${user.id} + ', \'user\', false)'" type="button">Cancel</button>
 			</td>
 		</tr>
 		</tbody>
 	</table>
 </div>
 <div layout:fragment="scripts">
-	<script th:src="@{/js/confirmation.js}" defer></script>
+	<script defer th:src="@{/js/confirmation.js}"></script>
 </div>
 </body>
 </html>

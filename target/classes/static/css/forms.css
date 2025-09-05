@@ -1,45 +1,76 @@
+/* Login box — standalone, theme-friendly */
 .login-box {
-	width: 400px;
+	width: min(400px, 92%);
 	padding: 40px;
-	margin: 80px auto;
-	background: linear-gradient(45deg, #04051dea 0%, #2b566e 100%);
+	margin: 6rem auto;
+	background: var(--gradient-primary);
+	color: var(--card-text);
 	box-shadow: 0 15px 25px rgba(0, 0, 0, 0.6);
 	border-radius: 10px;
-	color: #fff;
+	position: relative;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 }
 
+/* heading / intro paragraph */
+.login-box p:first-child {
+	margin: 0 0 30px;
+	font-size: 1.5rem;
+	font-weight: 700;
+	letter-spacing: 1px;
+	color: inherit;
+}
+
+/* subtle secondary text */
+.login-box p:last-child {
+	color: rgba(255, 255, 255, 0.75);
+	font-size: 0.875rem;
+}
+
+/* floating label wrapper */
 .login-box .user-box {
 	position: relative;
+	margin-bottom: 18px;
+	caret-color: var(--card-text, #fff);
 }
 
+/* inputs (transparent look) */
 .login-box .user-box input {
 	width: 100%;
 	font-size: 16px;
-	color: #fff;
-	margin-bottom: 30px;
-	border: none;
-	border-bottom: 1px solid #fff;
+	color: var(--card-text, #fff);
 	background: transparent;
-	outline: none;
+	border: none;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.9);
 	padding: 12px 3px 6px;
+	outline: none;
+	transition: border-color 180ms ease, box-shadow 180ms ease;
 }
 
+/* floating label */
 .login-box .user-box label {
 	position: absolute;
-	top: 0;
 	left: 0;
+	top: 6px;
 	padding: 3px 1px;
 	font-size: 16px;
-	color: #fff;
+	color: rgba(255, 255, 255, 0.95);
 	pointer-events: none;
-	transition: .5s;
+	transition: transform 240ms cubic-bezier(.2, .9, .2, 1), font-size 240ms ease, top 240ms ease;
+	transform-origin: left top;
 }
 
-.login-box .user-box input:focus ~ label, .login-box .user-box input:valid ~ label {
+/* move label when input is focused or contains value
+   Note: input:valid works only if input has required/pattern; placeholder-shown helps when not using required */
+.login-box .user-box input:focus ~ label,
+.login-box .user-box input:valid ~ label,
+.login-box .user-box input:not(:placeholder-shown) ~ label {
 	top: -20px;
 	font-size: 12px;
+	transform: translateY(-2px);
 }
 
+/* standalone form-group & default form controls (for other forms on page) */
 .form-group {
 	margin-bottom: 12px;
 }
@@ -48,25 +79,7 @@ label {
 	display: block;
 	margin-bottom: 6px;
 	font-weight: 600;
-}
-
-input[type="text"], input[type="email"], input[type="password"], select, input[type="date"] {
-	width: 100%;
-	padding: 10px;
-	border-radius: 8px;
-	border: 1px solid #ccc;
-	font-size: 14px;
-}
-
-/* Form and input styles */
-.form-group {
-	margin-bottom: 15px;
-}
-
-label {
-	display: block;
-	font-weight: 600;
-	margin-bottom: 6px;
+	color: inherit;
 }
 
 input[type="text"],
@@ -76,108 +89,100 @@ input[type="date"],
 select {
 	width: 100%;
 	padding: 10px;
-	font-size: 14px;
-	border: 1px solid #ccc;
 	border-radius: 8px;
-	transition: all 0.3s ease;
+	border: 1px solid rgba(255, 255, 255, 0.12);
+	font-size: 14px;
+	background: rgba(255, 255, 255, 0.03);
+	color: var(--card-text, #fff);
+	transition: border-color 180ms ease, box-shadow 180ms ease, background 180ms ease;
 }
 
+/* focus ring for accessibility */
 input:focus,
 select:focus {
-	border-color: var(--primary);
+	border-color: var(--primary, #007fff);
 	outline: none;
-	box-shadow: 0 0 5px rgba(0, 74, 173, 0.3);
+	box-shadow: 0 0 8px rgba(0, 123, 255, 0.15);
 }
 
-.login-box {
-	position: relative;
-	width: 400px;
-	padding: 40px;
-	margin: 100px auto;
-	background: linear-gradient(45deg, #04051dea 0%, #2b566e 100%);
-	box-shadow: 0 15px 25px rgba(0, 0, 0, .6);
-	border-radius: 10px;
-	color: #fff;
-}
-
-.login-box p:first-child {
-	margin: 0 0 30px;
-	font-size: 1.5rem;
-	font-weight: bold;
-	letter-spacing: 1px;
-}
-
-.login-box .user-box {
-	position: relative;
-	caret-color: #fff;
-}
-
-.login-box .user-box input {
-	width: 100%;
-	font-size: 16px;
-	color: #fff;
-	margin-bottom: 30px;
-	border: none;
-	border-bottom: 1px solid #fff;
-	background: transparent;
-	outline: none;
-	padding: 12px 3px 6px 3px;
-}
-
-.login-box .user-box label {
-	position: absolute;
-	top: 0;
-	left: 0;
-	padding: 3px 1px;
-	font-size: 16px;
-	color: #fff;
-	pointer-events: none;
-	transition: .5s;
-}
-
-.login-box .user-box input:focus ~ label,
-.login-box .user-box input:valid ~ label {
-	top: -20px;
-	font-size: 12px;
-}
-
-.login-box p:last-child {
-	color: #aaa;
-	font-size: 14px;
-}
-
+/* small link style */
 .login-box a.a2 {
-	color: #fff;
-	text-decoration: none;
+	color: inherit;
+	text-decoration: underline;
+	text-underline-offset: 3px;
 }
 
-.login-box a.a2:hover {
-	color: #ccc;
+.login-box a.a2:hover, .login-box a.a2:focus {
+	color: rgba(255, 255, 255, 0.9);
 }
 
+/* animated CTA button (improved)
+   Keep it simple and accessible: visible focus, no layout shift */
 .animated-button {
 	position: relative;
 	display: inline-block;
 	padding: 10px 20px;
-	font-weight: bold;
-	color: #fff;
+	font-weight: 700;
+	color: var(--card-text, #fff);
 	font-size: 16px;
 	text-transform: uppercase;
-	letter-spacing: 3px;
-	background: none;
-	border: none;
+	letter-spacing: 2px;
+	background: transparent;
+	border: 2px solid rgba(255, 255, 255, 0.18);
+	border-radius: 6px;
 	cursor: pointer;
 	overflow: hidden;
 	margin-top: 12px;
+	transition: background 220ms ease, color 220ms ease, transform 120ms ease, box-shadow 220ms ease;
 }
 
+/* hover / active / focus states */
 .animated-button:hover {
 	background: #fff;
 	color: #272727;
-	border-radius: 6px;
+	box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
 }
 
+.animated-button:active {
+	transform: translateY(1px) scale(.995);
+}
+
+.animated-button:focus-visible {
+	outline: 3px solid rgba(0, 157, 255, 0.22);
+	outline-offset: 3px;
+}
+
+/* optional decorative spans inside button (if used) */
 .animated-button span {
 	position: absolute;
 	display: block;
+	pointer-events: none;
+}
+
+/* make login box layout fit on small screens */
+@media (max-width: 480px) {
+	.login-box {
+		padding: 28px 18px;
+		margin: 3.5rem auto;
+		width: min(360px, 96%);
+	}
+
+	.login-box p:first-child {
+		font-size: 1.25rem;
+	}
+
+	.animated-button {
+		width: 100%;
+		text-align: center;
+	}
+}
+
+/* respect user motion preferences */
+@media (prefers-reduced-motion: reduce) {
+	.login-box .user-box label,
+	.login-box .user-box input,
+	.animated-button,
+	input, select {
+		transition: none !important;
+	}
 }

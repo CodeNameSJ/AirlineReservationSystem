@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout}" lang="en">
+<html lang="en"
+      layout:decorate="~{layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
 <head>
 	<th:block layout:fragment="head">
 	</th:block>
@@ -13,8 +13,8 @@
 	<hr/>
 	<h2>Featured Flights</h2>
 
-	<div th:if="${flights != null and !#lists.isEmpty(flights)}" class="card-container">
-		<div th:each="f : ${flights}" class="card">
+	<div class="card-container" th:if="${flights != null and !#lists.isEmpty(flights)}">
+		<div class="card" th:each="f : ${flights}">
 			<div class="content">
 				<div class="title">
 					<span th:text="${f.origin}"></span>
@@ -26,9 +26,11 @@
 				<div class="description">Departure Time: <span th:text="${f.departureDisplay}"></span></div>
 			</div>
 			<!--			<a th:href="@{/user/book(flightId=${f.id})}">-->
-			<a th:href="@{/flight/{id}(id=${f.id})}">
-				<button class="button">Book Now</button>
-			</a>
+			<div>
+				<a th:href="@{/flight/{id}(id=${f.id})}">
+					<button class="button">Book Now</button>
+				</a>
+			</div>
 		</div>
 	</div>
 </div>
