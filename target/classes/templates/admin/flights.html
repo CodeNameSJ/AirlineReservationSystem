@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-	<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout}" lang="en">
+<html lang="en"
+      layout:decorate="~{layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
 <head>
 	<div layout:fragment="head">
 		<meta charset="utf-8"/>
@@ -13,10 +13,10 @@
 	<h1>Manage Flights</h1>
 
 	<div class="action-bar">
-		<a th:href="@{/admin/flights/new}" class="btn secondary">New Flight</a>
+		<a class="btn secondary" th:href="@{/admin/flights/new}">New Flight</a>
 	</div>
 
-	<table class="data-table">
+	<table class="booking-table">
 		<thead>
 		<tr>
 			<th>ID</th>
@@ -41,32 +41,32 @@
 			<td th:text="${flight.economySeatsAvailable} + '/' + ${flight.totalEconomySeats}">10/100</td>
 			<td th:text="${flight.businessSeatsAvailable} + '/' + ${flight.totalBusinessSeats}">5/20</td>
 			<td>
-				<form th:action="@{/admin/flights/edit/{id}(id=${flight.id})}" method="get" style="display:inline;">
+				<form method="get" style="display:inline;" th:action="@{/admin/flights/edit/{id}(id=${flight.id})}">
 					<button type="submit">Edit</button>
 				</form>
 
-				<button type="button" th:onclick="'toggleWarning(' + ${flight.id} + ', true)'">Delete</button>
+				<button th:onclick="'toggleWarning(' + ${flight.id} + ', true)'" type="button">Delete</button>
 			</td>
 		</tr>
 
-		<tr th:each="flight : ${flights}" th:id="'warning-' + ${flight.id}" class="warning-row" style="display:none;">
+		<tr class="warning-row" style="display:none;" th:each="flight : ${flights}" th:id="'warning-' + ${flight.id}">
 			<td colspan="9">
 				<strong>&#9888; Are you sure you want to delete this flight? Deleting it will also remove all related
-					bookings.</strong>
+				        bookings.</strong>
 				<br/>
-				<form th:method="post" th:action="@{/admin/flights/delete}" style="display:inline;">
-					<input type="hidden" name="id" th:value="${flight.id}"/>
-					<input type="hidden" name="confirm" value="true"/>
-					<button type="submit" style="background-color:red; color:white;">Yes, Delete</button>
+				<form style="display:inline;" th:action="@{/admin/flights/delete}" th:method="post">
+					<input name="id" th:value="${flight.id}" type="hidden"/>
+					<input name="confirm" type="hidden" value="true"/>
+					<button style="background-color:red; color:white;" type="submit">Yes, Delete</button>
 				</form>
-				<button type="button" th:onclick="'toggleWarning(' + ${flight.id} + ', false)'">Cancel</button>
+				<button th:onclick="'toggleWarning(' + ${flight.id} + ', false)'" type="button">Cancel</button>
 			</td>
 		</tr>
 		</tbody>
 	</table>
 </div>
 <div layout:fragment="scripts">
-	<script th:src="@{/js/confirmation.js}" defer></script>
+	<script defer th:src="@{/js/confirmation.js}"></script>
 </div>
 </body>
 </html>
