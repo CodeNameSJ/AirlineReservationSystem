@@ -2,7 +2,6 @@ package org.airlinereservationsystem.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import lombok.RequiredArgsConstructor;
 import org.airlinereservationsystem.model.Flight;
 import org.airlinereservationsystem.service.BookingService;
 import org.airlinereservationsystem.service.FlightService;
@@ -17,10 +16,14 @@ import static org.airlinereservationsystem.util.DateUtils.addFormattedMaps;
 
 @Controller
 @RequestMapping("/admin")
-@RequiredArgsConstructor
 public class AdminController {
 	private final FlightService flightService;
 	private final BookingService bookingService;
+
+	public AdminController(FlightService flightService, BookingService bookingService) {
+		this.flightService = flightService;
+		this.bookingService = bookingService;
+	}
 
 
 	private boolean isAdmin(HttpServletRequest req) {
