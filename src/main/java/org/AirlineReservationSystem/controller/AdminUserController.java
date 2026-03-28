@@ -5,7 +5,6 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.airlinereservationsystem.model.User;
 import org.airlinereservationsystem.model.enums.Role;
-import org.airlinereservationsystem.model.enums.SeatClass;
 import org.airlinereservationsystem.service.BookingService;
 import org.airlinereservationsystem.service.UserService;
 import org.springframework.stereotype.Controller;
