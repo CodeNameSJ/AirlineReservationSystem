@@ -1,62 +1,72 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      lang="en"
-      th:replace="~{layout :: page(${booking.id != null} ? 'Edit Booking' : 'New Booking', ~{::content}, ~{::scripts})}">
+<html lang="en"
+      th:replace="~{layout :: page(${booking.id != null} ? 'Edit Booking' : 'New Booking', ~{::content}, ~{::scripts})}"
+      xmlns:th="http://www.thymeleaf.org">
 <th:block th:fragment="content">
 	<h2 th:text="${booking.id != null} ? 'Edit Booking' : 'New Booking'">Booking</h2>
 
-	<form th:action="@{/admin/bookings/save}" method="post">
-		<input type="hidden" name="id" th:value="${booking.id}"/>
+	<!--	<form method="post" th:action="${booking.id != null} ? @{/admin/bookings/update} : @{/admin/bookings/create}">-->
+	<form method="post" th:action="@{/admin/bookings/save}">
+		<!--		<input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>-->
+
+		<input name="id" th:value="${booking.id}" type="hidden"/>
 
 		<div class="form-row">
 			<label for="user">User</label>
-			<select name="userId" id="user" required>
-				<option th:each="u : ${users}" th:value="${u.id}"
+			<select id="user" name="userId" required>
+				<option th:each="u : ${users}" th:selected="${booking.user != null && booking.user.id == u.id}"
 				        th:text="${u.username + ' (' + (u.email != null ? u.email : 'no-email') + ')'}"
-				        th:selected="${booking.user != null && booking.user.id == u.id}">User
+				        th:value="${u.id}">User
 				</option>
 			</select>
 		</div>
 
 		<div class="form-row">
 			<label for="flight">Flight</label>
-			<select name="flightId" id="flight" required>
-				<option th:each="f : ${flights}" th:value="${f.id}"
+			<select id="flight" name="flightId" required>
+				<option th:each="f : ${flights}" th:selected="${booking.flight != null && booking.flight.id == f.id}"
 				        th:text="${f.flightNumber + ' (' + f.origin + ' - ' + f.destination + ') @ ' + (f.departureDisplay != null ? f.departureDisplay : '')}"
-				        th:selected="${booking.flight != null && booking.flight.id == f.id}">Flight
+				        th:value="${f.id}">Flight
 				</option>
 			</select>
 		</div>
 
 		<div class="form-row">
 			<label for="seats">Seats</label>
-			<input type="number" id="seats" name="seats"
-			       th:value="${booking.seats == 0 ? 1 : booking.seats}" min="1" required/>
+			<input id="seats" min="1" name="seats"
+			       required th:value="${booking.seats != null && booking.seats > 0 ? booking.seats : 1}" type="number"/>
 		</div>
 
 		<div class="form-row">
 			<label for="seatClass">Seat Class</label>
 			<select id="seatClass" name="seatClass" required>
-				<option th:each="sc : ${seatClasses}" th:value="${sc}" th:text="${sc}"
-				        th:selected="${booking.seatClass != null && booking.seatClass == sc}"></option>
+				<option th:each="sc : ${seatClasses}" th:selected="${booking.seatClass != null && booking.seatClass == sc}"
+				        th:text="${sc}"
+				        th:value="${sc}"></option>
 			</select>
 		</div>
 
 		<div style="margin-top:12px;">
 			<button type="submit">Save</button>
-			<a th:href="@{/admin/bookings}" class="button">Cancel</a>
+			<a class="button" th:href="@{/admin/bookings}">Cancel</a>
 		</div>
 	</form>
 
-	<form th:if="${booking.id != null}" th:action="@{/admin/bookings/delete}" method="post"
-	      style="display:inline; margin-top:12px;">
-		<input type="hidden" name="id" th:value="${booking.id}"/>
-		<input type="hidden" name="confirm" value="true"/>
-		<button type="submit" style="background:#d9534f;color:white;">Delete</button>
+	<form method="post" style="display:inline; margin-top:12px;" th:action="@{/admin/bookings/delete}"
+	      th:if="${booking.id != null}">
+		<!--		<input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>-->
+		<input name="id" th:value="${booking.id}" type="hidden"/>
+		<input name="confirm" type="hidden" value="true"/>
+		<button class="warn-toggle"
+		        data-id="${booking.id}"
+		        data-type="delete"
+		        type="button">
+			Delete
+		</button>
 	</form>
 </th:block>
 
 <th:block th:fragment="scripts">
-	<script th:src="@{/js/confirmation.js}" defer></script>
+	<script defer th:src="@{/js/confirmation.js}"></script>
 </th:block>
 </html>
