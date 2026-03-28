@@ -1,8 +1,7 @@
 .navbar {
-	/*position: fixed;*/
-	position: sticky;
-	top: 0;
-	/*width: 100%;*/
+	position: fixed;
+	/*position: sticky;*/
+	top: 10px;
 	height: 93px;
 	z-index: 1000;
 	display: flex;
@@ -11,11 +10,11 @@
 	gap: 1.25rem;
 	left: 50%;
 	transform: translateX(-50%);
-	width: min(calc(100% - 28px), 1220px);
-	padding: 0.9rem 1.15rem;
-	border-radius: 999px;
-	background: color-mix(in srgb, var(--surface-strong) 84%, transparent);
-	border: 1px solid color-mix(in srgb, var(--site-primary) 14%, transparent);
+	width: min(calc(100% - 36px), 1180px);
+	padding: 0.9rem 0.6rem;
+	border-radius: 30px;
+	background: color-mix(in srgb, var(--surface-strong) 82%, transparent);
+	border: 1px solid color-mix(in srgb, var(--site-primary) 12%, transparent);
 	box-shadow: 0 16px 42px rgba(16, 27, 34, 0.12);
 	backdrop-filter: blur(18px);
 	-webkit-backdrop-filter: blur(18px);

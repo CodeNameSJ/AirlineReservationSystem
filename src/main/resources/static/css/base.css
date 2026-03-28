@@ -11,10 +11,27 @@ html {
 	-webkit-text-size-adjust: 100%;
 }
 
+/* disable transitions during initial load */
+html.no-transition * {
+	transition: none !important;
+}
+
+/* enable transitions after load */
+:root {
+	transition: background-color 250ms ease, color 250ms ease;
+}
+
+* {
+	transition: background-color 250ms ease,
+	color 250ms ease,
+	border-color 250ms ease,
+	box-shadow 250ms ease;
+}
+
 body {
 	font-family: "Manrope", "Segoe UI", sans-serif;
 	line-height: 1.6;
-	padding: calc(var(--nav-height) + 2rem) clamp(14px, 3vw, 32px) 3rem;
+	padding: calc(var(--nav-height) + 1rem) clamp(12px, 3vw, 36px) 3rem;
 	color: var(--site-text);
 	background: radial-gradient(circle at top left, rgba(40, 75, 99, 0.16), transparent 32%),
 	radial-gradient(circle at top right, rgba(60, 110, 113, 0.12), transparent 28%),

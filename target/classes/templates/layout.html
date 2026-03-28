@@ -1,8 +1,16 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
-      th:fragment="page(pageTitle, pageContent, pageScripts)">
+      th:fragment="page(pageTitle, pageContent, pageScripts)"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
+	<script>
+		(() => {
+			const theme = localStorage.getItem('theme');
+			if (theme) {
+				document.documentElement.setAttribute('data-theme', theme);
+			}
+		})();
+	</script>
 	<meta charset="utf-8"/>
 	<title th:text="${pageTitle} ?: 'Airline Reservation'">Airline Reservation</title>
 

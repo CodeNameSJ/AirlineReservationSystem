@@ -1,71 +1,45 @@
-(function () {
-	const ID = 'theme-switch';
+document.documentElement.classList.add('no-transition');
+(() => {
 	const storageKey = 'theme';
+	const checkbox = document.getElementById('theme-switch');
+	const label = document.querySelector('.toggle');
 
-	function applyTheme(theme) {
-		if (!theme) return;
+	if (!checkbox) return;
+
+	const saved = localStorage.getItem(storageKey);
+	const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+	const initial = saved ?? (prefersDark ? 'dark' : 'light');
+
+	document.documentElement.setAttribute('data-theme', initial);
+	checkbox.checked = initial === 'dark';
+
+	if (label) {
+		label.setAttribute('aria-checked', String(checkbox.checked));
+	}
+
+	checkbox.addEventListener('change', () => {
+		const theme = checkbox.checked ? 'dark' : 'light';
+
 		document.documentElement.setAttribute('data-theme', theme);
-	}
+		localStorage.setItem(storageKey, theme);
 
-	function init() {
-		const checkbox = document.getElementById(ID);
-		if (!checkbox) return;
+		label?.setAttribute('aria-checked', String(checkbox.checked));
+	});
 
-		const label = document.querySelector(`label[for="${ID}"]`);
-
-		let saved;
-		try {
-			saved = localStorage.getItem(storageKey);
-		} catch {
-			saved = null;
-		}
-
-		let hasUserPreference = !!saved;
-
-		const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-		const initial = saved || (prefersDark ? 'dark' : 'light');
-
-		applyTheme(initial);
-		checkbox.checked = initial === 'dark';
-
-		if (label) {
-			label.setAttribute('aria-checked', String(checkbox.checked));
-		}
-
-		checkbox.addEventListener('change', () => {
-			const theme = checkbox.checked ? 'dark' : 'light';
-			applyTheme(theme);
-
-			try {
-				localStorage.setItem(storageKey, theme);
-				hasUserPreference = true;
-			} catch {
-			}
-
-			if (label) {
-				label.setAttribute('aria-checked', String(checkbox.checked));
-			}
-
-			window.dispatchEvent(new CustomEvent('themechange', {detail: {theme}}));
-		});
-
+	// OPTIONAL: react to system change ONLY if no user preference
+	if (!saved) {
 		const mq = window.matchMedia('(prefers-color-scheme: dark)');
-		mq.addEventListener?.('change', (e) => {
-			if (hasUserPreference) return;
-
+		mq.addEventListener('change', (e) => {
 			const theme = e.matches ? 'dark' : 'light';
-			applyTheme(theme);
+			document.documentElement.setAttribute('data-theme', theme);
 			checkbox.checked = e.matches;
-
-			if (label) {
-				label.setAttribute('aria-checked', String(checkbox.checked));
-			}
+			label?.setAttribute('aria-checked', String(e.matches));
 		});
-	}
-
-	if (document.readyState === 'loading') {
-		document.addEventListener('DOMContentLoaded', init);
-	} else {
-		init();
 	}
 })();
+window.addEventListener('load', () => {
+	requestAnimationFrame(() => {
+		document.documentElement.classList.remove('no-transition');
+	});
+});
