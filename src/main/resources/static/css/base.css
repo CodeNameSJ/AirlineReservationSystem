@@ -14,12 +14,11 @@ html {
 body {
 	font-family: "Manrope", "Segoe UI", sans-serif;
 	line-height: 1.6;
-	padding: calc(var(--nav-height) + 1.75rem) clamp(14px, 3vw, 32px) 3rem;
+	padding: calc(var(--nav-height) + 2rem) clamp(14px, 3vw, 32px) 3rem;
 	color: var(--site-text);
-	background:
-		radial-gradient(circle at top left, rgba(40, 75, 99, 0.16), transparent 32%),
-		radial-gradient(circle at top right, rgba(60, 110, 113, 0.12), transparent 28%),
-		linear-gradient(180deg, var(--background-50) 0%, var(--background) 44%, color-mix(in srgb, var(--background) 86%, var(--white) 14%) 100%);
+	background: radial-gradient(circle at top left, rgba(40, 75, 99, 0.16), transparent 32%),
+	radial-gradient(circle at top right, rgba(60, 110, 113, 0.12), transparent 28%),
+	linear-gradient(180deg, var(--background-50) 0%, var(--background) 44%, color-mix(in srgb, var(--background) 86%, var(--white) 14%) 100%);
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	min-height: 100vh;
@@ -29,9 +28,8 @@ body::before {
 	content: "";
 	position: fixed;
 	inset: 0;
-	background-image:
-		linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-		linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+	background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+	linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
 	background-size: 90px 90px;
 	opacity: 0.45;
 	pointer-events: none;

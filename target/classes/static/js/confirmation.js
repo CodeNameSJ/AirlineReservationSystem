@@ -1,69 +1,45 @@
-// function toggleWarning(id, typeOrShow, maybeShow) {
-// 	// normalize arguments
-// 	let type;
-// 	let show;
-//
-// 	if (typeof typeOrShow === 'string') {
-// 		type = typeOrShow;
-// 		show = (typeof maybeShow === 'undefined') ? true : Boolean(maybeShow);
-// 	} else {
-// 		// legacy signature: second arg is boolean (show/hide)
-// 		type = null;
-// 		show = Boolean(typeOrShow);
-// 	}
-//
-// 	// determine prefix
-// 	let prefix;
-// 	if (type === 'cancel') prefix = 'warning-cancel-';
-// 	else if (type === 'delete') prefix = 'warning-delete-';
-// 	else if (type === 'user') prefix = 'warning-user-';
-// 	else prefix = 'warning-';
-//
-// 	// hide all other warning rows of the same family before showing (keeps UI tidy)
-// 	const allSelectors = [
-// 		'[id^="warning-cancel-"]',
-// 		'[id^="warning-delete-"]',
-// 		'[id^="warning-user-"]',
-// 		'[id^="warning-"]'
-// 	].join(',');
-// 	document.querySelectorAll(allSelectors).forEach(el => {
-// 		// if current element is the one we want to toggle, skip for now
-// 		if (el.id === prefix + id) return;
-// 		// hide everything else
-// 		el.style.display = 'none';
-// 	});
-//
-// 	const el = document.getElementById(prefix + id);
-// 	if (!el) return;
-//
-// 	// table rows must use 'table-row' to display correctly
-// 	const isTr = el.tagName && el.tagName.toLowerCase() === 'tr';
-// 	if (show) {
-// 		el.style.display = isTr ? 'table-row' : 'block';
-// 	} else {
-// 		el.style.display = 'none';
-// 	}
-// }
+function toggleWarning(id, type, show = null) {
+	let prefix = 'warning-';
+	if (type === 'cancel') prefix = 'warning-cancel-';
+	else if (type === 'delete') prefix = 'warning-delete-';
+	else if (type === 'user') prefix = 'warning-user-';
 
-function toggleWarning(id, typeOrShow, show = null) {
-	// Determine parameters: if typeOrShow is boolean, then no type given
-	let type = typeOrShow;
-	if (typeof typeOrShow === 'boolean') {
-		show = typeOrShow;
-		type = null;
+	const targetId = prefix + id;
+	const row = document.getElementById(targetId);
+	if (!row) return;
+
+	if (show === null) {
+		show = row.style.display === 'none';
 	}
-	let selector;
-	if (type === 'cancel') {
-		selector = `#warning-cancel-${id}`;
-	} else if (type === 'delete') {
-		selector = `#warning-delete-${id}`;
-	} else if (type === 'user') {
-		selector = `#warning-user-${id}`;
-	} else {
-		selector = `#warning-${id}`;
-	}
-	const row = document.querySelector(selector);
-	if (row) {
-		row.style.display = show ? '' : 'none';
-	}
+
+	document.querySelectorAll('[id^="warning-"]').forEach(el => {
+		if (el.id !== targetId) {
+			el.style.display = 'none';
+		}
+	});
+
+	const isTr = row.tagName.toLowerCase() === 'tr';
+	row.style.display = show
+		 ? (isTr ? 'table-row' : 'block')
+		 : 'none';
 }
+
+document.addEventListener('click', (e) => {
+	const btn = e.target.closest('.warn-toggle');
+	if (!btn) return;
+
+	const id = btn.dataset.id;
+	const type = btn.dataset.type;
+
+	toggleWarning(id, type);
+});
+
+document.addEventListener('click', (e) => {
+	if (!e.target.closest('.warn-toggle') &&
+		 !e.target.closest('[id^="warning-"]')) {
+
+		document.querySelectorAll('[id^="warning-"]').forEach(el => {
+			el.style.display = 'none';
+		});
+	}
+});
