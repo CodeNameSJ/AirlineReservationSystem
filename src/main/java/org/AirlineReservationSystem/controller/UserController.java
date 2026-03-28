@@ -2,7 +2,6 @@ package org.airlinereservationsystem.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import lombok.RequiredArgsConstructor;
 import org.airlinereservationsystem.model.Flight;
 import org.airlinereservationsystem.model.enums.SeatClass;
 import org.airlinereservationsystem.service.BookingService;
@@ -13,10 +12,14 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/user")
-@RequiredArgsConstructor
 public class UserController {
 	private final FlightService flightService;
 	private final BookingService bookingService;
+
+	public UserController(FlightService flightService, BookingService bookingService) {
+		this.flightService = flightService;
+		this.bookingService = bookingService;
+	}
 
 	// view bookings
 	@GetMapping("/home")
@@ -58,8 +61,11 @@ public class UserController {
 	}
 
 	@PostMapping("/bookings/cancel")
-	public String cancel(@RequestParam Long id) {
-		bookingService.cancelBooking(id);
+	public String cancel(@RequestParam Long id, HttpServletRequest req) {
+		HttpSession s = req.getSession(false);
+		if (s == null || s.getAttribute("userId") == null) return "redirect:/login";
+		Long userId = (Long) s.getAttribute("userId");
+		bookingService.cancelBookingForUser(id, userId);
 		return "redirect:/user/home";
 	}
 
@@ -69,10 +75,10 @@ public class UserController {
 		if (s == null || s.getAttribute("userId") == null) return "redirect:/login";
 		Long userId = (Long) s.getAttribute("userId");
 		var opt = bookingService.findById(id);
-		if (opt.isEmpty()) return "redirect:/user/bookings";
+		if (opt.isEmpty()) return "redirect:/user/home";
 		var booking = opt.get();
 		// ensure booking belongs to logged user (safety)
-		if (!booking.getUser().getId().equals(userId)) return "redirect:/user/bookings";
+		if (!booking.getUser().getId().equals(userId)) return "redirect:/user/home";
 		model.addAttribute("booking", booking);
 		return "user/bookingBill";
 	}

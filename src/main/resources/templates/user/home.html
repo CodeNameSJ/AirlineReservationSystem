@@ -33,7 +33,7 @@
 			<td th:text="${booking.flight != null ? booking.flight.flightNumber : '-'}">FL123</td>
 			<td th:text="${booking.seatClass}">Economy</td>
 			<td th:text="${booking.seats}">2</td>
-			<td th:text="${booking.flight.departureDisplay}"></td>
+			<td th:text="${booking.flight != null ? booking.flight.departureDisplay : '-'}">-</td>
 			<td th:text="${booking.status}">BOOKED</td>
 			<td>
 				<!-- null-safe check for BOOKED -->

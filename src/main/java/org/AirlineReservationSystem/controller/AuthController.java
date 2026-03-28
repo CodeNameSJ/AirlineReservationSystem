@@ -2,7 +2,6 @@ package org.airlinereservationsystem.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import lombok.RequiredArgsConstructor;
 import org.airlinereservationsystem.model.User;
 import org.airlinereservationsystem.model.enums.Role;
 import org.airlinereservationsystem.service.UserService;
@@ -13,10 +12,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequiredArgsConstructor
 public class AuthController {
 
 	private final UserService userService;
+
+	public AuthController(UserService userService) {
+		this.userService = userService;
+	}
 
 	// Show login page
 	@GetMapping("/login")
@@ -38,7 +40,7 @@ public class AuthController {
 			return "login";
 		}
 		User user = opt.get();
-		if (!user.getPassword().equals(password)) {
+		if (!userService.passwordMatches(user, password)) {
 			model.addAttribute("error", "Invalid username or password");
 			return "login";
 		}

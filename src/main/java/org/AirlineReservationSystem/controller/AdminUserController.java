@@ -2,7 +2,6 @@ package org.airlinereservationsystem.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import lombok.RequiredArgsConstructor;
 import org.airlinereservationsystem.model.User;
 import org.airlinereservationsystem.model.enums.Role;
 import org.airlinereservationsystem.service.BookingService;
@@ -14,11 +13,15 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/admin/users")
-@RequiredArgsConstructor
 public class AdminUserController {
 
 	private final UserService userService;
 	private final BookingService bookingService;
+
+	public AdminUserController(UserService userService, BookingService bookingService) {
+		this.userService = userService;
+		this.bookingService = bookingService;
+	}
 
 	// returns true if the current session belongs to an ADMIN
 	private boolean isAdmin(HttpServletRequest req) {

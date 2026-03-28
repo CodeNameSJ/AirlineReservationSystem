@@ -1,6 +1,5 @@
 package org.airlinereservationsystem.service;
 
-import lombok.RequiredArgsConstructor;
 import org.airlinereservationsystem.model.Flight;
 import org.airlinereservationsystem.repository.FlightRepository;
 import org.springframework.stereotype.Service;
@@ -11,10 +10,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class FlightService {
 	private final FlightRepository flightRepo;
+
+	public FlightService(FlightRepository flightRepo) {
+		this.flightRepo = flightRepo;
+	}
 
 	public List<Flight> findAll() {
 		return flightRepo.findAll();
@@ -85,8 +87,13 @@ public class FlightService {
 	@Transactional
 	public void updateAvailability(Long id, int economyDelta, int businessDelta) {
 		Flight flight = flightRepo.findById(id).orElseThrow();
-		flight.setEconomySeatsAvailable(flight.getEconomySeatsAvailable() + economyDelta);
-		flight.setBusinessSeatsAvailable(flight.getBusinessSeatsAvailable() + businessDelta);
+		int updatedEconomySeats = flight.getEconomySeatsAvailable() + economyDelta;
+		int updatedBusinessSeats = flight.getBusinessSeatsAvailable() + businessDelta;
+		if (updatedEconomySeats < 0 || updatedBusinessSeats < 0) {
+			throw new IllegalArgumentException("Seat availability cannot be negative.");
+		}
+		flight.setEconomySeatsAvailable(updatedEconomySeats);
+		flight.setBusinessSeatsAvailable(updatedBusinessSeats);
 		flightRepo.save(flight);
 	}
 }

@@ -77,7 +77,6 @@ package org.airlinereservationsystem.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import lombok.RequiredArgsConstructor;
 import org.airlinereservationsystem.model.Booking;
 import org.airlinereservationsystem.model.Flight;
 import org.airlinereservationsystem.model.User;
@@ -96,12 +95,17 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/admin/bookings")
-@RequiredArgsConstructor
 public class AdminBookingController {
 
 	private final BookingService bookingService;
 	private final UserService userService;
 	private final FlightService flightService;
+
+	public AdminBookingController(BookingService bookingService, UserService userService, FlightService flightService) {
+		this.bookingService = bookingService;
+		this.userService = userService;
+		this.flightService = flightService;
+	}
 
 	private boolean isAdmin(HttpServletRequest req) {
 		HttpSession s = req.getSession(false);
@@ -184,7 +188,7 @@ public class AdminBookingController {
 //		}
 
 //		bookingService.save(booking);
-		var booking = bookingService.createBooking(userId, flightId, seatClass, seats);
+		bookingService.saveBooking(id, userId, flightId, seatClass, seats, status);
 		ra.addFlashAttribute("successMessage", "Booking saved.");
 		return "redirect:/admin/bookings";
 	}
