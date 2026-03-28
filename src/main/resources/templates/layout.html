@@ -6,7 +6,7 @@
 	<title th:text="${pageTitle} ?: 'Airline Reservation'">Airline Reservation</title>
 
 	<!-- Global CSS -->
-	<div th:replace="~{fragments/themeHead :: themeHead}"></div>
+	<th:block th:replace="~{fragments/themeHead :: themeHead}"></th:block>
 
 	<link rel="stylesheet" th:href="@{/css/theme.css}"/>
 	<link rel="stylesheet" th:href="@{/css/theme-sync.css}"/>
@@ -19,7 +19,7 @@
 	<link rel="stylesheet" th:href="@{/css/theme-toggle.css}"/>
 
 	<link rel="icon" th:href="@{/images/favicon.png}" type="image/png">
-	<div layout:fragment="head"></div>
+	<th:block layout:fragment="head"></th:block>
 </head>
 <body>
 <header>
@@ -41,6 +41,6 @@
 <script defer th:src="@{/js/theme-toggle.js}"></script>
 
 <div th:replace="~{fragments/themeToggle :: themeToggle}"></div>
-<div layout:fragment="scripts"></div>
+<th:block layout:fragment="scripts"></th:block>
 </body>
 </html>

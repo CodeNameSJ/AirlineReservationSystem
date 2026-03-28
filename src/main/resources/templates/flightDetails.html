@@ -3,10 +3,10 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout}" lang="en">
 <head>
-	<div layout:fragment="head">
+	<th:block layout:fragment="head">
 		<meta charset="utf-8"/>
 		<title>Flight Details</title>
-	</div>
+	</th:block>
 </head>
 <body>
 <div layout:fragment="content">
@@ -34,6 +34,6 @@
 	<a th:unless="${session.userId != null}" th:href="@{/login}">Login to Book</a>
 </div>
 
-<div layout:fragment="scripts"></div>
+<th:block layout:fragment="scripts"></th:block>
 </body>
 </html>

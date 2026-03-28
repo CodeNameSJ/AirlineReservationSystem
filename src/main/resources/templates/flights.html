@@ -4,9 +4,9 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
 <head>
 	<title>Search Flights</title>
-	<div layout:fragment="head">
+	<th:block layout:fragment="head">
 		<meta charset="utf-8"/>
-	</div>
+	</th:block>
 </head>
 <body>
 <div layout:fragment="content">
@@ -37,18 +37,14 @@
 				<td th:text="${flight.priceEconomy}"></td>
 				<td th:text="${flight.priceBusiness}"></td>
 				<td>
-					<a th:href="@{/flight/{id}(id=${flight.id})}" th:if="${session.userId != null}">
-						<button class="button">Book</button>
-					</a>
-					<a th:href="@{/login}" th:unless="${session.userId != null}">
-						<button class="button">Login to Book</button>
-					</a>
+					<a th:href="@{/flight/{id}(id=${flight.id})}" th:if="${session.userId != null}" class="button">Book</a>
+					<a th:href="@{/login}" th:unless="${session.userId != null}" class="button">Login to Book</a>
 				</td>
 			</tr>
 			</tbody>
 		</table>
 	</div>
 </div>
-<div layout:fragment="scripts"></div>
+<th:block layout:fragment="scripts"></th:block>
 </body>
 </html>

@@ -136,10 +136,13 @@
 /* CTA */
 .cta {
 	position: relative;
+	display: inline-flex;
+	align-items: center;
 	padding: 12px 0 12px 18px;
 	background: none;
 	border: none;
 	cursor: pointer;
+	text-decoration: none;
 	transition: all 0.2s ease;
 }
 

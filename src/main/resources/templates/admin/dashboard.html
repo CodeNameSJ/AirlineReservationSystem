@@ -3,10 +3,10 @@
       layout:decorate="~{layout}"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
 <head>
-	<div layout:fragment="head">
+	<th:block layout:fragment="head">
 		<meta charset="utf-8"/>
 		<title>Admin Dashboard</title>
-	</div>
+	</th:block>
 </head>
 <body>
 <div layout:fragment="content">
@@ -38,6 +38,6 @@
 	</table>
 </div>
 
-<div layout:fragment="scripts"></div>
+<th:block layout:fragment="scripts"></th:block>
 </body>
 </html>

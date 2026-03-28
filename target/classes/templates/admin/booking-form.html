@@ -51,21 +51,20 @@
 
 		<div style="margin-top:12px;">
 			<button type="submit">Save</button>
-			<a th:href="@{/admin/bookings}">
-				<button type="button">Cancel</button>
-			</a>
-			<form th:if="${booking.id != null}" th:action="@{/admin/bookings/delete}" method="post"
-			      style="display:inline;">
-				<input type="hidden" name="id" th:value="${booking.id}"/>
-				<input type="hidden" name="confirm" value="true"/>
-				<button type="submit" style="background:#d9534f;color:white;">Delete</button>
-			</form>
+			<a th:href="@{/admin/bookings}" class="button">Cancel</a>
 		</div>
+	</form>
+
+	<form th:if="${booking.id != null}" th:action="@{/admin/bookings/delete}" method="post"
+	      style="display:inline; margin-top:12px;">
+		<input type="hidden" name="id" th:value="${booking.id}"/>
+		<input type="hidden" name="confirm" value="true"/>
+		<button type="submit" style="background:#d9534f;color:white;">Delete</button>
 	</form>
 </div>
 
-<div layout:fragment="scripts">
+<th:block layout:fragment="scripts">
 	<script th:src="@{/js/confirmation.js}" defer></script>
-</div>
+</th:block>
 </body>
 </html>
