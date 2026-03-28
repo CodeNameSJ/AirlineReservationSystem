@@ -3,10 +3,10 @@
       layout:decorate="~{layout}"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
 <head>
-	<div layout:fragment="head">
+	<th:block layout:fragment="head">
 		<meta charset="utf-8"/>
 		<title>Manage Users</title>
-	</div>
+	</th:block>
 </head>
 <body>
 
@@ -56,8 +56,8 @@
 		</tbody>
 	</table>
 </div>
-<div layout:fragment="scripts">
+<th:block layout:fragment="scripts">
 	<script defer th:src="@{/js/confirmation.js}"></script>
-</div>
+</th:block>
 </body>
 </html>

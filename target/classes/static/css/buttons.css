@@ -13,6 +13,7 @@
 	will-change: transform, background-color;
 	background-color: var(--btn-primary-bg);
 	color: var(--btn-text-on-accent, #fff);
+	text-decoration: none;
 	transition: background-color 200ms ease, transform 120ms ease;
 }
 

@@ -4,9 +4,9 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-	<div layout:fragment="head">
+	<th:block layout:fragment="head">
 		<title>Manage Bookings</title>
-	</div>
+	</th:block>
 </head>
 <body>
 <div layout:fragment="content">
@@ -86,8 +86,8 @@
 	</table>
 </div>
 
-<div layout:fragment="scripts">
+<th:block layout:fragment="scripts">
 	<script defer th:src="@{/js/confirmation.js}"></script>
-</div>
+</th:block>
 </body>
 </html>

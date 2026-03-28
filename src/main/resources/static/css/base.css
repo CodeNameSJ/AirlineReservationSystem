@@ -1,5 +1,4 @@
-/* Base / page wrapper (expects theme.css to define tokens like --background, --text, --primary) */
-@import url('theme.css');
+/* Base / page wrapper (expects theme.css and theme-sync.css to be loaded by the layout) */
 
 *,
 *::before,
