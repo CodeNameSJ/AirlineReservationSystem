@@ -71,7 +71,7 @@ public class AdminBookingController {
 	public String saveBooking(HttpServletRequest req, @RequestParam(required = false) Long id, @RequestParam Long userId, @RequestParam Long flightId, @RequestParam int seats, @RequestParam SeatClass seatClass, @RequestParam(required = false) BookingStatus status, RedirectAttributes ra) {
 		if (isNotAdmin(req)) return "redirect:/login";
 
-		bookingService.saveBooking(id, userId, flightId, seatClass, seats, status);
+		Booking booking = bookingService.updateBooking(id, userId, flightId, seatClass, seats, status);
 		ra.addFlashAttribute("successMessage", "Booking saved.");
 		return "redirect:/admin/bookings";
 	}

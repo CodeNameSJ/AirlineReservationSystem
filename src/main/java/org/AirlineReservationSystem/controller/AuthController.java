@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.airlinereservationsystem.model.User;
 import org.airlinereservationsystem.service.UserService;
+import org.airlinereservationsystem.util.UserValidationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,13 +23,14 @@ public class AuthController {
 		this.userService = userService;
 	}
 
-	// Show login page
 	@GetMapping("/login")
 	public String loginPage(@RequestParam(required = false) String error, HttpServletRequest req, Model model) {
-		HttpSession s = req.getSession(true);
+
+		HttpSession s = req.getSession(false);
 		if (s != null && s.getAttribute("userId") != null) {
 			return "redirect:/";
 		}
+
 		if (error != null) model.addAttribute("error", error);
 		return "login";
 	}
@@ -37,64 +39,59 @@ public class AuthController {
 	public String doLogin(@RequestParam String username, @RequestParam String password, HttpServletRequest req, Model model) {
 
 		var opt = userService.findByUsername(username);
-		if (opt.isEmpty()) {
+
+		if (opt.isEmpty() || !userService.passwordMatches(opt.get(), password)) {
 			model.addAttribute("error", "Invalid username or password");
 			return "login";
 		}
+
 		User user = opt.get();
-		if (!userService.passwordMatches(user, password)) {
-			model.addAttribute("error", "Invalid username or password");
-			return "login";
+
+		HttpSession session = req.getSession(true);
+		session.setAttribute("userId", user.getId());
+		session.setAttribute("username", user.getUsername());
+		session.setAttribute("role", user.getRole().name());
+
+		// 🔥 SAFE redirect handling
+		String redirect = (String) session.getAttribute("redirectAfterLogin");
+		session.removeAttribute("redirectAfterLogin");
+
+		if (redirect != null && redirect.startsWith("/")) {
+			return "redirect:" + redirect;
 		}
 
-		HttpSession s = req.getSession(true);
-		s.setAttribute("userId", user.getId());
-		s.setAttribute("username", user.getUsername());
-		s.setAttribute("role", user.getRole().name());
-
-		String saved = (String) s.getAttribute("redirectAfterLogin");
-		if (saved != null) {
-			s.removeAttribute("redirectAfterLogin");
-			return "redirect:" + saved;
+		// role-based fallback
+		if ("ADMIN".equalsIgnoreCase(user.getRole().name())) {
+			return "redirect:/admin/dashboard";
 		}
 
-		if ("ADMIN".equalsIgnoreCase(user.getRole().name())) return "redirect:/admin/dashboard";
 		return "redirect:/user/home";
 	}
 
 	@GetMapping("/register")
 	public String registerPage(HttpServletRequest req, Model model) {
-		HttpSession s = req.getSession(true);
+
+		HttpSession s = req.getSession(false);
 		if (s != null && s.getAttribute("userId") != null) {
 			return "redirect:/";
 		}
+
 		model.addAttribute("user", new User());
 		return "register";
 	}
 
 	@PostMapping("/register")
-	public String doRegister(@Valid @ModelAttribute("user") User user, BindingResult result, HttpServletRequest req, Model model) {
+	public String doRegister(@Valid @ModelAttribute("user") User user, BindingResult result, HttpServletRequest req) {
 
 		if (result.hasErrors()) return "register";
 
 		try {
 			userService.register(user);
-		} catch (IllegalArgumentException e) {
-
-			String msg = e.getMessage();
-
-			if (msg.contains("Username")) {
-				result.rejectValue("username", "error.user", msg);
-			} else if (msg.contains("Email")) {
-				result.rejectValue("email", "error.user", msg);
-			} else {
-				result.reject("error.user", msg);
-			}
-
+		} catch (UserValidationException e) {
+			result.rejectValue(e.getField(), "error.user", e.getMessage());
 			return "register";
 		}
 
-		// login logic
 		HttpSession session = req.getSession(true);
 		session.setAttribute("userId", user.getId());
 		session.setAttribute("username", user.getUsername());

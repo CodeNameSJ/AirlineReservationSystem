@@ -41,7 +41,7 @@ public class FlightService {
 		}
 
 		return hasDateRange ? flightRepo.findByDestinationAndDepartureTimeBetween(destination, start, end) : flightRepo.findByDestination(destination);
-		
+
 	}
 
 	public Optional<Flight> findById(Long id) {
@@ -84,28 +84,48 @@ public class FlightService {
 	}
 
 	@Transactional
-	public void reserveSeatsAtomic(Long flightId, SeatClass seatClass, int seats) {
+	public int reserveSeatsAtomic(Long flightId, SeatClass seatClass, int seats) {
 
-		int updated;
-
-		if (seatClass == SeatClass.ECONOMY) {
-			updated = flightRepo.reserveEconomySeats(flightId, seats);
-		} else {
-			updated = flightRepo.reserveBusinessSeats(flightId, seats);
+		if (seatClass == null) {
+			throw new IllegalArgumentException("Seat class required");
 		}
+
+		if (seats <= 0) {
+			throw new IllegalArgumentException("Seats must be greater than 0");
+		}
+
+		int updated = (seatClass == SeatClass.ECONOMY) ? flightRepo.reserveEconomySeats(flightId, seats) : flightRepo.reserveBusinessSeats(flightId, seats);
 
 		if (updated == 0) {
+			if (!flightRepo.existsById(flightId)) {
+				throw new IllegalArgumentException("Flight not found");
+			}
 			throw new IllegalStateException("Not enough seats available");
 		}
+
+		return updated;
 	}
 
 	@Transactional
-	public void releaseSeatsAtomic(Long flightId, SeatClass seatClass, int seats) {
+	public int releaseSeatsAtomic(Long flightId, SeatClass seatClass, int seats) {
 
-		if (seatClass == SeatClass.ECONOMY) {
-			flightRepo.releaseEconomySeats(flightId, seats);
-		} else {
-			flightRepo.releaseBusinessSeats(flightId, seats);
+		if (seatClass == null) {
+			throw new IllegalArgumentException("Seat class required");
 		}
+
+		if (seats <= 0) {
+			throw new IllegalArgumentException("Seats must be greater than 0");
+		}
+
+		int updated = (seatClass == SeatClass.ECONOMY) ? flightRepo.releaseEconomySeats(flightId, seats) : flightRepo.releaseBusinessSeats(flightId, seats);
+
+		if (updated == 0) {
+			if (!flightRepo.existsById(flightId)) {
+				throw new IllegalArgumentException("Flight not found");
+			}
+			throw new IllegalStateException("Seat release exceeds capacity");
+		}
+
+		return updated;
 	}
 }

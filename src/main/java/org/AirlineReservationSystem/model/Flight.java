@@ -14,13 +14,13 @@ import java.util.Objects;
 @Setter
 @Getter
 @Entity
-@Table(name = "flights")
+@Table(name = "flights", indexes = {@Index(name = "idx_flight_origin", columnList = "origin"), @Index(name = "idx_flight_destination", columnList = "destination"), @Index(name = "idx_flight_departure", columnList = "departureTime")})
 public class Flight {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Transient
+	@OneToMany(mappedBy = "flight", fetch = FetchType.LAZY)
 	private List<Booking> bookings;
 
 	@Transient
@@ -43,15 +43,22 @@ public class Flight {
 	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
 	private LocalDateTime arrivalTime;
 
+	@Column(nullable = false)
 	private int totalEconomySeats;
+
+	@Column(nullable = false)
 	private int totalBusinessSeats;
+
+	@Column(nullable = false)
 	private int economySeatsAvailable;
+
+	@Column(nullable = false)
 	private int businessSeatsAvailable;
 
-	@Column(nullable = false)
+	@Column(nullable = false, precision = 10, scale = 2)
 	private BigDecimal priceEconomy;
 
-	@Column(nullable = false)
+	@Column(nullable = false, precision = 10, scale = 2)
 	private BigDecimal priceBusiness;
 
 	public Flight() {
@@ -65,6 +72,14 @@ public class Flight {
 	@Transient
 	public String getArrivalDisplay() {
 		return org.airlinereservationsystem.util.DateUtils.formatForDisplay(this.getArrivalTime());
+	}
+
+	@PrePersist
+	@PreUpdate
+	private void validateTimes() {
+		if (departureTime != null && arrivalTime != null && arrivalTime.isBefore(departureTime)) {
+			throw new IllegalArgumentException("Arrival must be after departure");
+		}
 	}
 
 	@Override

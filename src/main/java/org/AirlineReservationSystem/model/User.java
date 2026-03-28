@@ -15,14 +15,14 @@ import java.util.Objects;
 @Setter
 @Getter
 @Entity
-@Table(name = "users")
+@Table(name = "users", indexes = {@Index(name = "idx_users_username", columnList = "username"), @Index(name = "idx_users_email", columnList = "email")})
 public class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Transient
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 	private List<Booking> bookings;
 
 	@Transient
@@ -38,8 +38,6 @@ public class User {
 	@Column(nullable = false, unique = true)
 	private String email;
 
-	@NotBlank
-	@Column(nullable = false)
 	@Size(min = 8, message = "Password must be at least 8 characters")
 	private String password;
 

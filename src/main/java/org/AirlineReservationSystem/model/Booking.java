@@ -14,7 +14,7 @@ import java.util.Objects;
 @Setter
 @Getter
 @Entity
-@Table(name = "bookings")
+@Table(name = "bookings", indexes = {@Index(name = "idx_booking_user", columnList = "user_id"), @Index(name = "idx_booking_flight", columnList = "flight_id")})
 public class Booking {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,7 +35,7 @@ public class Booking {
 	@Column(nullable = false)
 	private int seats;
 
-	@Column(nullable = false)
+	@Column(nullable = false, precision = 10, scale = 2)
 	private BigDecimal totalAmount;
 
 	@Column(nullable = false)
@@ -46,6 +46,28 @@ public class Booking {
 	private BookingStatus status;
 
 	public Booking() {
+	}
+
+	private void validate() {
+		if (seats <= 0) {
+			throw new IllegalArgumentException("Seats must be greater than 0");
+		}
+	}
+
+	@PrePersist
+	private void prePersist() {
+		if (bookingTime == null) {
+			bookingTime = LocalDateTime.now();
+		}
+		if (status == null) {
+			status = BookingStatus.BOOKED;
+		}
+		validate();
+	}
+
+	@PreUpdate
+	private void preUpdate() {
+		validate();
 	}
 
 	@Transient

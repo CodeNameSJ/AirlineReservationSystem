@@ -3,6 +3,7 @@ package org.airlinereservationsystem.service;
 import org.airlinereservationsystem.model.User;
 import org.airlinereservationsystem.model.enums.Role;
 import org.airlinereservationsystem.repository.UserRepository;
+import org.airlinereservationsystem.util.UserValidationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,20 +31,20 @@ public class UserService {
 		}
 
 		if (user.getPassword() == null || user.getPassword().isBlank()) {
-			throw new IllegalArgumentException("Password required");
+			throw new UserValidationException("password", "Password required");
 		}
 
-		// Optional but recommended: move duplicate checks here
 		if (userRepo.findByUsername(user.getUsername()).isPresent()) {
-			throw new IllegalArgumentException("Username already exists");
+			throw new UserValidationException("username", "Username already exists");
 		}
 
 		if (userRepo.findByEmail(user.getEmail()).isPresent()) {
-			throw new IllegalArgumentException("Email already exists");
+			throw new UserValidationException("email", "Email already exists");
 		}
 
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
-
+		user.setUsername(user.getUsername().trim().toLowerCase());
+		user.setEmail(user.getEmail().trim().toLowerCase());
 		userRepo.save(user);
 	}
 
@@ -63,7 +64,9 @@ public class UserService {
 		if (user.getRole() == null) {
 			user.setRole(existing.getRole());
 		}
-
+		
+		user.setUsername(user.getUsername().trim().toLowerCase());
+		user.setEmail(user.getEmail().trim().toLowerCase());
 		userRepo.save(user);
 	}
 

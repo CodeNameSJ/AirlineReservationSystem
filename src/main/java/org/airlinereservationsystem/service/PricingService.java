@@ -19,18 +19,19 @@ public class PricingService {
 	private BigDecimal serviceFee;
 
 	public BigDecimal calculateTotal(Booking booking) {
+
+		if (booking == null || booking.getFlight() == null || booking.getSeatClass() == null) {
+			throw new IllegalArgumentException("Invalid booking data for pricing");
+		}
+
 		Flight flight = booking.getFlight();
 
-		// Select price per seat based on class
-		BigDecimal pricePerSeat = booking.getSeatClass() == SeatClass.ECONOMY
-				                          ? flight.getPriceEconomy()
-				                          : flight.getPriceBusiness();
+		BigDecimal pricePerSeat = booking.getSeatClass() == SeatClass.ECONOMY ? flight.getPriceEconomy() : flight.getPriceBusiness();
 
-		// Base subtotal
 		BigDecimal subtotal = pricePerSeat.multiply(BigDecimal.valueOf(booking.getSeats()));
 
-		// Dynamic taxes and fees
-		BigDecimal tax = subtotal.multiply(taxRate);
+		BigDecimal tax = subtotal.multiply(taxRate).setScale(2, RoundingMode.HALF_UP);
+
 		BigDecimal total = subtotal.add(tax).add(serviceFee);
 
 		return total.setScale(2, RoundingMode.HALF_UP);
