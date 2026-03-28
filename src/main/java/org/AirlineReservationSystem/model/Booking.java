@@ -1,17 +1,8 @@
 package org.airlinereservationsystem.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.airlinereservationsystem.model.enums.BookingStatus;
 import org.airlinereservationsystem.model.enums.SeatClass;
 import org.hibernate.proxy.HibernateProxy;
@@ -20,6 +11,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "bookings")
 public class Booking {
@@ -53,70 +46,6 @@ public class Booking {
 	private BookingStatus status;
 
 	public Booking() {
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
-	public Flight getFlight() {
-		return flight;
-	}
-
-	public void setFlight(Flight flight) {
-		this.flight = flight;
-	}
-
-	public SeatClass getSeatClass() {
-		return seatClass;
-	}
-
-	public void setSeatClass(SeatClass seatClass) {
-		this.seatClass = seatClass;
-	}
-
-	public int getSeats() {
-		return seats;
-	}
-
-	public void setSeats(int seats) {
-		this.seats = seats;
-	}
-
-	public BigDecimal getTotalAmount() {
-		return totalAmount;
-	}
-
-	public void setTotalAmount(BigDecimal totalAmount) {
-		this.totalAmount = totalAmount;
-	}
-
-	public LocalDateTime getBookingTime() {
-		return bookingTime;
-	}
-
-	public void setBookingTime(LocalDateTime bookingTime) {
-		this.bookingTime = bookingTime;
-	}
-
-	public BookingStatus getStatus() {
-		return status;
-	}
-
-	public void setStatus(BookingStatus status) {
-		this.status = status;
 	}
 
 	@Transient

@@ -1,12 +1,8 @@
 package org.airlinereservationsystem.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.proxy.HibernateProxy;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -15,6 +11,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "flights")
 public class Flight {
@@ -57,118 +55,6 @@ public class Flight {
 	private BigDecimal priceBusiness;
 
 	public Flight() {
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public List<Booking> getBookings() {
-		return bookings;
-	}
-
-	public void setBookings(List<Booking> bookings) {
-		this.bookings = bookings;
-	}
-
-	public boolean isHasBookings() {
-		return hasBookings;
-	}
-
-	public void setHasBookings(boolean hasBookings) {
-		this.hasBookings = hasBookings;
-	}
-
-	public String getFlightNumber() {
-		return flightNumber;
-	}
-
-	public void setFlightNumber(String flightNumber) {
-		this.flightNumber = flightNumber;
-	}
-
-	public String getOrigin() {
-		return origin;
-	}
-
-	public void setOrigin(String origin) {
-		this.origin = origin;
-	}
-
-	public String getDestination() {
-		return destination;
-	}
-
-	public void setDestination(String destination) {
-		this.destination = destination;
-	}
-
-	public LocalDateTime getDepartureTime() {
-		return departureTime;
-	}
-
-	public void setDepartureTime(LocalDateTime departureTime) {
-		this.departureTime = departureTime;
-	}
-
-	public LocalDateTime getArrivalTime() {
-		return arrivalTime;
-	}
-
-	public void setArrivalTime(LocalDateTime arrivalTime) {
-		this.arrivalTime = arrivalTime;
-	}
-
-	public int getTotalEconomySeats() {
-		return totalEconomySeats;
-	}
-
-	public void setTotalEconomySeats(int totalEconomySeats) {
-		this.totalEconomySeats = totalEconomySeats;
-	}
-
-	public int getTotalBusinessSeats() {
-		return totalBusinessSeats;
-	}
-
-	public void setTotalBusinessSeats(int totalBusinessSeats) {
-		this.totalBusinessSeats = totalBusinessSeats;
-	}
-
-	public int getEconomySeatsAvailable() {
-		return economySeatsAvailable;
-	}
-
-	public void setEconomySeatsAvailable(int economySeatsAvailable) {
-		this.economySeatsAvailable = economySeatsAvailable;
-	}
-
-	public int getBusinessSeatsAvailable() {
-		return businessSeatsAvailable;
-	}
-
-	public void setBusinessSeatsAvailable(int businessSeatsAvailable) {
-		this.businessSeatsAvailable = businessSeatsAvailable;
-	}
-
-	public BigDecimal getPriceEconomy() {
-		return priceEconomy;
-	}
-
-	public void setPriceEconomy(BigDecimal priceEconomy) {
-		this.priceEconomy = priceEconomy;
-	}
-
-	public BigDecimal getPriceBusiness() {
-		return priceBusiness;
-	}
-
-	public void setPriceBusiness(BigDecimal priceBusiness) {
-		this.priceBusiness = priceBusiness;
 	}
 
 	@Transient

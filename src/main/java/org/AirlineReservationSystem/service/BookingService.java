@@ -2,6 +2,7 @@ package org.airlinereservationsystem.service;
 
 import org.airlinereservationsystem.model.Booking;
 import org.airlinereservationsystem.model.Flight;
+import org.airlinereservationsystem.model.User;
 import org.airlinereservationsystem.model.enums.BookingStatus;
 import org.airlinereservationsystem.model.enums.SeatClass;
 import org.airlinereservationsystem.repository.BookingRepository;
@@ -16,6 +17,7 @@ import java.util.Optional;
 
 @Service
 public class BookingService {
+
 	private final BookingRepository bookingRepo;
 	private final UserRepository userRepo;
 	private final FlightRepository flightRepo;
@@ -44,20 +46,18 @@ public class BookingService {
 
 	@Transactional
 	public Booking createBooking(Long userId, Long flightId, SeatClass seatClass, int seats) {
-		var userOpt = userRepo.findById(userId);
-		var flightOpt = flightRepo.findById(flightId);
 
-		if (userOpt.isEmpty()) throw new IllegalArgumentException("User not found: " + userId);
-		if (flightOpt.isEmpty()) throw new IllegalArgumentException("Flight not found: " + flightId);
+		validateSeats(seats);
+		flightService.reserveSeatsAtomic(flightId, seatClass, seats);
 
-		var flight = flightOpt.get();
+		User user = userRepo.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found"));
 
-		validateSeatsRequested(seats);
-		ensureSeatsAvailable(flight, seatClass, seats);
-		reserveSeats(flightId, seatClass, seats);
+		Flight flight = flightRepo.findById(flightId).orElseThrow(() -> new IllegalArgumentException("Flight not found"));
 
+		flightService.reserveSeatsAtomic(flightId, seatClass, seats);
+		
 		Booking booking = new Booking();
-		booking.setUser(userOpt.get());
+		booking.setUser(user);
 		booking.setFlight(flight);
 		booking.setSeatClass(seatClass);
 		booking.setSeats(seats);
@@ -69,52 +69,56 @@ public class BookingService {
 	}
 
 	@Transactional
-	public Booking saveBooking(Long id, Long userId, Long flightId, SeatClass seatClass, int seats, BookingStatus status) {
-		validateSeatsRequested(seats);
-		BookingStatus targetStatus = status == null ? BookingStatus.BOOKED : status;
-		if (id == null) {
-			Booking booking = createBooking(userId, flightId, seatClass, seats);
-			if (targetStatus == BookingStatus.CANCELLED) {
-				cancelBooking(booking.getId());
+	public void saveBooking(Long id, Long userId, Long flightId, SeatClass seatClass, int seats, BookingStatus status) {
+
+		validateSeats(seats);
+
+		User user = userRepo.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+
+		Flight flight = flightRepo.findById(flightId).orElseThrow(() -> new RuntimeException("Flight not found"));
+
+		Booking booking;
+
+		if (id != null) {
+			booking = bookingRepo.findById(id).orElseThrow(() -> new RuntimeException("Booking not found"));
+
+			// release old seats BEFORE update
+			if (booking.getStatus() == BookingStatus.BOOKED) {
+				flightService.releaseSeatsAtomic(booking.getFlight().getId(), booking.getSeatClass(), booking.getSeats());
 			}
-			return booking;
+
+		} else {
+			booking = new Booking();
+			booking.setBookingTime(LocalDateTime.now());
 		}
 
-		Booking booking = bookingRepo.findById(id).orElseThrow(() -> new IllegalArgumentException("Booking not found: " + id));
-		if (booking.getStatus() == BookingStatus.BOOKED) {
-			releaseSeats(booking.getFlight(), booking.getSeatClass(), booking.getSeats());
-		}
+		flightService.reserveSeatsAtomic(flightId, seatClass, seats);
 
-		Flight updatedFlight = flightRepo.findById(flightId).orElseThrow(() -> new IllegalArgumentException("Flight not found: " + flightId));
-		if (targetStatus == BookingStatus.BOOKED) {
-			ensureSeatsAvailable(updatedFlight, seatClass, seats);
-			reserveSeats(flightId, seatClass, seats);
-		}
-
-		booking.setUser(userRepo.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found: " + userId)));
-		booking.setFlight(updatedFlight);
+		booking.setUser(user);
+		booking.setFlight(flight);
 		booking.setSeatClass(seatClass);
 		booking.setSeats(seats);
-		booking.setStatus(targetStatus);
+
+		// status handling
+		if (id == null) {
+			booking.setStatus(status == null ? BookingStatus.BOOKED : status);
+		} else if (status != null) {
+			booking.setStatus(status);
+		}
+
 		booking.setTotalAmount(pricingService.calculateTotal(booking));
-		return bookingRepo.save(booking);
+
+		bookingRepo.save(booking);
 	}
 
 	@Transactional
 	public void cancelBooking(Long bookingId) {
-		var opt = bookingRepo.findById(bookingId);
-		if (opt.isEmpty()) return;
 
-		Booking booking = opt.get();
+		Booking booking = bookingRepo.findById(bookingId).orElseThrow(() -> new RuntimeException("Booking not found"));
+
 		if (booking.getStatus() == BookingStatus.CANCELLED) return;
 
-		Flight flight = booking.getFlight();
-		if (booking.getSeatClass() == SeatClass.ECONOMY) {
-			flight.setEconomySeatsAvailable(flight.getEconomySeatsAvailable() + booking.getSeats());
-		} else {
-			flight.setBusinessSeatsAvailable(flight.getBusinessSeatsAvailable() + booking.getSeats());
-		}
-		flightRepo.save(flight);
+		flightService.releaseSeatsAtomic(booking.getFlight().getId(), booking.getSeatClass(), booking.getSeats());
 
 		booking.setStatus(BookingStatus.CANCELLED);
 		bookingRepo.save(booking);
@@ -122,79 +126,67 @@ public class BookingService {
 
 	@Transactional
 	public void cancelBookingForUser(Long bookingId, Long userId) {
-		Booking booking = bookingRepo.findById(bookingId).orElseThrow(() -> new IllegalArgumentException("Booking not found: " + bookingId));
+		Booking booking = bookingRepo.findById(bookingId).orElseThrow(() -> new RuntimeException("Booking not found"));
+
 		if (!booking.getUser().getId().equals(userId)) {
-			throw new IllegalArgumentException("You cannot cancel another user's booking.");
+			throw new RuntimeException("Unauthorized cancel attempt");
 		}
+
 		cancelBooking(bookingId);
+	}
+
+	@Transactional
+	public void delete(Long bookingId) {
+
+		Booking booking = bookingRepo.findById(bookingId).orElseThrow(() -> new RuntimeException("Booking not found"));
+
+		if (booking.getStatus() == BookingStatus.BOOKED) {
+			flightService.releaseSeatsAtomic(booking.getFlight().getId(), booking.getSeatClass(), booking.getSeats());
+		}
+
+		bookingRepo.delete(booking);
+	}
+
+	@Transactional
+	public void deleteByFlightId(Long flightId) {
+
+		List<Booking> bookings = bookingRepo.findByFlightId(flightId);
+
+		for (Booking booking : bookings) {
+			if (booking.getStatus() == BookingStatus.BOOKED) {
+				flightService.releaseSeatsAtomic(booking.getFlight().getId(), booking.getSeatClass(), booking.getSeats());
+			}
+		}
+
+		bookingRepo.deleteAll(bookings);
+	}
+
+	@Transactional
+	public void deleteByUserId(Long userId) {
+
+		List<Booking> bookings = bookingRepo.findByUserId(userId);
+
+		for (Booking booking : bookings) {
+			if (booking.getStatus() == BookingStatus.BOOKED) {
+				flightService.releaseSeatsAtomic(booking.getFlight().getId(), booking.getSeatClass(), booking.getSeats());
+			}
+		}
+
+		bookingRepo.deleteAll(bookings);
 	}
 
 	public boolean existsByFlightId(Long flightId) {
 		return bookingRepo.existsByFlightId(flightId);
 	}
 
-	@Transactional
-	public void deleteByFlightId(Long flightId) {
-		new Booking().setStatus(BookingStatus.CANCELLED);
-		bookingRepo.deleteByFlightId(flightId);
+	public boolean existsByUserId(Long userId) {
+		return bookingRepo.existsByUserId(userId);
 	}
 
-	@Transactional
-	public void delete(Long bookingId) {
-		var opt = bookingRepo.findById(bookingId);
-		if (opt.isEmpty()) return;
-
-		Booking booking = opt.get();
-		if (booking.getStatus() == BookingStatus.BOOKED) {
-			releaseSeats(booking.getFlight(), booking.getSeatClass(), booking.getSeats());
-		}
-		bookingRepo.delete(booking);
-	}
-
-	@Transactional
-	public Booking save(Booking b) {
-		return bookingRepo.save(b);
-	}
-
-	@Transactional
-	public void deleteByUserId(Long userId) {
-		bookingRepo.findByUserId(userId).forEach(booking -> {
-			if (booking.getStatus() == BookingStatus.BOOKED) {
-				releaseSeats(booking.getFlight(), booking.getSeatClass(), booking.getSeats());
-			}
-		});
-		bookingRepo.deleteByUserId(userId);
-	}
-
-	public boolean existsByUserId(Long userId) {return bookingRepo.existsByUserId(userId);}
-
-	private void validateSeatsRequested(int seats) {
+	private void validateSeats(int seats) {
 		if (seats <= 0) {
-			throw new IllegalArgumentException("Seats must be greater than zero.");
+			throw new IllegalArgumentException("Seats must be greater than zero");
 		}
 	}
 
-	private void ensureSeatsAvailable(Flight flight, SeatClass seatClass, int seats) {
-		if (seatClass == SeatClass.ECONOMY && flight.getEconomySeatsAvailable() < seats) {
-			throw new IllegalArgumentException("Not enough economy seats");
-		}
-		if (seatClass == SeatClass.BUSINESS && flight.getBusinessSeatsAvailable() < seats) {
-			throw new IllegalArgumentException("Not enough business seats");
-		}
-	}
-
-	private void reserveSeats(Long flightId, SeatClass seatClass, int seats) {
-		int economyDelta = seatClass == SeatClass.ECONOMY ? -seats : 0;
-		int businessDelta = seatClass == SeatClass.BUSINESS ? -seats : 0;
-		flightService.updateAvailability(flightId, economyDelta, businessDelta);
-	}
-
-	private void releaseSeats(Flight flight, SeatClass seatClass, int seats) {
-		if (seatClass == SeatClass.ECONOMY) {
-			flight.setEconomySeatsAvailable(flight.getEconomySeatsAvailable() + seats);
-		} else {
-			flight.setBusinessSeatsAvailable(flight.getBusinessSeatsAvailable() + seats);
-		}
-		flightRepo.save(flight);
-	}
 }

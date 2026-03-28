@@ -1,6 +1,7 @@
 package org.airlinereservationsystem.service;
 
 import org.airlinereservationsystem.model.Flight;
+import org.airlinereservationsystem.model.enums.SeatClass;
 import org.airlinereservationsystem.repository.FlightRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,34 +29,19 @@ public class FlightService {
 		boolean hasDateRange = (start != null && end != null);
 
 		if (!hasOrigin && !hasDestination) {
-			if (!hasDateRange) {
-				return flightRepo.findAll();
-			} else {
-				return flightRepo.findByDepartureTimeBetween(start, end);
-			}
+			return hasDateRange ? flightRepo.findByDepartureTimeBetween(start, end) : flightRepo.findAll();
 		}
 
 		if (hasOrigin && hasDestination) {
-			if (hasDateRange) {
-				return flightRepo.findByOriginAndDestinationAndDepartureTimeBetween(origin, destination, start, end);
-			} else {
-				return flightRepo.findByOriginAndDestination(origin, destination);
-			}
-		} else if (hasOrigin) {
-			if (hasDateRange) {
-				return flightRepo.findByOriginAndDepartureTimeBetween(origin, start, end);
-			} else {
-				return flightRepo.findByOrigin(origin);
-			}
-		} else if (hasDestination) {
-			if (hasDateRange) {
-				return flightRepo.findByDestinationAndDepartureTimeBetween(destination, start, end);
-			} else {
-				return flightRepo.findByDestination(destination);
-			}
+			return hasDateRange ? flightRepo.findByOriginAndDestinationAndDepartureTimeBetween(origin, destination, start, end) : flightRepo.findByOriginAndDestination(origin, destination);
 		}
 
-		return flightRepo.findAll();
+		if (hasOrigin) {
+			return hasDateRange ? flightRepo.findByOriginAndDepartureTimeBetween(origin, start, end) : flightRepo.findByOrigin(origin);
+		}
+
+		return hasDateRange ? flightRepo.findByDestinationAndDepartureTimeBetween(destination, start, end) : flightRepo.findByDestination(destination);
+		
 	}
 
 	public Optional<Flight> findById(Long id) {
@@ -72,10 +58,23 @@ public class FlightService {
 
 	@Transactional
 	public void save(Flight flight) {
-		if (flight.getEconomySeatsAvailable() == 0 && flight.getBusinessSeatsAvailable() == 0) {
+
+		if (flight.getTotalEconomySeats() < 0 || flight.getTotalBusinessSeats() < 0) {
+			throw new IllegalArgumentException("Seat counts cannot be negative");
+		}
+
+		if (flight.getId() == null) {
+			// new flight
 			flight.setEconomySeatsAvailable(flight.getTotalEconomySeats());
 			flight.setBusinessSeatsAvailable(flight.getTotalBusinessSeats());
+		} else {
+			// existing flight → preserve availability
+			Flight existing = flightRepo.findById(flight.getId()).orElseThrow();
+
+			flight.setEconomySeatsAvailable(existing.getEconomySeatsAvailable());
+			flight.setBusinessSeatsAvailable(existing.getBusinessSeatsAvailable());
 		}
+
 		flightRepo.save(flight);
 	}
 
@@ -85,15 +84,28 @@ public class FlightService {
 	}
 
 	@Transactional
-	public void updateAvailability(Long id, int economyDelta, int businessDelta) {
-		Flight flight = flightRepo.findById(id).orElseThrow();
-		int updatedEconomySeats = flight.getEconomySeatsAvailable() + economyDelta;
-		int updatedBusinessSeats = flight.getBusinessSeatsAvailable() + businessDelta;
-		if (updatedEconomySeats < 0 || updatedBusinessSeats < 0) {
-			throw new IllegalArgumentException("Seat availability cannot be negative.");
+	public void reserveSeatsAtomic(Long flightId, SeatClass seatClass, int seats) {
+
+		int updated;
+
+		if (seatClass == SeatClass.ECONOMY) {
+			updated = flightRepo.reserveEconomySeats(flightId, seats);
+		} else {
+			updated = flightRepo.reserveBusinessSeats(flightId, seats);
 		}
-		flight.setEconomySeatsAvailable(updatedEconomySeats);
-		flight.setBusinessSeatsAvailable(updatedBusinessSeats);
-		flightRepo.save(flight);
+
+		if (updated == 0) {
+			throw new IllegalStateException("Not enough seats available");
+		}
+	}
+
+	@Transactional
+	public void releaseSeatsAtomic(Long flightId, SeatClass seatClass, int seats) {
+
+		if (seatClass == SeatClass.ECONOMY) {
+			flightRepo.releaseEconomySeats(flightId, seats);
+		} else {
+			flightRepo.releaseBusinessSeats(flightId, seats);
+		}
 	}
 }

@@ -11,8 +11,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 public class UserService {
+
 	private final UserRepository userRepo;
 	private final PasswordEncoder passwordEncoder;
 
@@ -21,41 +22,80 @@ public class UserService {
 		this.passwordEncoder = passwordEncoder;
 	}
 
-	public void save(User user) {
-		if (user.getRole() == null) user.setRole(Role.USER);
-		if (user.getId() != null) {
-			User existing = userRepo.findById(user.getId()).orElseThrow();
-			if (user.getPassword() == null || user.getPassword().isBlank()) {
-				user.setPassword(existing.getPassword());
-			}
+	@Transactional
+	public void register(User user) {
+
+		if (user.getRole() == null) {
+			user.setRole(Role.USER);
 		}
-		if (!isEncodedPassword(user.getPassword())) {
-			user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+		if (user.getPassword() == null || user.getPassword().isBlank()) {
+			throw new IllegalArgumentException("Password required");
 		}
+
+		// Optional but recommended: move duplicate checks here
+		if (userRepo.findByUsername(user.getUsername()).isPresent()) {
+			throw new IllegalArgumentException("Username already exists");
+		}
+
+		if (userRepo.findByEmail(user.getEmail()).isPresent()) {
+			throw new IllegalArgumentException("Email already exists");
+		}
+
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
+
 		userRepo.save(user);
 	}
 
-	public boolean passwordMatches(User user, String rawPassword) {
-		String storedPassword = user.getPassword();
-		if (isEncodedPassword(storedPassword)) {
-			return passwordEncoder.matches(rawPassword, storedPassword);
+	@Transactional
+	public void update(User user) {
+
+		User existing = userRepo.findById(user.getId()).orElseThrow(() -> new RuntimeException("User not found"));
+
+		// Password handling
+		if (user.getPassword() == null || user.getPassword().isBlank()) {
+			user.setPassword(existing.getPassword());
+		} else {
+			user.setPassword(passwordEncoder.encode(user.getPassword()));
 		}
-		boolean matchesLegacyPassword = storedPassword != null && storedPassword.equals(rawPassword);
-		if (matchesLegacyPassword) {
+
+		// Role handling (allow admin change, preserve otherwise)
+		if (user.getRole() == null) {
+			user.setRole(existing.getRole());
+		}
+
+		userRepo.save(user);
+	}
+
+	@Transactional
+	public boolean passwordMatches(User user, String rawPassword) {
+
+		String stored = user.getPassword();
+
+		if (stored == null) return false;
+
+		// Normal encoded case
+		if (stored.startsWith("$2")) {
+			return passwordEncoder.matches(rawPassword, stored);
+		}
+
+		// Legacy plain-text fallback → migrate
+		if (stored.equals(rawPassword)) {
 			user.setPassword(passwordEncoder.encode(rawPassword));
 			userRepo.save(user);
+			return true;
 		}
-		return matchesLegacyPassword;
+
+		return false;
 	}
 
-	private boolean isEncodedPassword(String password) {
-		return password != null && password.startsWith("$2");
-	}
 
+	@Transactional
 	public void delete(User user) {
 		userRepo.delete(user);
 	}
 
+	@Transactional
 	public void delete(Long id) {
 		userRepo.deleteById(id);
 	}

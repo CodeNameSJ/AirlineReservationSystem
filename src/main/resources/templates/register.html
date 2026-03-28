@@ -1,37 +1,45 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      lang="en"
-      th:replace="~{layout :: page('User Registration', ~{::content}, ~{::scripts})}">
+<html lang="en"
+      th:replace="~{layout :: page('User Registration', ~{::content}, ~{::scripts})}"
+      xmlns:th="http://www.thymeleaf.org">
 <th:block th:fragment="content">
 	<section class="page-shell">
 		<div class="section-intro">
 			<span class="eyebrow">Create Account</span>
 			<h1>Join the cabin</h1>
-			<p class="section-lead">Create your account once and manage every route, booking, and confirmation from a calmer control surface.</p>
+			<p class="section-lead">Create your account once and manage every route, booking, and confirmation from a
+			                        calmer control surface.</p>
 		</div>
 		<div class="login-box">
 			<p>Sign Up</p>
-			<form th:action="@{/register}" method="post" th:object="${user}">
+			<form method="post" th:action="@{/register}" th:object="${user}">
+
 				<div class="user-box">
-					<input required type="text" id="username" name="username" th:value="*{username}">
 					<label for="username">Username</label>
+					<input id="username" required th:field="*{username}" type="text">
+					<span class="error" th:errors="*{username}" th:if="${#fields.hasErrors('username')}"></span>
 				</div>
+
 				<div class="user-box">
-					<input required type="email" id="email" name="email" th:value="*{email}">
 					<label for="email">Email</label>
+					<input id="email" required th:field="*{email}" type="email">
+					<span class="error" th:errors="*{email}" th:if="${#fields.hasErrors('email')}"></span>
 				</div>
+
 				<div class="user-box">
-					<input required type="password" id="password" name="password">
 					<label for="password">Password</label>
+					<input id="password" required th:field="*{password}" type="password">
+					<span class="error" th:errors="*{password}" th:if="${#fields.hasErrors('password')}"></span>
 				</div>
-				<button type="submit" class="animated-button">
-					Register
-				</button>
+
+				<button class="animated-button" type="submit">Register</button>
+
 			</form>
+			
 			<p>Already have an account?
-				<a th:href="@{/login}" class="a2">Login</a>
+				<a class="a2" th:href="@{/login}">Login</a>
 			</p>
-			<p th:if="${error}" th:text="${error}" style="color:red" class="a2"></p>
+			<p class="a2" style="color:red" th:if="${error}" th:text="${error}"></p>
 		</div>
 	</section>
 </th:block>

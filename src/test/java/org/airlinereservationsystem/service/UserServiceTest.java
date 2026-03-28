@@ -11,13 +11,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
@@ -37,9 +36,9 @@ class UserServiceTest {
 		user.setUsername("alice");
 		user.setPassword("secret");
 
-		when(passwordEncoder.encode("secret")).thenReturn("$2hashed");
+		when(Objects.requireNonNull(passwordEncoder.encode("secret"))).thenReturn("$2hashed");
 
-		userService.save(user);
+		userService.register(user);
 
 		ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
 		verify(userRepository).save(userCaptor.capture());
@@ -61,7 +60,7 @@ class UserServiceTest {
 
 		when(userRepository.findById(7L)).thenReturn(Optional.of(existingUser));
 
-		userService.save(editedUser);
+		userService.update(editedUser);
 
 		ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
 		verify(userRepository).save(userCaptor.capture());
@@ -75,7 +74,7 @@ class UserServiceTest {
 		User user = new User();
 		user.setPassword("legacy-secret");
 
-		when(passwordEncoder.encode("legacy-secret")).thenReturn("$2upgraded");
+		when(Objects.requireNonNull(passwordEncoder.encode("legacy-secret"))).thenReturn("$2upgraded");
 
 		boolean matches = userService.passwordMatches(user, "legacy-secret");
 

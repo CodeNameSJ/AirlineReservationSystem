@@ -2,12 +2,14 @@ package org.airlinereservationsystem.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.airlinereservationsystem.model.User;
-import org.airlinereservationsystem.model.enums.Role;
 import org.airlinereservationsystem.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -61,45 +63,43 @@ public class AuthController {
 	}
 
 	@GetMapping("/register")
-	public String registerPage(HttpServletRequest req) {
+	public String registerPage(HttpServletRequest req, Model model) {
 		HttpSession s = req.getSession(true);
 		if (s != null && s.getAttribute("userId") != null) {
 			return "redirect:/";
 		}
+		model.addAttribute("user", new User());
 		return "register";
 	}
 
 	@PostMapping("/register")
-	public String doRegister(@RequestParam String username, @RequestParam String email, @RequestParam String password, HttpServletRequest req, Model model) {
-		if (userService.findByUsername(username).isPresent()) {
-			model.addAttribute("error", "Username taken");
-			return "register";
-		}
-		if (userService.findByEmail(email).isPresent()) {
-			model.addAttribute("error", "Email already registered");
+	public String doRegister(@Valid @ModelAttribute("user") User user, BindingResult result, HttpServletRequest req, Model model) {
+
+		if (result.hasErrors()) return "register";
+
+		try {
+			userService.register(user);
+		} catch (IllegalArgumentException e) {
+
+			String msg = e.getMessage();
+
+			if (msg.contains("Username")) {
+				result.rejectValue("username", "error.user", msg);
+			} else if (msg.contains("Email")) {
+				result.rejectValue("email", "error.user", msg);
+			} else {
+				result.reject("error.user", msg);
+			}
+
 			return "register";
 		}
 
-		User user = new User();
-		user.setUsername(username);
-		user.setEmail(email);
-		user.setPassword(password);
-		user.setRole(Role.USER);
-		userService.save(user);
-
-		// auto-login
+		// login logic
 		HttpSession session = req.getSession(true);
 		session.setAttribute("userId", user.getId());
 		session.setAttribute("username", user.getUsername());
 		session.setAttribute("role", user.getRole().name());
 
 		return "redirect:/user/home";
-	}
-
-	@GetMapping("/logout")
-	public String logout(HttpServletRequest req) {
-		HttpSession s = req.getSession(false);
-		if (s != null) s.invalidate();
-		return "redirect:/";
 	}
 }
