@@ -1,15 +1,8 @@
 <!DOCTYPE html>
 <html lang="en"
-      layout:decorate="~{layout}"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:th="http://www.thymeleaf.org">
-<head>
-	<th:block layout:fragment="head">
-		<title>Manage Bookings</title>
-	</th:block>
-</head>
-<body>
-<div layout:fragment="content">
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: page('Manage Bookings', ~{::content}, ~{::scripts})}">
+<th:block th:fragment="content">
 	<h1>Manage Bookings</h1>
 	<div class="action-bar">
 		<a class="btn secondary" th:href="@{/admin/bookings/new}">New Booking</a>
@@ -45,13 +38,13 @@
 				</form>
 
 				<button class="btn-cancel crud-button" th:if="${b.status != null and #strings.equalsIgnoreCase(b.status.toString(), 'BOOKED')}"
-				        th:onclick="'toggleWarning(' + ${b.id} + ', \'cancel\', true)'"
+				        th:onclick="'toggleWarning(' + ${b.id} + ', ''cancel'', true)'"
 				        type="button">
 					Cancel
 				</button>
 
 				<button class="btn-delete crud-button" th:if="${b.status != null and (#strings.equalsIgnoreCase(b.status.toString(), 'BOOKED') or #strings.equalsIgnoreCase(b.status.toString(), 'CANCELLED'))}"
-				        th:onclick="'toggleWarning(' + ${b.id} + ', \'delete\', true)'"
+				        th:onclick="'toggleWarning(' + ${b.id} + ', ''delete'', true)'"
 				        type="button">
 					Delete
 				</button>
@@ -67,7 +60,7 @@
 					<input name="confirm" type="hidden" value="true"/>
 					<button style="background:#f0ad4e;color:white;" type="submit">Yes, Cancel</button>
 				</form>
-				<button th:onclick="'toggleWarning(' + ${b.id} + ', \'cancel\', false)'" type="button">No, Keep</button>
+				<button th:onclick="'toggleWarning(' + ${b.id} + ', ''cancel'', false)'" type="button">No, Keep</button>
 			</td>
 		</tr>
 
@@ -79,15 +72,14 @@
 					<input name="confirm" type="hidden" value="true"/>
 					<button style="background:#d9534f;color:white;" type="submit">Yes, Delete</button>
 				</form>
-				<button th:onclick="'toggleWarning(' + ${b.id} + ', \'delete\', false)'" type="button">No, Keep</button>
+				<button th:onclick="'toggleWarning(' + ${b.id} + ', ''delete'', false)'" type="button">No, Keep</button>
 			</td>
 		</tr>
 		</tbody>
 	</table>
-</div>
+</th:block>
 
-<th:block layout:fragment="scripts">
+<th:block th:fragment="scripts">
 	<script defer th:src="@{/js/confirmation.js}"></script>
 </th:block>
-</body>
 </html>

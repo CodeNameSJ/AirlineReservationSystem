@@ -1,15 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout}" lang="en">
-<head>
-	<th:block layout:fragment="head">
-		<meta charset="utf-8"/>
-		<title>Book Flight</title>
-	</th:block>
-</head>
-<body>
-<div layout:fragment="content">
+      lang="en"
+      th:replace="~{layout :: page('Book Flight', ~{::content}, ~{::scripts})}">
+<th:block th:fragment="content">
 	<h1>Book Flight</h1>
 	<div th:if="${flight != null}">
 		<p>Flight:
@@ -32,11 +25,10 @@
 					        th:text="${seatClass}">
 					</option>
 				</select>
-
 			</label>
 			<button type="submit">Confirm Booking</button>
 		</form>
 	</div>
-</div>
-</body>
+</th:block>
+<th:block th:fragment="scripts"></th:block>
 </html>

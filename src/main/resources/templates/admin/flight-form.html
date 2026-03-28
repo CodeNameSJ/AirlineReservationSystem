@@ -1,17 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout}" lang="en">
-<head>
-	<th:block layout:fragment="head">
-		<title>Flight Details</title>
-	</th:block>
-</head>
-<body>
-<div layout:fragment="content">
+      lang="en"
+      th:replace="~{layout :: page('Flight Details', ~{::content}, ~{::scripts})}">
+<th:block th:fragment="content">
 	<h1 th:text="${flight.id != null} ? 'Edit Flight' : 'New Flight'"></h1>
 
-	<!-- bind the form to the flight model attribute -->
 	<form th:object="${flight}" th:action="@{/admin/flights}" method="post">
 		<input type="hidden" th:field="*{id}"/>
 
@@ -63,6 +56,6 @@
 		<button type="submit">Save</button>
 		<a th:href="@{/admin/flights}" class="button">Cancel</a>
 	</form>
-</div>
-</body>
+</th:block>
+<th:block th:fragment="scripts"></th:block>
 </html>

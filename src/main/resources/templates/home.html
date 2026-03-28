@@ -1,38 +1,42 @@
 <!DOCTYPE html>
 <html lang="en"
-      layout:decorate="~{layout}"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
-<head>
-	<th:block layout:fragment="head">
-	</th:block>
-	<title>Home - Airline Reservation</title>
-</head>
-<body>
-<div layout:fragment="content">
-	<div th:replace="~{fragments/searchForm :: searchForm}"></div>
-	<hr/>
-	<h2>Featured Flights</h2>
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: page('Home - Airline Reservation', ~{::content}, ~{::scripts})}">
+<th:block th:fragment="content">
+	<section class="page-shell">
+		<div class="hero-callout">
+			<span class="eyebrow">Curated Routes</span>
+			<h1>Move through every itinerary with lounge-level calm.</h1>
+			<p>Search, compare, and book in a cleaner interface built around route clarity, pricing confidence, and faster decisions.</p>
+		</div>
 
-	<div class="card-container" th:if="${flights != null and !#lists.isEmpty(flights)}">
-		<div class="card" th:each="f : ${flights}">
-			<div class="content">
-				<div class="title">
-					<span th:text="${f.origin}"></span>
-					<span class="form-separator">&#8594;</span>
-					<span th:text="${f.destination}"></span>
+		<div th:replace="~{fragments/searchForm :: searchForm}"></div>
+
+		<div class="section-intro">
+			<span class="eyebrow">Featured Flights</span>
+			<h2>Recommended departures this week</h2>
+			<p class="section-lead">A premium shortlist of active routes with quick booking access and clearer fare presentation.</p>
+		</div>
+
+		<div class="card-container" th:if="${flights != null and !#lists.isEmpty(flights)}">
+			<div class="card" th:each="f : ${flights}">
+				<div class="content">
+					<div class="title">
+						<span th:text="${f.origin}"></span>
+						<span class="form-separator">&#8594;</span>
+						<span th:text="${f.destination}"></span>
+					</div>
+					<div class="price">Economy: ₹<span th:text="${f.priceEconomy}"></span></div>
+					<div class="price">Business: ₹<span th:text="${f.priceBusiness}"></span></div>
+					<div class="description">Departure Time: <span th:text="${f.departureDisplay}"></span></div>
 				</div>
-				<div class="price">Economy: ₹<span th:text="${f.priceEconomy}"></span></div>
-				<div class="price">Business: ₹<span th:text="${f.priceBusiness}"></span></div>
-				<div class="description">Departure Time: <span th:text="${f.departureDisplay}"></span></div>
-			</div>
-			<!--			<a th:href="@{/user/book(flightId=${f.id})}">-->
-			<div>
-				<a th:href="@{/flight/{id}(id=${f.id})}" class="button">Book Now</a>
+				<div>
+					<a th:href="@{/flight/{id}(id=${f.id})}" class="button">Book Now</a>
+				</div>
 			</div>
 		</div>
-	</div>
-</div>
+	</section>
+</th:block>
 
-<th:block layout:fragment="scripts"></th:block>
-</body>
+<th:block th:fragment="scripts"></th:block>
 </html>

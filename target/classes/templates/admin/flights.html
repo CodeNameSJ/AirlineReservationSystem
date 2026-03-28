@@ -1,15 +1,8 @@
 <!DOCTYPE html>
 <html lang="en"
-      layout:decorate="~{layout}"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
-<head>
-	<th:block layout:fragment="head">
-		<meta charset="utf-8"/>
-		<title>Manage Flights</title>
-	</th:block>
-</head>
-<body>
-<div layout:fragment="content">
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: page('Manage Flights', ~{::content}, ~{::scripts})}">
+<th:block th:fragment="content">
 	<h1>Manage Flights</h1>
 
 	<div class="action-bar">
@@ -64,9 +57,8 @@
 		</tr>
 		</tbody>
 	</table>
-</div>
-<th:block layout:fragment="scripts">
+</th:block>
+<th:block th:fragment="scripts">
 	<script defer th:src="@{/js/confirmation.js}"></script>
 </th:block>
-</body>
 </html>

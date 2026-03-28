@@ -1,20 +1,19 @@
 <!DOCTYPE html>
 <html lang="en"
-      layout:decorate="~{layout}"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
-<head>
-	<title>Search Flights</title>
-	<th:block layout:fragment="head">
-		<meta charset="utf-8"/>
-	</th:block>
-</head>
-<body>
-<div layout:fragment="content">
-	<h1 class="page-title">Search Flights</h1>
-	<div th:replace="~{fragments/searchForm :: searchForm}"></div>
-	<hr/>
-	<div id="searchResults">
-		<table class="booking-table">
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: page('Search Flights', ~{::content}, ~{::scripts})}">
+<th:block th:fragment="content">
+	<section class="page-shell">
+		<div class="section-intro">
+			<span class="eyebrow">Search Results</span>
+			<h1 class="page-title">Search Flights</h1>
+			<p class="section-lead">Scan route availability, compare cabin pricing, and move directly into booking with a tighter, cleaner view.</p>
+		</div>
+
+		<div th:replace="~{fragments/searchForm :: searchForm}"></div>
+
+		<div id="searchResults" class="table-panel">
+			<table class="booking-table">
 			<thead>
 			<tr>
 				<th>Flight No</th>
@@ -42,9 +41,9 @@
 				</td>
 			</tr>
 			</tbody>
-		</table>
-	</div>
-</div>
-<th:block layout:fragment="scripts"></th:block>
-</body>
+			</table>
+		</div>
+	</section>
+</th:block>
+<th:block th:fragment="scripts"></th:block>
 </html>

@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      th:fragment="page(pageTitle, pageContent, pageScripts)">
 <head>
 	<meta charset="utf-8"/>
 	<title th:text="${pageTitle} ?: 'Airline Reservation'">Airline Reservation</title>
 
-	<!-- Global CSS -->
 	<th:block th:replace="~{fragments/themeHead :: themeHead}"></th:block>
 
 	<link rel="stylesheet" th:href="@{/css/theme.css}"/>
@@ -19,7 +19,6 @@
 	<link rel="stylesheet" th:href="@{/css/theme-toggle.css}"/>
 
 	<link rel="icon" th:href="@{/images/favicon.png}" type="image/png">
-	<th:block layout:fragment="head"></th:block>
 </head>
 <body>
 <header>
@@ -27,13 +26,12 @@
 </header>
 
 <main>
-	<section layout:fragment="content"></section>
+	<th:block th:replace="${pageContent}"></th:block>
 </main>
 
 <footer>
 	<div th:replace="~{fragments/footer :: footer}"></div>
 </footer>
-
 
 <script defer th:src="@{/js/search.js}"></script>
 <script defer th:src="@{/js/navbar.js}"></script>
@@ -41,6 +39,6 @@
 <script defer th:src="@{/js/theme-toggle.js}"></script>
 
 <div th:replace="~{fragments/themeToggle :: themeToggle}"></div>
-<th:block layout:fragment="scripts"></th:block>
+<th:block th:replace="${pageScripts}"></th:block>
 </body>
 </html>

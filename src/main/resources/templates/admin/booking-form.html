@@ -1,15 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout}" lang="en">
-<head>
-	<th:block layout:fragment="head">
-	</th:block>
-	<meta charset="utf-8"/>
-	<title th:text="${booking.id != null} ? 'Edit Booking' : 'New Booking'">Booking</title>
-</head>
-<body>
-<div layout:fragment="content">
+      lang="en"
+      th:replace="~{layout :: page(${booking.id != null} ? 'Edit Booking' : 'New Booking', ~{::content}, ~{::scripts})}">
+<th:block th:fragment="content">
 	<h2 th:text="${booking.id != null} ? 'Edit Booking' : 'New Booking'">Booking</h2>
 
 	<form th:action="@{/admin/bookings/save}" method="post">
@@ -29,7 +22,7 @@
 			<label for="flight">Flight</label>
 			<select name="flightId" id="flight" required>
 				<option th:each="f : ${flights}" th:value="${f.id}"
-				        th:text="${f.flightNumber + ' — ' + f.origin + '→' + f.destination + ' @ ' + (f.departureDisplay != null ? f.departureDisplay : '')}"
+				        th:text="${f.flightNumber + ' (' + f.origin + ' - ' + f.destination + ') @ ' + (f.departureDisplay != null ? f.departureDisplay : '')}"
 				        th:selected="${booking.flight != null && booking.flight.id == f.id}">Flight
 				</option>
 			</select>
@@ -61,10 +54,9 @@
 		<input type="hidden" name="confirm" value="true"/>
 		<button type="submit" style="background:#d9534f;color:white;">Delete</button>
 	</form>
-</div>
+</th:block>
 
-<th:block layout:fragment="scripts">
+<th:block th:fragment="scripts">
 	<script th:src="@{/js/confirmation.js}" defer></script>
 </th:block>
-</body>
 </html>

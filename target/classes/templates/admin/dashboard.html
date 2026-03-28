@@ -1,18 +1,17 @@
 <!DOCTYPE html>
 <html lang="en"
-      layout:decorate="~{layout}"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
-<head>
-	<th:block layout:fragment="head">
-		<meta charset="utf-8"/>
-		<title>Admin Dashboard</title>
-	</th:block>
-</head>
-<body>
-<div layout:fragment="content">
-	<h2>Admin Dashboard</h2>
-	<h3>All-Flights Overview</h3>
-	<table class="booking-table">
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: page('Admin Dashboard', ~{::content}, ~{::scripts})}">
+<th:block th:fragment="content">
+	<section class="page-shell">
+		<div class="section-intro">
+			<span class="eyebrow">Operations</span>
+			<h2>Admin Dashboard</h2>
+			<p class="section-lead">A focused overview of route inventory and timetable readiness across the current flight set.</p>
+		</div>
+		<div class="table-panel">
+			<h3>All Flights Overview</h3>
+			<table class="booking-table">
 		<thead>
 		<tr>
 			<th>Flight No</th>
@@ -26,18 +25,18 @@
 		</thead>
 		<tbody>
 		<tr th:each="flight : ${flights}">
-			<td th:text="${flight.flightNumber}">FL123</td>
-			<td th:text="${flight.origin}">OriginCity</td>
-			<td th:text="${flight.destination}">DestinationCity</td>
-			<td th:text="${flight.departureDisplay}">2025-08-17 08:00</td>
-			<td th:text="${flight.arrivalDisplay}">2025-08-17 12:00</td>
-			<td th:text="${flight.economySeatsAvailable} + '/' + ${flight.totalEconomySeats}">10/100</td>
-			<td th:text="${flight.businessSeatsAvailable} + '/' + ${flight.totalBusinessSeats}">12/30</td>
+			<td th:text="${flight.flightNumber}"></td>
+			<td th:text="${flight.origin}"></td>
+			<td th:text="${flight.destination}"></td>
+			<td th:text="${flight.departureDisplay}"></td>
+			<td th:text="${flight.arrivalDisplay}"></td>
+			<td th:text="${flight.economySeatsAvailable} + '/' + ${flight.totalEconomySeats}"></td>
+			<td th:text="${flight.businessSeatsAvailable} + '/' + ${flight.totalBusinessSeats}"></td>
 		</tr>
 		</tbody>
-	</table>
-</div>
-
-<th:block layout:fragment="scripts"></th:block>
-</body>
+			</table>
+		</div>
+	</section>
+</th:block>
+<th:block th:fragment="scripts"></th:block>
 </html>

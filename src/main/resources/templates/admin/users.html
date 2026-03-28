@@ -1,16 +1,8 @@
 <!DOCTYPE html>
 <html lang="en"
-      layout:decorate="~{layout}"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
-<head>
-	<th:block layout:fragment="head">
-		<meta charset="utf-8"/>
-		<title>Manage Users</title>
-	</th:block>
-</head>
-<body>
-
-<div layout:fragment="content">
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: page('Manage Users', ~{::content}, ~{::scripts})}">
+<th:block th:fragment="content">
 	<h2>Registered Users</h2>
 	<div class="action-bar">
 		<a class="btn secondary" th:href="@{/admin/users/add}">Add User</a>
@@ -36,7 +28,7 @@
 					<button type="submit">Edit</button>
 				</form>
 
-				<button th:onclick="'toggleWarning(' + ${user.id} + ', \'user\', true)'" type="button">Delete</button>
+				<button th:onclick="'toggleWarning(' + ${user.id} + ', ''user'', true)'" type="button">Delete</button>
 			</td>
 		</tr>
 
@@ -50,14 +42,13 @@
 					<input name="confirm" type="hidden" value="true"/>
 					<button style="background-color:red; color:white;" type="submit">Yes, Delete</button>
 				</form>
-				<button th:onclick="'toggleWarning(' + ${user.id} + ', \'user\', false)'" type="button">Cancel</button>
+				<button th:onclick="'toggleWarning(' + ${user.id} + ', ''user'', false)'" type="button">Cancel</button>
 			</td>
 		</tr>
 		</tbody>
 	</table>
-</div>
-<th:block layout:fragment="scripts">
+</th:block>
+<th:block th:fragment="scripts">
 	<script defer th:src="@{/js/confirmation.js}"></script>
 </th:block>
-</body>
 </html>
