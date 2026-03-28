@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en"
+      th:replace="~{layout :: page('Error', ~{::content}, ~{::scripts})}"
+      xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:fragment="content">
+	<section class="page-shell">
+		<div class="section-intro">
+			<span class="eyebrow">Something went wrong</span>
+			<h1>Unexpected Error</h1>
+			<p class="section-lead">
+				We hit some turbulence. The page you're looking for isn’t available or something failed on our side.
+			</p>
+		</div>
+
+		<div class="login-box">
+			<p>Error Details</p>
+
+			<!-- Status Code -->
+			<p th:if="${status}">
+				<strong>Status:</strong> <span th:text="${status}"></span>
+			</p>
+
+			<!-- Error Message -->
+			<p th:if="${error}">
+				<strong>Error:</strong> <span th:text="${error}"></span>
+			</p>
+
+			<!-- Custom Message -->
+			<p th:if="${message}">
+				<strong>Message:</strong> <span th:text="${message}"></span>
+			</p>
+
+			<!-- Timestamp -->
+			<p th:if="${timestamp}">
+				<strong>Time:</strong> <span th:text="${timestamp}"></span>
+			</p>
+
+			<!-- Action Buttons -->
+			<div style="margin-top: 20px;">
+				<a class="animated-button" th:href="@{/}">Go Home</a>
+			</div>
+
+			<p style="margin-top: 15px;">
+				Or try again later.
+			</p>
+		</div>
+	</section>
+</th:block>
+
+<th:block th:fragment="scripts"></th:block>
+</html>

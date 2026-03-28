@@ -1,10 +1,10 @@
 <nav class="navbar" th:fragment="navbar">
 	<div class="nav-left">
-		<a th:href="@{/}" class="a">
-			<img th:src="@{/images/logo.png}" class="logo" alt="Logo" />
+		<a class="a" th:href="@{/}">
+			<img alt="Logo" class="logo" th:src="@{/images/logo.png}"/>
 		</a>
-		<span th:if="${session.username != null}" class="btn-shine">
-			Welcome, <span th:text="${session.username}" style="text-transform: uppercase"></span>
+		<span class="btn-shine" th:if="${session.username != null}">
+			Welcome, <span style="text-transform: uppercase" th:text="${session.username}"></span>
 		</span>
 	</div>
 
@@ -14,33 +14,34 @@
 	</div>
 
 	<div class="nav-right">
-		<div th:if="${session.role != null and session.role == 'ADMIN'}" class="nav-right">
+		<div class="nav-right" th:if="${session.role != null and session.role == 'ADMIN'}">
 			<div class="dropdown">
-				<button th:href="@{/admin/dashboard}" class="drop-btn glowing-text a" aria-expanded="false" aria-controls="admin-menu">
+				<button aria-controls="admin-menu" aria-expanded="false" class="drop-btn glowing-text a"
+				        th:href="@{/admin/dashboard}">
 					Admin Dashboard <span class="arrow">&#9662;</span>
 				</button>
-				<span id="admin-menu" class="dropdown-content" role="menu" aria-label="Admin options">
-					<a th:href="@{/admin/flights}" class="glowing-text a">Manage Flights</a>
-					<a th:href="@{/admin/users}" class="glowing-text a">Manage Users</a>
-					<a th:href="@{/admin/bookings}" class="glowing-text a">Manage Bookings</a>
+				<span aria-label="Admin options" class="dropdown-content" id="admin-menu" role="menu">
+					<a class="glowing-text a" th:href="@{/admin/flights}">Manage Flights</a>
+					<a class="glowing-text a" th:href="@{/admin/users}">Manage Users</a>
+					<a class="glowing-text a" th:href="@{/admin/bookings}">Manage Bookings</a>
 				</span>
 			</div>
 			<span>|</span>
-			<a th:href="@{/logout}" class="cta a">
+			<a class="cta button" th:href="@{/logout}">
 				<span>Logout</span>
-				<svg width="15px" height="10px" viewBox="0 0 13 10">
+				<svg height="10px" viewBox="0 0 13 10" width="15px">
 					<path d="M1,5 L11,5"></path>
 					<polyline points="8 1 12 5 8 9"></polyline>
 				</svg>
 			</a>
 		</div>
 
-		<span th:if="${session.userId != null and session.role != 'ADMIN'}" class="nav-right">
-			<a th:href="@{/user/home}" class="glowing-text a">My Bookings</a>
+		<span class="nav-right" th:if="${session.userId != null and session.role != 'ADMIN'}">
+			<a class="glowing-text a" th:href="@{/user/home}">My Bookings</a>
 			<span>|</span>
-			<a th:href="@{/logout}" class="cta a">
+			<a class="cta button" th:href="@{/logout}">
 				<span>Logout</span>
-				<svg width="15px" height="10px" viewBox="0 0 13 10">
+				<svg height="10px" viewBox="0 0 13 10" width="15px">
 					<path d="M1,5 L11,5"></path>
 					<polyline points="8 1 12 5 8 9"></polyline>
 				</svg>
@@ -48,9 +49,9 @@
 		</span>
 
 		<span th:if="${session.userId == null}">
-			<a th:href="@{/login}" class="cta a">
+			<a class="cta button" th:href="@{/login}">
 				<span>Login</span>
-				<svg width="15px" height="10px" viewBox="0 0 13 10">
+				<svg height="10px" viewBox="0 0 13 10" width="15px">
 					<path d="M1,5 L11,5"></path>
 					<polyline points="8 1 12 5 8 9"></polyline>
 				</svg>

@@ -99,4 +99,11 @@ public class AuthController {
 
 		return "redirect:/user/home";
 	}
+
+	@GetMapping("/logout")
+	public String logout(HttpServletRequest req) {
+		HttpSession s = req.getSession(false);
+		if (s != null) s.invalidate();
+		return "redirect:/";
+	}
 }
