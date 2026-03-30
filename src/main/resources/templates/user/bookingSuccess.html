@@ -40,9 +40,21 @@
 				</div>
 
 				<div class="success-actions">
-					<a class="button" th:href="@{/user/booking/{id}(id=${booking.id})}">View Booking</a>
-					<a class="btn secondary" th:href="@{/user/booking/{id}/bill(id=${booking.id})}">Open Invoice</a>
-					<a class="btn secondary" th:href="@{/user/home}">My Bookings</a>
+					<button class="button"
+					        th:onclick="|window.location.href='@{/user/booking/{id}(id=${booking.id})}'|"
+					        type="button">
+						View Booking
+					</button>
+					<button class="btn secondary"
+					        th:onclick="|window.location.href='@{/user/booking/{id}/bill(id=${booking.id})}'|"
+					        type="button">
+						Open Invoice
+					</button>
+					<button class="btn secondary"
+					        th:onclick="|window.location.href='@{/user/home}'|"
+					        type="button">
+						My Bookings
+					</button>
 				</div>
 			</div>
 
@@ -69,7 +81,11 @@
 				<p class="section-lead">The success page was opened without an attached booking record.</p>
 			</div>
 			<div class="action-bar">
-				<a class="button" th:href="@{/user/home}">Back to My Bookings</a>
+				<button class="button"
+				        th:onclick="|window.location.href='@{/user/home}'|"
+				        type="button">
+					Back to My Bookings
+				</button>
 			</div>
 		</div>
 	</section>

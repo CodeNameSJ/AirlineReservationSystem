@@ -9,6 +9,7 @@ import org.airlinereservationsystem.service.PricingService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/user")
@@ -98,12 +99,13 @@ public class UserController {
 	}
 
 	@PostMapping("/bookings/cancel")
-	public String cancel(@RequestParam Long id, HttpServletRequest req) {
+	public String cancel(@RequestParam Long id, HttpServletRequest req, RedirectAttributes redirectAttributes) {
 
 		Long userId = getUserId(req);
 		if (userId == null) return "redirect:/login";
 
 		bookingService.cancelBookingForUser(id, userId);
+		redirectAttributes.addFlashAttribute("successMessage", "Booking canceled successfully.");
 		return "redirect:/user/home";
 	}
 

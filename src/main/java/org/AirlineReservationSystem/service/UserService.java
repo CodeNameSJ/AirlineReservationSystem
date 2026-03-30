@@ -25,6 +25,7 @@ public class UserService {
 
 	@Transactional
 	public void register(User user) {
+		normalizeIdentity(user);
 
 		if (user.getRole() == null) {
 			user.setRole(Role.USER);
@@ -43,15 +44,26 @@ public class UserService {
 		}
 
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
-		user.setUsername(user.getUsername().trim().toLowerCase());
-		user.setEmail(user.getEmail().trim().toLowerCase());
 		userRepo.save(user);
 	}
 
 	@Transactional
 	public void update(User user) {
+		normalizeIdentity(user);
 
 		User existing = userRepo.findById(user.getId()).orElseThrow(() -> new RuntimeException("User not found"));
+
+		userRepo.findByUsername(user.getUsername())
+				.filter(found -> !found.getId().equals(existing.getId()))
+				.ifPresent(found -> {
+					throw new UserValidationException("username", "Username already exists");
+				});
+
+		userRepo.findByEmail(user.getEmail())
+				.filter(found -> !found.getId().equals(existing.getId()))
+				.ifPresent(found -> {
+					throw new UserValidationException("email", "Email already exists");
+				});
 
 		// Password handling
 		if (user.getPassword() == null || user.getPassword().isBlank()) {
@@ -65,8 +77,6 @@ public class UserService {
 			user.setRole(existing.getRole());
 		}
 		
-		user.setUsername(user.getUsername().trim().toLowerCase());
-		user.setEmail(user.getEmail().trim().toLowerCase());
 		userRepo.save(user);
 	}
 
@@ -108,7 +118,8 @@ public class UserService {
 	}
 
 	public Optional<User> findByUsername(String username) {
-		return userRepo.findByUsername(username);
+		if (username == null) return Optional.empty();
+		return userRepo.findByUsername(username.trim().toLowerCase());
 	}
 
 	public Optional<User> findByEmail(String email) {
@@ -117,5 +128,14 @@ public class UserService {
 
 	public Optional<User> findById(Long id) {
 		return userRepo.findById(id);
+	}
+
+	private void normalizeIdentity(User user) {
+		if (user.getUsername() != null) {
+			user.setUsername(user.getUsername().trim().toLowerCase());
+		}
+		if (user.getEmail() != null) {
+			user.setEmail(user.getEmail().trim().toLowerCase());
+		}
 	}
 }

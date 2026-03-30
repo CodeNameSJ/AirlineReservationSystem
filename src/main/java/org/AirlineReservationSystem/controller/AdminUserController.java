@@ -5,6 +5,7 @@ import org.airlinereservationsystem.model.User;
 import org.airlinereservationsystem.model.enums.Role;
 import org.airlinereservationsystem.service.BookingService;
 import org.airlinereservationsystem.service.UserService;
+import org.airlinereservationsystem.util.UserValidationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -42,15 +43,24 @@ public class AdminUserController {
 	}
 
 	@PostMapping("/save")
-	public String saveUser(HttpServletRequest req, @ModelAttribute User user) {
+	public String saveUser(HttpServletRequest req, @ModelAttribute User user, Model model, RedirectAttributes redirectAttributes) {
 		if (isNotAdmin(req))
 			return "redirect:/login";
-		if (user.getId() == null) {
-			userService.register(user); // new user
-		} else {
-			userService.update(user); // existing user
+		try {
+			if (user.getId() == null) {
+				userService.register(user);
+				redirectAttributes.addFlashAttribute("successMessage", "User created successfully.");
+			} else {
+				userService.update(user);
+				redirectAttributes.addFlashAttribute("successMessage", "User updated successfully.");
+			}
+			return "redirect:/admin/users";
+		} catch (UserValidationException e) {
+			model.addAttribute("errorMessage", e.getMessage());
+			model.addAttribute("user", user);
+			model.addAttribute("roles", Role.values());
+			return "admin/user-form";
 		}
-		return "redirect:/admin/users";
 	}
 
 	@GetMapping("/edit/{username}")
@@ -60,7 +70,11 @@ public class AdminUserController {
 		var opt = userService.findByUsername(username);
 		if (opt.isEmpty())
 			return "redirect:/admin/users";
-		model.addAttribute("user", opt.get());
+		User user = opt.get();
+		if (!user.getUsername().equals(username)) {
+			return "redirect:/admin/users/edit/" + user.getUsername();
+		}
+		model.addAttribute("user", user);
 		model.addAttribute("roles", Role.values());
 		return "admin/user-form";
 	}

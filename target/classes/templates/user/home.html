@@ -1,88 +1,97 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      lang="en"
-      th:replace="~{layout :: page('My Bookings', ~{::content}, ~{::scripts})}">
+<html lang="en"
+      th:replace="~{layout :: page('My Bookings', ~{::content}, ~{::scripts})}"
+      xmlns:th="http://www.thymeleaf.org">
 <th:block th:fragment="content">
 	<section class="page-shell">
 		<div class="section-intro">
 			<span class="eyebrow">My Trips</span>
 			<h2>Welcome, <span th:text="${session.username}">Username</span></h2>
-			<p class="section-lead">Review your bookings, check their status, and cancel active reservations when needed.</p>
+			<p class="section-lead">Review your bookings, check their status, and cancel active reservations when
+			                        needed.</p>
 		</div>
 
 		<div class="table-panel">
 			<h3>Your Bookings</h3>
-			<table class="booking-table" aria-describedby="booking-info">
-		<thead>
-		<tr>
-			<th>ID</th>
-			<th>Flight</th>
-			<th>Class</th>
-			<th>Seats</th>
-			<th>Departure</th>
-			<th>Status</th>
-			<th>Actions</th>
-		</tr>
-		</thead>
-		<tbody>
-		<th:block th:each="booking : ${bookings}">
-			<tr>
-				<td th:text="${booking.id}">1</td>
-				<td th:text="${booking.flight != null ? booking.flight.flightNumber : '-'}">FL123</td>
-				<td th:text="${booking.seatClass}">Economy</td>
-				<td th:text="${booking.seats}">2</td>
-				<td th:text="${booking.flight != null ? booking.flight.departureDisplay : '-'}">-</td>
-				<td><span class="status-chip" th:text="${booking.status}">BOOKED</span></td>
-				<td>
-					<a th:href="@{/user/booking/{id}(id=${booking.id})}" class="btn secondary">View</a>
-					<button type="button" class="btn-cancel crud-button warn-toggle"
-					        data-type="cancel"
-					        th:attr="data-id=${booking.id}"
-					        th:if="${booking.status != null and #strings.equalsIgnoreCase(booking.status.toString(), 'BOOKED')}">
-						Cancel
-					</button>
-
-					<span th:unless="${booking.status != null and #strings.equalsIgnoreCase(booking.status.toString(), 'BOOKED')}">—</span>
-				</td>
-			</tr>
-
-			<tr th:id="'warning-cancel-' + ${booking.id}"
-			    class="warning-row"
-			    style="display:none;"
-			    th:if="${booking.status != null and #strings.equalsIgnoreCase(booking.status.toString(), 'BOOKED')}">
-				<td colspan="7">
-					<strong>&#9888; Cancel booking?</strong>
-					<p>This cannot be undone.</p>
-
-					<form class="inline-action" th:method="post" th:action="@{/user/bookings/cancel}">
-						<input type="hidden" name="id" th:value="${booking.id}"/>
-						<input type="hidden" name="confirm" value="true"/>
-						<div class="form-actions">
-							<button type="submit" class="btn-cancel crud-button">
-								Yes, Cancel
+			<table aria-describedby="booking-info" class="booking-table">
+				<thead>
+				<tr>
+					<th>ID</th>
+					<th>Flight</th>
+					<th>Class</th>
+					<th>Seats</th>
+					<th>Departure</th>
+					<th>Status</th>
+					<th>Actions</th>
+				</tr>
+				</thead>
+				<tbody>
+				<th:block th:each="booking : ${bookings}">
+					<tr>
+						<td th:text="${booking.id}">1</td>
+						<td th:text="${booking.flight != null ? booking.flight.flightNumber : '-'}">FL123</td>
+						<td th:text="${booking.seatClass}">Economy</td>
+						<td th:text="${booking.seats}">2</td>
+						<td th:text="${booking.flight != null ? booking.flight.departureDisplay : '-'}">-</td>
+						<td><span class="status-chip" th:text="${booking.status}">BOOKED</span></td>
+						<td>
+							<button class="btn secondary"
+							        th:onclick="|window.location.href='@{/user/booking/{id}(id=${booking.id})}'|"
+							        type="button">
+								View
 							</button>
-
-							<button type="button" class="btn secondary warn-toggle"
+							<button aria-expanded="false" class="btn-cancel crud-button warn-toggle"
 							        data-type="cancel"
-							        th:attr="data-id=${booking.id}">
-								No, Keep
+							        th:aria-controls="'warning-cancel-' + ${booking.id}"
+							        th:attr="data-id=${booking.id}"
+							        th:if="${booking.status != null and #strings.equalsIgnoreCase(booking.status.toString(), 'BOOKED')}"
+							        type="button">
+								Cancel
 							</button>
-						</div>
-					</form>
-				</td>
-			</tr>
-		</th:block>
 
-		<tr th:if="${bookings == null or #lists.isEmpty(bookings)}">
-			<td class="empty-row" colspan="7">You have no bookings.</td>
-		</tr>
-		</tbody>
+							<span th:unless="${booking.status != null and #strings.equalsIgnoreCase(booking.status.toString(), 'BOOKED')}"></span>
+						</td>
+					</tr>
+
+					<tr class="warning-row warning-collapsible"
+					    th:id="'warning-cancel-' + ${booking.id}"
+					    th:if="${booking.status != null and #strings.equalsIgnoreCase(booking.status.toString(), 'BOOKED')}">
+						<td colspan="7">
+							<strong>&#9888; Cancel booking #<span th:text="${booking.id}">1</span> for flight <span
+									th:text="${booking.flight != null ? booking.flight.flightNumber : '-'}">FL123</span>?</strong>
+							<p>This cannot be undone.</p>
+
+							<form class="inline-action" th:action="@{/user/bookings/cancel}" th:method="post">
+								<input name="id" th:value="${booking.id}" type="hidden"/>
+								<input name="confirm" type="hidden" value="true"/>
+								<div class="form-actions">
+									<button class="btn-cancel crud-button" type="submit">
+										Yes, Cancel
+									</button>
+
+									<button aria-expanded="false" class="btn secondary warn-toggle"
+									        data-type="cancel"
+									        th:aria-controls="'warning-cancel-' + ${booking.id}"
+									        th:attr="data-id=${booking.id}"
+									        type="button">
+										No, Keep
+									</button>
+								</div>
+							</form>
+						</td>
+					</tr>
+				</th:block>
+
+				<tr th:if="${bookings == null or #lists.isEmpty(bookings)}">
+					<td class="empty-row" colspan="7">You have no bookings.</td>
+				</tr>
+				</tbody>
 			</table>
 		</div>
 	</section>
 </th:block>
 
 <th:block th:fragment="scripts">
-	<script th:src="@{/js/confirmation.js}" defer></script>
+	<script defer th:src="@{/js/confirmation.js}"></script>
 </th:block>
 </html>

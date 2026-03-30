@@ -11,7 +11,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.Objects;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -34,9 +33,12 @@ class UserServiceTest {
 	void saveHashesPlaintextPasswordsAndDefaultsRoleForNewUsers() {
 		User user = new User();
 		user.setUsername("alice");
+		user.setEmail("alice@mail.com");
 		user.setPassword("secret");
 
-		when(Objects.requireNonNull(passwordEncoder.encode("secret"))).thenReturn("$2hashed");
+		when(userRepository.findByUsername("alice")).thenReturn(Optional.empty());
+		when(userRepository.findByEmail("alice@mail.com")).thenReturn(Optional.empty());
+		when(passwordEncoder.encode("secret")).thenReturn("$2hashed");
 
 		userService.register(user);
 
@@ -55,10 +57,13 @@ class UserServiceTest {
 		User editedUser = new User();
 		editedUser.setId(7L);
 		editedUser.setUsername("alice");
+		editedUser.setEmail("alice@mail.com");
 		editedUser.setPassword(" ");
 		editedUser.setRole(Role.ADMIN);
 
 		when(userRepository.findById(7L)).thenReturn(Optional.of(existingUser));
+		when(userRepository.findByUsername("alice")).thenReturn(Optional.of(existingUser));
+		when(userRepository.findByEmail("alice@mail.com")).thenReturn(Optional.empty());
 
 		userService.update(editedUser);
 
@@ -74,7 +79,7 @@ class UserServiceTest {
 		User user = new User();
 		user.setPassword("legacy-secret");
 
-		when(Objects.requireNonNull(passwordEncoder.encode("legacy-secret"))).thenReturn("$2upgraded");
+		when(passwordEncoder.encode("legacy-secret")).thenReturn("$2upgraded");
 
 		boolean matches = userService.passwordMatches(user, "legacy-secret");
 

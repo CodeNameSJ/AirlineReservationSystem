@@ -17,7 +17,11 @@
 					<p>Review booking records and confirm cancel or delete actions directly under the selected row.</p>
 				</div>
 				<div class="action-bar">
-					<a class="btn secondary" th:href="@{/admin/bookings/new}">New Booking</a>
+					<button class="btn secondary"
+					        th:onclick="|window.location.href='@{/admin/bookings/new}'|"
+					        type="button">
+						New Booking
+					</button>
 				</div>
 			</div>
 
@@ -56,6 +60,8 @@
 								<button class="btn-cancel crud-button warn-toggle"
 								        data-type="cancel"
 								        th:attr="data-id=${b.id}"
+								        th:aria-controls="'warning-cancel-' + ${b.id}"
+								        aria-expanded="false"
 								        th:if="${b.status != null and #strings.equalsIgnoreCase(b.status.toString(), 'BOOKED')}"
 								        type="button">
 									Cancel
@@ -64,6 +70,8 @@
 								<button class="btn-delete crud-button warn-toggle"
 								        data-type="delete"
 								        th:attr="data-id=${b.id}"
+								        th:aria-controls="'warning-delete-' + ${b.id}"
+								        aria-expanded="false"
 								        th:if="${b.status != null and (#strings.equalsIgnoreCase(b.status.toString(), 'BOOKED') or #strings.equalsIgnoreCase(b.status.toString(), 'CANCELLED'))}"
 								        type="button">
 									Delete
@@ -71,10 +79,10 @@
 							</td>
 						</tr>
 
-						<tr class="warning-row" style="display:none;" th:id="'warning-cancel-' + ${b.id}"
+						<tr class="warning-row warning-collapsible" th:id="'warning-cancel-' + ${b.id}"
 						    th:if="${b.status != null and #strings.equalsIgnoreCase(b.status.toString(), 'BOOKED')}">
 							<td colspan="9">
-								<strong>&#9888; This booking is active. Canceling will restore seats. Proceed?</strong>
+								<strong>&#9888; Cancel booking #<span th:text="${b.id}">1</span> for flight <span th:text="${b.flight.flightNumber}">FL123</span>?</strong>
 								<p>The cancellation is immediate and the available inventory is returned to the flight.</p>
 								<form class="inline-action" th:action="@{/admin/bookings/cancel}" th:method="post">
 									<input name="id" th:value="${b.id}" type="hidden"/>
@@ -82,6 +90,8 @@
 									<div class="form-actions">
 										<button class="btn-cancel crud-button" type="submit">Yes, Cancel</button>
 										<button class="btn secondary warn-toggle" data-type="cancel" th:attr="data-id=${b.id}"
+										        th:aria-controls="'warning-cancel-' + ${b.id}"
+										        aria-expanded="false"
 										        type="button">No, Keep
 										</button>
 									</div>
@@ -89,9 +99,9 @@
 							</td>
 						</tr>
 
-						<tr class="warning-row" style="display:none;" th:id="'warning-delete-' + ${b.id}">
+						<tr class="warning-row warning-collapsible" th:id="'warning-delete-' + ${b.id}">
 							<td colspan="9">
-								<strong>&#9888; This will permanently delete the booking. Proceed?</strong>
+								<strong>&#9888; Delete booking #<span th:text="${b.id}">1</span> for user <span th:text="${b.user.username}">user</span>?</strong>
 								<p>Use deletion only for records you do not want to preserve in the admin ledger.</p>
 								<form class="inline-action" th:action="@{/admin/bookings/delete}" th:method="post">
 									<input name="id" th:value="${b.id}" type="hidden"/>
@@ -99,6 +109,8 @@
 									<div class="form-actions">
 										<button class="btn-delete crud-button" type="submit">Yes, Delete</button>
 										<button class="btn secondary warn-toggle" data-type="delete" th:attr="data-id=${b.id}"
+										        th:aria-controls="'warning-delete-' + ${b.id}"
+										        aria-expanded="false"
 										        type="button">No, Keep
 										</button>
 									</div>

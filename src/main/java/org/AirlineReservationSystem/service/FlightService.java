@@ -49,7 +49,8 @@ public class FlightService {
 	}
 
 	public Optional<Flight> findByFlightNumber(String flightNumber) {
-		return flightRepo.findByFlightNumber(flightNumber);
+		if (flightNumber == null) return Optional.empty();
+		return flightRepo.findByFlightNumber(normalizeFlightNumber(flightNumber));
 	}
 
 	public List<String> originAirports() {
@@ -62,10 +63,17 @@ public class FlightService {
 
 	@Transactional
 	public void save(Flight flight) {
+		normalizeFlight(flight);
 
 		if (flight.getTotalEconomySeats() < 0 || flight.getTotalBusinessSeats() < 0) {
 			throw new IllegalArgumentException("Seat counts cannot be negative");
 		}
+
+		flightRepo.findByFlightNumber(flight.getFlightNumber())
+				.filter(existing -> flight.getId() == null || !existing.getId().equals(flight.getId()))
+				.ifPresent(existing -> {
+					throw new IllegalArgumentException("Flight number already exists");
+				});
 
 		if (flight.getId() == null) {
 			// new flight
@@ -131,5 +139,21 @@ public class FlightService {
 		}
 
 		return updated;
+	}
+
+	private void normalizeFlight(Flight flight) {
+		if (flight.getFlightNumber() != null) {
+			flight.setFlightNumber(normalizeFlightNumber(flight.getFlightNumber()));
+		}
+		if (flight.getOrigin() != null) {
+			flight.setOrigin(flight.getOrigin().trim());
+		}
+		if (flight.getDestination() != null) {
+			flight.setDestination(flight.getDestination().trim());
+		}
+	}
+
+	private String normalizeFlightNumber(String flightNumber) {
+		return flightNumber.trim().toUpperCase();
 	}
 }

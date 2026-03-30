@@ -17,7 +17,11 @@
 					<p>Review flight schedules, seat counts, and edit or delete each route.</p>
 				</div>
 				<div class="action-bar">
-					<a class="btn secondary" th:href="@{/admin/flights/new}">New Flight</a>
+					<button class="btn secondary"
+					        th:onclick="|window.location.href='@{/admin/flights/new}'|"
+					        type="button">
+						New Flight
+					</button>
 				</div>
 			</div>
 
@@ -54,15 +58,17 @@
 									Edit
 								</button>
 								<button class="btn-delete crud-button warn-toggle" data-type="delete"
-								        th:attr="data-id=${flight.id}" type="button">Delete
+								        th:attr="data-id=${flight.id}"
+								        th:aria-controls="'warning-delete-' + ${flight.id}"
+								        aria-expanded="false"
+								        type="button">Delete
 								</button>
 							</td>
 						</tr>
 
-						<tr class="warning-row" style="display:none;" th:id="'warning-delete-' + ${flight.id}">
+						<tr class="warning-row warning-collapsible" th:id="'warning-delete-' + ${flight.id}">
 							<td colspan="9">
-								<strong>&#9888; Are you sure you want to delete this flight? Deleting it will also remove all
-								        related bookings.</strong>
+								<strong>&#9888; Delete flight <span th:text="${flight.flightNumber}">FL123</span>? This also removes related bookings.</strong>
 								<p>This action removes the route and its dependent reservations from the system.</p>
 								<form class="inline-action" th:action="@{/admin/flights/delete}" th:method="post">
 									<input name="id" th:value="${flight.id}" type="hidden"/>

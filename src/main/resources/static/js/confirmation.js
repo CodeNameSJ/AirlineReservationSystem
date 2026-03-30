@@ -12,19 +12,20 @@ if (!window.__confirmationInit) {
 		if (!row) return;
 
 		if (show === null) {
-			show = row.style.display === 'none';
+			show = !row.classList.contains('is-open');
 		}
 
 		document.querySelectorAll('[id^="warning-"]').forEach(el => {
 			if (el.id !== targetId) {
-				el.style.display = 'none';
+				el.classList.remove('is-open');
 			}
 		});
 
-		const isTr = row.tagName.toLowerCase() === 'tr';
-		row.style.display = show
-			? (isTr ? 'table-row' : 'block')
-			: 'none';
+		row.classList.toggle('is-open', show);
+
+		document.querySelectorAll(`.warn-toggle[data-id="${id}"][data-type="${type}"]`).forEach(btn => {
+			btn.setAttribute('aria-expanded', String(show));
+		});
 	};
 
 	document.addEventListener('click', (e) => {
@@ -42,7 +43,10 @@ if (!window.__confirmationInit) {
 			!e.target.closest('[id^="warning-"]')) {
 
 			document.querySelectorAll('[id^="warning-"]').forEach(el => {
-				el.style.display = 'none';
+				el.classList.remove('is-open');
+			});
+			document.querySelectorAll('.warn-toggle[aria-expanded="true"]').forEach(btn => {
+				btn.setAttribute('aria-expanded', 'false');
 			});
 		}
 	});

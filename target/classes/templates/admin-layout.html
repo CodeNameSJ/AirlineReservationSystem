@@ -28,6 +28,10 @@
 </header>
 
 <main>
+	<div aria-live="polite" class="flash-stack" th:if="${successMessage != null or errorMessage != null}" role="status">
+		<div class="flash-message success" th:if="${successMessage != null}" th:text="${successMessage}">Action completed successfully.</div>
+		<div class="flash-message error" th:if="${errorMessage != null}" th:text="${errorMessage}">Something went wrong.</div>
+	</div>
 	<th:block th:replace="${pageContent}"></th:block>
 </main>
 

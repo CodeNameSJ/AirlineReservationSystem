@@ -50,6 +50,18 @@
 	color: var(--site-muted);
 }
 
+.warning-collapsible {
+	display: none;
+}
+
+tr.warning-collapsible.is-open {
+	display: table-row;
+}
+
+div.warning-collapsible.is-open {
+	display: block;
+}
+
 .table-wrap {
 	width: 100%;
 	overflow-x: auto;
@@ -87,6 +99,31 @@
 	font-weight: 800;
 	letter-spacing: 0.08em;
 	text-transform: uppercase;
+}
+
+.flash-stack {
+	display: grid;
+	gap: 0.85rem;
+}
+
+.flash-message {
+	padding: 1rem 1.15rem;
+	border-radius: 18px;
+	border: 1px solid transparent;
+	box-shadow: var(--shadow-card);
+	font-weight: 600;
+}
+
+.flash-message.success {
+	background: color-mix(in srgb, var(--site-secondary) 14%, var(--white) 86%);
+	border-color: color-mix(in srgb, var(--site-secondary) 24%, transparent);
+	color: color-mix(in srgb, var(--site-secondary) 78%, var(--site-text) 22%);
+}
+
+.flash-message.error {
+	background: color-mix(in srgb, #8b2e34 12%, var(--white) 88%);
+	border-color: color-mix(in srgb, #8b2e34 22%, transparent);
+	color: #8b2e34;
 }
 
 .detail-grid {

@@ -62,7 +62,11 @@
 
 					<div class="form-actions">
 						<button type="submit">Save Booking</button>
-						<a class="btn secondary" th:href="@{/admin/bookings}">Back to Bookings</a>
+						<button class="btn secondary"
+						        th:onclick="|window.location.href='@{/admin/bookings}'|"
+						        type="button">
+							Back to Bookings
+						</button>
 					</div>
 				</form>
 
@@ -71,15 +75,17 @@
 						<button class="btn-delete warn-toggle"
 						        data-type="delete"
 						        th:attr="data-id=${booking.id}"
+						        th:aria-controls="'warning-delete-' + ${booking.id}"
+						        aria-expanded="false"
 						        type="button">
 							Delete Booking
 						</button>
 					</div>
 
-					<div class="section-card" style="display:none;" th:id="'warning-delete-' + ${booking.id}">
+					<div class="section-card warning-collapsible" th:id="'warning-delete-' + ${booking.id}">
 						<div class="form-header">
 							<span class="eyebrow">Confirm Delete</span>
-							<h3>Remove this booking?</h3>
+							<h3>Remove booking #<span th:text="${booking.id}">1</span>?</h3>
 							<p>This action permanently deletes the reservation record.</p>
 						</div>
 						<form class="inline-action" method="post" th:action="@{/admin/bookings/delete}">
@@ -87,7 +93,10 @@
 							<input name="confirm" type="hidden" value="true"/>
 							<div class="form-actions">
 								<button class="btn-delete" type="submit">Yes, Delete</button>
-								<button class="btn secondary warn-toggle" data-type="delete" th:attr="data-id=${booking.id}" type="button">Keep Booking</button>
+								<button class="btn secondary warn-toggle" data-type="delete" th:attr="data-id=${booking.id}"
+								        th:aria-controls="'warning-delete-' + ${booking.id}"
+								        aria-expanded="false"
+								        type="button">Keep Booking</button>
 							</div>
 						</form>
 					</div>

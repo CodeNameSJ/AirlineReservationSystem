@@ -74,7 +74,11 @@
 
 					<div class="form-actions">
 						<button type="submit">Save Flight</button>
-						<a class="btn secondary" th:href="@{/admin/flights}">Back to Flights</a>
+						<button class="btn secondary"
+						        th:onclick="|window.location.href='@{/admin/flights}'|"
+						        type="button">
+							Back to Flights
+						</button>
 					</div>
 				</form>
 			</div>

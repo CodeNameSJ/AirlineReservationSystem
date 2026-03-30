@@ -75,17 +75,38 @@ public class AdminBookingController {
 	public String saveBooking(HttpServletRequest req, @RequestParam(required = false) Long id,
 			@RequestParam Long userId, @RequestParam Long flightId, @RequestParam int seats,
 			@RequestParam SeatClass seatClass, @RequestParam(required = false) BookingStatus status,
+			Model model,
 			RedirectAttributes ra) {
 		if (isNotAdmin(req))
 			return "redirect:/login";
 
-		Booking booking = bookingService.updateBooking(id, userId, flightId, seatClass, seats, status);
-		boolean isNewBooking = id == null;
-		String flightNumber = booking.getFlight() != null ? booking.getFlight().getFlightNumber() : "N/A";
-		ra.addFlashAttribute("successMessage",
-				(isNewBooking ? "Booking created" : "Booking updated") + ": #" + booking.getId() + " for flight "
-						+ flightNumber + ".");
-		return "redirect:/admin/bookings/edit/" + booking.getId();
+		try {
+			boolean isNewBooking = id == null;
+			Booking booking = isNewBooking
+					? bookingService.createBooking(userId, flightId, seatClass, seats)
+					: bookingService.updateBooking(id, userId, flightId, seatClass, seats, status);
+			String flightNumber = booking.getFlight() != null ? booking.getFlight().getFlightNumber() : "N/A";
+			ra.addFlashAttribute("successMessage",
+					(isNewBooking ? "Booking created" : "Booking updated") + ": #" + booking.getId() + " for flight "
+							+ flightNumber + ".");
+			return "redirect:/admin/bookings/edit/" + booking.getId();
+		} catch (RuntimeException e) {
+			Booking booking = new Booking();
+			booking.setId(id);
+			userService.findById(userId).ifPresent(booking::setUser);
+			flightService.findById(flightId).ifPresent(booking::setFlight);
+			booking.setSeatClass(seatClass);
+			booking.setSeats(seats);
+			booking.setStatus(status);
+
+			model.addAttribute("errorMessage", e.getMessage());
+			model.addAttribute("booking", booking);
+			model.addAttribute("users", userService.findAll());
+			model.addAttribute("flights", flightService.findAll());
+			model.addAttribute("seatClasses", SeatClass.values());
+			model.addAttribute("bookingStatus", BookingStatus.values());
+			return "admin/booking-form";
+		}
 	}
 
 	@PostMapping("/delete")

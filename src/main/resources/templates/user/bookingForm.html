@@ -40,7 +40,11 @@
 
 					<div class="form-actions">
 						<button type="submit">Confirm Booking</button>
-						<a class="btn secondary" th:href="@{/flight/{id}(id=${flight.id})}">Back to Flight</a>
+						<button class="btn secondary"
+						        th:onclick="|window.location.href='@{/flight/{id}(id=${flight.id})}'|"
+						        type="button">
+							Back to Flight
+						</button>
 					</div>
 				</form>
 			</div>
@@ -84,7 +88,11 @@
 				<p class="section-lead">The booking form was opened without a valid flight record.</p>
 			</div>
 			<div class="action-bar">
-				<a class="button" th:href="@{/flights}">Return to Flights</a>
+				<button class="button"
+				        th:onclick="|window.location.href='@{/flights}'|"
+				        type="button">
+					Return to Flights
+				</button>
 			</div>
 		</div>
 	</section>

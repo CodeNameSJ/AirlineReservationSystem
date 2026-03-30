@@ -27,35 +27,41 @@
 				</div>
 			</div>
 			<span>|</span>
-			<a class="cta button" th:href="@{/logout}">
+			<button class="cta button"
+			        th:onclick="|window.location.href='@{/logout}'|"
+			        type="button">
 				<span>Logout</span>
 				<svg height="10px" viewBox="0 0 13 10" width="15px">
 					<path d="M1,5 L11,5"></path>
 					<polyline points="8 1 12 5 8 9"></polyline>
 				</svg>
-			</a>
+			</button>
 		</div>
 
 		<span class="nav-right" th:if="${session.userId != null and session.role != 'ADMIN'}">
 			<a class="glowing-text a" th:href="@{/user/home}">My Bookings</a>
 			<span>|</span>
-			<a class="cta button" th:href="@{/logout}">
+			<button class="cta button"
+			        th:onclick="|window.location.href='@{/logout}'|"
+			        type="button">
 				<span>Logout</span>
 				<svg height="10px" viewBox="0 0 13 10" width="15px">
 					<path d="M1,5 L11,5"></path>
 					<polyline points="8 1 12 5 8 9"></polyline>
 				</svg>
-			</a>
+			</button>
 		</span>
 
 		<span th:if="${session.userId == null}">
-			<a class="cta button" th:href="@{/login}">
+			<button class="cta button"
+			        th:onclick="|window.location.href='@{/login}'|"
+			        type="button">
 				<span>Login</span>
 				<svg height="10px" viewBox="0 0 13 10" width="15px">
 					<path d="M1,5 L11,5"></path>
 					<polyline points="8 1 12 5 8 9"></polyline>
 				</svg>
-			</a>
+			</button>
 		</span>
 		<!--		<a th:href="@{/register}" class="signup a">SIGN UP</a>-->
 	</div>

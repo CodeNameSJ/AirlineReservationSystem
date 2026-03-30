@@ -17,7 +17,11 @@
 					<p>Review user roles and account details, and confirm deletions directly under the selected row.</p>
 				</div>
 				<div class="action-bar">
-					<a class="btn secondary" th:href="@{/admin/users/add}">Add User</a>
+					<button class="btn secondary"
+					        th:onclick="|window.location.href='@{/admin/users/add}'|"
+					        type="button">
+						Add User
+					</button>
 				</div>
 			</div>
 
@@ -47,15 +51,16 @@
 								</button>
 
 								<button class="btn-delete crud-button warn-toggle" data-type="user" th:attr="data-id=${user.id}"
+								        th:aria-controls="'warning-user-' + ${user.id}"
+								        aria-expanded="false"
 								        type="button">Delete
 								</button>
 							</td>
 						</tr>
 
-						<tr class="warning-row" style="display:none;" th:id="'warning-user-' + ${user.id}">
+						<tr class="warning-row warning-collapsible" th:id="'warning-user-' + ${user.id}">
 							<td colspan="5">
-								<strong>&#9888; Are you sure you want to delete this user? Deleting it will also remove all
-								        related bookings.</strong>
+								<strong>&#9888; Delete user <span th:text="${user.username}">username</span>? This also removes related bookings.</strong>
 								<p>Delete it only when you want the account and dependent reservation history removed.</p>
 								<form class="inline-action" th:action="@{/admin/users/delete}" th:method="post">
 									<input name="id" th:value="${user.id}" type="hidden"/>
@@ -63,6 +68,8 @@
 									<div class="form-actions">
 										<button class="btn-delete crud-button" type="submit">Yes, Delete</button>
 										<button class="btn secondary warn-toggle" data-type="user" th:attr="data-id=${user.id}"
+										        th:aria-controls="'warning-user-' + ${user.id}"
+										        aria-expanded="false"
 										        type="button">Keep User
 										</button>
 									</div>

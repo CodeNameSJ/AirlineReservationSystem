@@ -47,8 +47,16 @@
 					<p>Return to the homepage, browse flights again, or try the action later if the problem continues.</p>
 				</div>
 				<div class="form-actions">
-					<a class="button" th:href="@{/}">Go Home</a>
-					<a class="btn secondary" th:href="@{/flights}">Browse Flights</a>
+					<button class="button"
+					        th:onclick="|window.location.href='@{/}'|"
+					        type="button">
+						Go Home
+					</button>
+					<button class="btn secondary"
+					        th:onclick="|window.location.href='@{/flights}'|"
+					        type="button">
+						Browse Flights
+					</button>
 				</div>
 				<p class="field-note">If this repeats, the server log context above is the starting point for diagnosis.</p>
 			</div>

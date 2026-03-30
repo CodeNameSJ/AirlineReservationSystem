@@ -31,7 +31,11 @@
 					<div class="description">Departure Time: <span th:text="${f.departureDisplay}"></span></div>
 				</div>
 				<div>
-					<a th:href="@{/flight/{id}(id=${f.id})}" class="button">Book Now</a>
+					<button class="button"
+					        th:onclick="|window.location.href='@{/flight/{id}(id=${f.id})}'|"
+					        type="button">
+						Book Now
+					</button>
 				</div>
 			</div>
 		</div>

@@ -32,10 +32,18 @@
 		</div>
 
 		<div class="action-bar" th:if="${session.userId != null}">
-			<a th:href="@{/user/book(flightId=${flight.id})}" class="button">Book this flight</a>
+				<button class="button"
+				        th:onclick="|window.location.href='@{/user/book(flightId=${flight.id})}'|"
+				        type="button">
+					Book this flight
+				</button>
 		</div>
 		<div class="action-bar" th:unless="${session.userId != null}">
-			<a th:href="@{/login}" class="button">Login to Book</a>
+				<button class="button"
+				        th:onclick="|window.location.href='@{/login}'|"
+				        type="button">
+					Login to Book
+				</button>
 		</div>
 	</section>
 </th:block>

@@ -51,17 +51,26 @@ public class AdminController {
 	}
 
 	@PostMapping("/flights")
-	public String saveFlight(HttpServletRequest req, @ModelAttribute Flight flight) {
+	public String saveFlight(HttpServletRequest req, @ModelAttribute Flight flight, Model model, RedirectAttributes redirectAttributes) {
 		if (isNotAdmin(req))
 			return "redirect:/login";
+		boolean isNewFlight = flight.getId() == null;
 
-		if (flight.getId() == null) {
-			flight.setEconomySeatsAvailable(flight.getTotalEconomySeats());
-			flight.setBusinessSeatsAvailable(flight.getTotalBusinessSeats());
+		try {
+			if (isNewFlight) {
+				flight.setEconomySeatsAvailable(flight.getTotalEconomySeats());
+				flight.setBusinessSeatsAvailable(flight.getTotalBusinessSeats());
+			}
+
+			flightService.save(flight);
+			redirectAttributes.addFlashAttribute("successMessage",
+					isNewFlight ? "Flight created successfully." : "Flight updated successfully.");
+			return "redirect:/admin/flights";
+		} catch (IllegalArgumentException e) {
+			model.addAttribute("errorMessage", e.getMessage());
+			model.addAttribute("flight", flight);
+			return "admin/flight-form";
 		}
-
-		flightService.save(flight);
-		return "redirect:/admin/flights";
 	}
 
 	@GetMapping("/flights/new")
@@ -84,7 +93,11 @@ public class AdminController {
 		var opt = flightService.findByFlightNumber(flightNumber);
 		if (opt.isEmpty())
 			return "redirect:/admin/flights";
-		model.addAttribute("flight", opt.get());
+		Flight flight = opt.get();
+		if (!flight.getFlightNumber().equals(flightNumber)) {
+			return "redirect:/admin/flights/edit/" + flight.getFlightNumber();
+		}
+		model.addAttribute("flight", flight);
 		return "admin/flight-form";
 	}
 
