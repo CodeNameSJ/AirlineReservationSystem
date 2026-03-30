@@ -4,7 +4,7 @@
 			<img alt="Logo" class="logo" th:src="@{/images/logo.png}"/>
 		</a>
 		<span class="btn-shine" th:if="${session.username != null}">
-			Welcome, <span style="text-transform: uppercase" th:text="${session.username}"></span>
+			Welcome, <span class="username" th:text="${session.username}"></span>
 		</span>
 	</div>
 
@@ -16,15 +16,15 @@
 	<div class="nav-right">
 		<div class="nav-right" th:if="${session.role != null and session.role == 'ADMIN'}">
 			<div class="dropdown">
-				<button aria-controls="admin-menu" aria-expanded="false" class="drop-btn glowing-text a"
-				        th:href="@{/admin/dashboard}">
+				<button aria-controls="admin-menu" aria-expanded="false" class="drop-btn glowing-text a" type="button">
 					Admin Dashboard <span class="arrow">&#9662;</span>
 				</button>
-				<span aria-label="Admin options" class="dropdown-content" id="admin-menu" role="menu">
+				<div aria-label="Admin options" class="dropdown-content" id="admin-menu">
+					<a class="glowing-text a" th:href="@{/admin/dashboard}">Dashboard Overview</a>
 					<a class="glowing-text a" th:href="@{/admin/flights}">Manage Flights</a>
 					<a class="glowing-text a" th:href="@{/admin/users}">Manage Users</a>
 					<a class="glowing-text a" th:href="@{/admin/bookings}">Manage Bookings</a>
-				</span>
+				</div>
 			</div>
 			<span>|</span>
 			<a class="cta button" th:href="@{/logout}">

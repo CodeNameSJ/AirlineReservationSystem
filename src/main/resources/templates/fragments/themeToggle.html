@@ -1,10 +1,12 @@
 <div th:fragment="themeToggle">
 	<div class="theme-toggle-container">
-		<label aria-checked="false" class="toggle" role="switch" title="Toggle theme">
+		<label class="toggle" for="theme-switch" title="Toggle theme">
 
-			<input aria-label="Toggle dark mode"
+			<input aria-checked="false"
+			       aria-label="Toggle dark mode"
 			       class="theme-switch-input"
 			       id="theme-switch"
+			       role="switch"
 			       type="checkbox">
 
 			<span aria-hidden="true" class="icon icon--moon">

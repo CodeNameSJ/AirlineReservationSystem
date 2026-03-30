@@ -48,6 +48,10 @@ public class FlightService {
 		return flightRepo.findById(id);
 	}
 
+	public Optional<Flight> findByFlightNumber(String flightNumber) {
+		return flightRepo.findByFlightNumber(flightNumber);
+	}
+
 	public List<String> originAirports() {
 		return flightRepo.findDistinctOrigins();
 	}

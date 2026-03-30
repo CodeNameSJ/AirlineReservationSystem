@@ -1,0 +1,276 @@
+.booking-hero {
+	display: grid;
+	gap: 0.8rem;
+}
+
+.booking-grid {
+	display: grid;
+	grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
+	gap: 1.25rem;
+	align-items: start;
+}
+
+.booking-summary,
+.invoice-card,
+.success-card {
+	display: grid;
+	gap: 1rem;
+}
+
+.booking-pill-row {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.65rem;
+}
+
+.booking-pill {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.45rem;
+	padding: 0.65rem 0.9rem;
+	border-radius: 999px;
+	background: color-mix(in srgb, var(--site-primary) 8%, var(--white) 92%);
+	color: color-mix(in srgb, var(--site-primary) 72%, var(--site-text) 28%);
+	font-size: 0.78rem;
+	font-weight: 800;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+}
+
+.invoice-card {
+	padding: clamp(1.2rem, 2vw, 2rem);
+	background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.88)),
+	var(--card-bg);
+	border: 1px solid var(--card-border);
+	border-radius: var(--radius-lg);
+	box-shadow: var(--shadow-strong);
+}
+
+:root[data-theme="dark"] .invoice-card {
+	background: linear-gradient(180deg, rgba(17, 25, 31, 0.96), rgba(19, 29, 35, 0.92)),
+	var(--card-bg);
+}
+
+.invoice-head {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 1rem;
+	padding-bottom: 1rem;
+	border-bottom: 1px solid var(--table-border);
+}
+
+.invoice-brand {
+	display: grid;
+	gap: 0.35rem;
+}
+
+.invoice-brand h2 {
+	margin: 0;
+}
+
+.invoice-code {
+	font-size: 0.84rem;
+	color: var(--site-muted);
+}
+
+.invoice-code.inverse {
+	color: rgba(255, 255, 255, 0.78);
+}
+
+.invoice-status {
+	display: inline-flex;
+	align-items: center;
+	padding: 0.55rem 0.85rem;
+	border-radius: 999px;
+	background: color-mix(in srgb, var(--site-secondary) 14%, var(--white) 86%);
+	color: color-mix(in srgb, var(--site-secondary) 76%, var(--site-text) 24%);
+	font-size: 0.76rem;
+	font-weight: 800;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+}
+
+.invoice-meta {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 1rem;
+}
+
+.invoice-meta-block {
+	display: grid;
+	gap: 0.35rem;
+	padding: 1rem;
+	border-radius: 20px;
+	background: color-mix(in srgb, var(--site-primary) 5%, var(--white) 95%);
+	border: 1px solid color-mix(in srgb, var(--site-primary) 8%, transparent);
+}
+
+.invoice-label {
+	font-size: 0.72rem;
+	font-weight: 800;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--site-muted);
+}
+
+.invoice-value {
+	font-size: 1.05rem;
+	font-weight: 700;
+	color: #385264;
+}
+
+.invoice-route {
+	display: grid;
+	gap: 0.85rem;
+	padding: 1rem 1.1rem;
+	border-radius: 22px;
+	background: linear-gradient(135deg, rgba(40, 75, 99, 0.94), rgba(60, 110, 113, 0.9));
+	color: var(--white);
+	box-shadow: 0 18px 38px rgba(32, 53, 67, 0.22);
+}
+
+.invoice-route-top {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 0.75rem;
+}
+
+.invoice-airports {
+	display: flex;
+	align-items: center;
+	gap: 0.85rem;
+	font-family: "Cormorant Garamond", serif;
+	font-size: clamp(1.8rem, 3vw, 2.6rem);
+}
+
+.invoice-airports .arrow {
+	font-size: 1.1rem;
+	opacity: 0.8;
+}
+
+.invoice-note {
+	color: rgba(255, 255, 255, 0.78);
+	font-size: 0.95rem;
+}
+
+.invoice-table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.invoice-table th,
+.invoice-table td {
+	padding: 0.85rem 0;
+	border-bottom: 1px solid var(--table-border);
+	font-size: 0.94rem;
+}
+
+.invoice-table th {
+	text-align: left;
+	font-size: 0.72rem;
+	font-weight: 800;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--site-muted);
+}
+
+.invoice-table td:last-child,
+.invoice-table th:last-child {
+	text-align: right;
+}
+
+.invoice-total {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding-top: 1rem;
+	font-size: 1.2rem;
+	font-weight: 800;
+	color: color-mix(in srgb, var(--site-primary) 74%, var(--site-text) 26%);
+}
+
+.success-card {
+	padding: clamp(1.35rem, 2vw, 2rem);
+}
+
+.success-highlight {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.65rem;
+	width: fit-content;
+	padding: 0.65rem 0.95rem;
+	border-radius: 999px;
+	background: color-mix(in srgb, var(--site-secondary) 14%, var(--white) 86%);
+	color: color-mix(in srgb, var(--site-secondary) 72%, var(--site-text) 28%);
+	font-size: 0.78rem;
+	font-weight: 800;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+}
+
+.success-summary {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 1rem;
+}
+
+.success-summary .invoice-meta-block {
+	height: 100%;
+}
+
+.success-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.75rem;
+	margin-top: 0.4rem;
+}
+
+.success-actions .btn,
+.success-actions .button {
+	width: auto;
+}
+
+.empty-state {
+	padding: 1.5rem;
+	border-radius: var(--radius-lg);
+	background: color-mix(in srgb, var(--card-bg) 94%, var(--white) 6%);
+	border: 1px solid var(--card-border);
+	box-shadow: var(--shadow-card);
+}
+
+@media (max-width: 900px) {
+	.booking-grid,
+	.invoice-meta,
+	.success-summary {
+		grid-template-columns: 1fr;
+	}
+}
+
+@media print {
+	body {
+		padding: 0;
+		background: #ffffff;
+	}
+
+	body::before,
+	header,
+	footer,
+	.theme-toggle-container,
+	.action-bar,
+	.success-actions {
+		display: none !important;
+	}
+
+	main {
+		max-width: none;
+	}
+
+	.invoice-card {
+		box-shadow: none;
+		border: 0;
+		padding: 0;
+		background: #ffffff;
+	}
+}

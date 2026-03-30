@@ -65,6 +65,7 @@ button[type="button"]:focus-visible {
 	color: var(--site-primary);
 	border-color: color-mix(in srgb, var(--site-primary) 22%, transparent);
 	box-shadow: none;
+	text-align: center;
 }
 
 .btn.secondary:hover,

@@ -3,59 +3,105 @@
       lang="en"
       th:replace="~{layout :: page('Flight Details', ~{::content}, ~{::scripts})}">
 <th:block th:fragment="content">
-	<h1 th:text="${flight.id != null} ? 'Edit Flight' : 'New Flight'"></h1>
+	<section class="page-shell">
+		<div class="section-intro">
+			<span class="eyebrow">Admin Flight</span>
+			<h1 th:text="${flight.id != null} ? 'Edit Flight' : 'Create Flight'">Flight</h1>
+			<p class="section-lead">Set route details, timing, seat availability, and fares for this flight.</p>
+		</div>
 
-	<form th:object="${flight}" th:action="@{/admin/flights}" method="post">
-		<input type="hidden" th:field="*{id}"/>
+		<div class="booking-grid">
+			<div class="form-panel section-card">
+				<div class="form-header">
+					<span class="eyebrow">Route Setup</span>
+					<h2>Flight configuration</h2>
+					<p>Keep the flight number, route, timing, seat counts, and pricing aligned before publishing changes.</p>
+				</div>
 
-		<label>Flight Number:
-			<input type="text" th:field="*{flightNumber}" required/>
-		</label>
-		<br/>
+				<form method="post" th:action="@{/admin/flights}" th:object="${flight}">
+					<input th:field="*{id}" type="hidden"/>
 
-		<label>Origin:
-			<input type="text" th:field="*{origin}" required/>
-		</label>
-		<br/>
+					<div class="form-row">
+						<label>
+							Flight Number
+							<input required th:field="*{flightNumber}" type="text"/>
+						</label>
+						<label>
+							Origin
+							<input required th:field="*{origin}" type="text"/>
+						</label>
+					</div>
 
-		<label>Destination:
-			<input type="text" th:field="*{destination}" required/>
-		</label>
-		<br/>
+					<div class="form-row">
+						<label>
+							Destination
+							<input required th:field="*{destination}" type="text"/>
+						</label>
+						<label>
+							Departure Time
+							<input th:field="*{departureTime}" type="datetime-local"/>
+						</label>
+					</div>
 
-		<label>Departure Time:
-			<input type="datetime-local" th:field="*{departureTime}"/>
-		</label>
-		<br/>
+					<div class="form-row">
+						<label>
+							Arrival Time
+							<input th:field="*{arrivalTime}" type="datetime-local"/>
+						</label>
+						<label>
+							Total Economy Seats
+							<input min="0" th:field="*{totalEconomySeats}" type="number"/>
+						</label>
+					</div>
 
-		<label>Arrival Time:
-			<input type="datetime-local" th:field="*{arrivalTime}"/>
-		</label>
-		<br/>
+					<div class="form-row">
+						<label>
+							Total Business Seats
+							<input min="0" th:field="*{totalBusinessSeats}" type="number"/>
+						</label>
+						<label>
+							Price Economy
+							<input step="0.01" th:field="*{priceEconomy}" type="number"/>
+						</label>
+					</div>
 
-		<label>Total Economy Seats:
-			<input type="number" th:field="*{totalEconomySeats}" min="0"/>
-		</label>
-		<br/>
+					<div class="form-row">
+						<label>
+							Price Business
+							<input step="0.01" th:field="*{priceBusiness}" type="number"/>
+						</label>
+					</div>
 
-		<label>Total Business Seats:
-			<input type="number" th:field="*{totalBusinessSeats}" min="0"/>
-		</label>
-		<br/>
+					<div class="form-actions">
+						<button type="submit">Save Flight</button>
+						<a class="btn secondary" th:href="@{/admin/flights}">Back to Flights</a>
+					</div>
+				</form>
+			</div>
 
-		<label>Price Economy:
-			<input type="number" step="0.01" th:field="*{priceEconomy}"/>
-		</label>
-		<br/>
-
-		<label>Price Business:
-			<input type="number" step="0.01" th:field="*{priceBusiness}"/>
-		</label>
-		<br/>
-
-		<button type="submit">Save</button>
-		<a th:href="@{/admin/flights}" class="button">Cancel</a>
-	</form>
+			<div class="panel booking-summary">
+				<div class="form-header">
+					<span class="eyebrow">Summary</span>
+					<h2>Current flight details</h2>
+					<p>Review the route and fare information for this flight before saving.</p>
+				</div>
+				<div class="booking-pill-row">
+					<span class="booking-pill" th:text="${flight.flightNumber != null ? flight.flightNumber : 'Flight number pending'}">Flight number pending</span>
+					<span class="booking-pill" th:text="${(flight.origin != null ? flight.origin : 'Origin') + ' → ' + (flight.destination != null ? flight.destination : 'Destination')}">Origin → Destination</span>
+				</div>
+				<dl>
+					<dt>Departure</dt>
+					<dd th:text="${flight.departureDisplay != null ? flight.departureDisplay : 'Set on save'}">Set on save</dd>
+					<dt>Arrival</dt>
+					<dd th:text="${flight.arrivalDisplay != null ? flight.arrivalDisplay : 'Set on save'}">Set on save</dd>
+					<dt>Economy Price</dt>
+					<dd th:text="${flight.priceEconomy != null ? '₹' + flight.priceEconomy : 'Pending'}">Pending</dd>
+					<dt>Business Price</dt>
+					<dd th:text="${flight.priceBusiness != null ? '₹' + flight.priceBusiness : 'Pending'}">Pending</dd>
+				</dl>
+			</div>
+		</div>
+	</section>
 </th:block>
 <th:block th:fragment="scripts"></th:block>
 </html>

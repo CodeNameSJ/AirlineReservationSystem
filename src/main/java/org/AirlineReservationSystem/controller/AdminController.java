@@ -12,7 +12,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.List;
 
 import static org.airlinereservationsystem.util.DateUtils.addFormattedMaps;
-import static org.airlinereservationsystem.util.isNotAdmin.isNotAdmin;
+import static org.airlinereservationsystem.util.ifAdmin.isNotAdmin;
 
 @Controller
 @RequestMapping("/admin")
@@ -27,7 +27,8 @@ public class AdminController {
 
 	@GetMapping("/dashboard")
 	public String dashboard(HttpServletRequest req, Model model) {
-		if (isNotAdmin(req)) return "redirect:/login";
+		if (isNotAdmin(req))
+			return "redirect:/login";
 		List<Flight> flights = flightService.findAll();
 		addFormattedMaps(model, flights);
 		model.addAttribute("flights", flights);
@@ -36,7 +37,8 @@ public class AdminController {
 
 	@GetMapping("/flights")
 	public String manageFlights(HttpServletRequest req, Model model) {
-		if (isNotAdmin(req)) return "redirect:/login";
+		if (isNotAdmin(req))
+			return "redirect:/login";
 
 		List<Flight> flights = flightService.findAll();
 
@@ -50,7 +52,8 @@ public class AdminController {
 
 	@PostMapping("/flights")
 	public String saveFlight(HttpServletRequest req, @ModelAttribute Flight flight) {
-		if (isNotAdmin(req)) return "redirect:/login";
+		if (isNotAdmin(req))
+			return "redirect:/login";
 
 		if (flight.getId() == null) {
 			flight.setEconomySeatsAvailable(flight.getTotalEconomySeats());
@@ -63,7 +66,8 @@ public class AdminController {
 
 	@GetMapping("/flights/new")
 	public String showNewFlightForm(HttpServletRequest req, Model model) {
-		if (isNotAdmin(req)) return "redirect:/login";
+		if (isNotAdmin(req))
+			return "redirect:/login";
 		Flight flight = new Flight();
 		model.addAttribute("flight", flight);
 
@@ -73,18 +77,22 @@ public class AdminController {
 		return "admin/flight-form";
 	}
 
-	@GetMapping("/flights/edit/{id}")
-	public String showEditFlightForm(@PathVariable Long id, HttpServletRequest req, Model model) {
-		if (isNotAdmin(req)) return "redirect:/login";
-		var opt = flightService.findById(id);
-		if (opt.isEmpty()) return "redirect:/admin/flights";
+	@GetMapping("/flights/edit/{flightNumber}")
+	public String showEditFlightForm(@PathVariable String flightNumber, HttpServletRequest req, Model model) {
+		if (isNotAdmin(req))
+			return "redirect:/login";
+		var opt = flightService.findByFlightNumber(flightNumber);
+		if (opt.isEmpty())
+			return "redirect:/admin/flights";
 		model.addAttribute("flight", opt.get());
 		return "admin/flight-form";
 	}
 
 	@PostMapping("/flights/delete")
-	public String deleteFlightRequest(HttpServletRequest req, @RequestParam Long id, @RequestParam(required = false) boolean confirm, RedirectAttributes redirectAttributes) {
-		if (isNotAdmin(req)) return "redirect:/login";
+	public String deleteFlightRequest(HttpServletRequest req, @RequestParam Long id,
+			@RequestParam(required = false) boolean confirm, RedirectAttributes redirectAttributes) {
+		if (isNotAdmin(req))
+			return "redirect:/login";
 
 		if (confirm) {
 			bookingService.deleteByFlightId(id);

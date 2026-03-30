@@ -40,12 +40,11 @@ public final class DateUtils {
 		Map<Long, String> arrivalMap = new HashMap<>();
 		if (flights != null) {
 			for (Flight f : flights) {
-				Long id = f == null ? null : f.getId();
-				// guard: if id is null skip mapping
-				if (id != null) {
-					departureMap.put(id, formatForDisplay(f.getDepartureTime()));
-					arrivalMap.put(id, formatForDisplay(f.getArrivalTime()));
-				}
+				if (f == null || f.getId() == null) continue;
+
+				Long id = f.getId();
+				departureMap.put(id, formatForDisplay(f.getDepartureTime()));
+				arrivalMap.put(id, formatForDisplay(f.getArrivalTime()));
 			}
 		}
 		model.addAttribute("departureMap", departureMap);

@@ -14,7 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Optional;
 
-import static org.airlinereservationsystem.util.isNotAdmin.isNotAdmin;
+import static org.airlinereservationsystem.util.ifAdmin.isNotAdmin;
 
 @Controller
 @RequestMapping("/admin/bookings")
@@ -32,14 +32,16 @@ public class AdminBookingController {
 
 	@GetMapping
 	public String listBookings(HttpServletRequest req, Model model) {
-		if (isNotAdmin(req)) return "redirect:/login";
+		if (isNotAdmin(req))
+			return "redirect:/login";
 		model.addAttribute("bookings", bookingService.findAll());
 		return "admin/bookings";
 	}
 
 	@GetMapping("/new")
 	public String newBookingForm(HttpServletRequest req, Model model) {
-		if (isNotAdmin(req)) return "redirect:/login";
+		if (isNotAdmin(req))
+			return "redirect:/login";
 		Booking booking = new Booking();
 		model.addAttribute("booking", booking);
 
@@ -53,9 +55,11 @@ public class AdminBookingController {
 
 	@GetMapping("/edit/{id}")
 	public String viewBooking(HttpServletRequest req, @PathVariable Long id, Model model) {
-		if (isNotAdmin(req)) return "redirect:/login";
+		if (isNotAdmin(req))
+			return "redirect:/login";
 		Optional<Booking> opt = bookingService.findById(id);
-		if (opt.isEmpty()) return "redirect:/admin/bookings";
+		if (opt.isEmpty())
+			return "redirect:/admin/bookings";
 
 		Booking booking = opt.get();
 		model.addAttribute("booking", booking);
@@ -68,17 +72,27 @@ public class AdminBookingController {
 	}
 
 	@PostMapping("/save")
-	public String saveBooking(HttpServletRequest req, @RequestParam(required = false) Long id, @RequestParam Long userId, @RequestParam Long flightId, @RequestParam int seats, @RequestParam SeatClass seatClass, @RequestParam(required = false) BookingStatus status, RedirectAttributes ra) {
-		if (isNotAdmin(req)) return "redirect:/login";
+	public String saveBooking(HttpServletRequest req, @RequestParam(required = false) Long id,
+			@RequestParam Long userId, @RequestParam Long flightId, @RequestParam int seats,
+			@RequestParam SeatClass seatClass, @RequestParam(required = false) BookingStatus status,
+			RedirectAttributes ra) {
+		if (isNotAdmin(req))
+			return "redirect:/login";
 
 		Booking booking = bookingService.updateBooking(id, userId, flightId, seatClass, seats, status);
-		ra.addFlashAttribute("successMessage", "Booking saved.");
-		return "redirect:/admin/bookings";
+		boolean isNewBooking = id == null;
+		String flightNumber = booking.getFlight() != null ? booking.getFlight().getFlightNumber() : "N/A";
+		ra.addFlashAttribute("successMessage",
+				(isNewBooking ? "Booking created" : "Booking updated") + ": #" + booking.getId() + " for flight "
+						+ flightNumber + ".");
+		return "redirect:/admin/bookings/edit/" + booking.getId();
 	}
 
 	@PostMapping("/delete")
-	public String deleteBooking(HttpServletRequest req, @RequestParam Long id, @RequestParam(required = false) boolean confirm, RedirectAttributes ra) {
-		if (isNotAdmin(req)) return "redirect:/login";
+	public String deleteBooking(HttpServletRequest req, @RequestParam Long id,
+			@RequestParam(required = false) boolean confirm, RedirectAttributes ra) {
+		if (isNotAdmin(req))
+			return "redirect:/login";
 
 		if (confirm) {
 			bookingService.delete(id);
@@ -88,8 +102,10 @@ public class AdminBookingController {
 	}
 
 	@PostMapping("/cancel")
-	public String cancelBooking(HttpServletRequest req, @RequestParam Long id, @RequestParam(required = false) boolean confirm, RedirectAttributes redirectAttributes) {
-		if (isNotAdmin(req)) return "redirect:/login";
+	public String cancelBooking(HttpServletRequest req, @RequestParam Long id,
+			@RequestParam(required = false) boolean confirm, RedirectAttributes redirectAttributes) {
+		if (isNotAdmin(req))
+			return "redirect:/login";
 
 		if (confirm) {
 			bookingService.cancelBooking(id);

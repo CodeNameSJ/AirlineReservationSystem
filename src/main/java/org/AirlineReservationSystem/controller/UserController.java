@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpSession;
 import org.airlinereservationsystem.model.enums.SeatClass;
 import org.airlinereservationsystem.service.BookingService;
 import org.airlinereservationsystem.service.FlightService;
+import org.airlinereservationsystem.service.PricingService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,10 +16,12 @@ public class UserController {
 
 	private final FlightService flightService;
 	private final BookingService bookingService;
+	private final PricingService pricingService;
 
-	public UserController(FlightService flightService, BookingService bookingService) {
+	public UserController(FlightService flightService, BookingService bookingService, PricingService pricingService) {
 		this.flightService = flightService;
 		this.bookingService = bookingService;
+		this.pricingService = pricingService;
 	}
 
 	private Long getUserId(HttpServletRequest req) {
@@ -106,7 +109,19 @@ public class UserController {
 
 	@GetMapping("/booking/{id}")
 	public String bookingDetail(@PathVariable Long id, HttpServletRequest req, Model model) {
+		String redirect = addAuthorizedBookingToModel(id, req, model);
+		if (redirect != null) return redirect;
+		return "user/bookingDetail";
+	}
 
+	@GetMapping("/booking/{id}/bill")
+	public String bookingBill(@PathVariable Long id, HttpServletRequest req, Model model) {
+		String redirect = addAuthorizedBookingToModel(id, req, model);
+		if (redirect != null) return redirect;
+		return "user/bookingBill";
+	}
+
+	private String addAuthorizedBookingToModel(Long id, HttpServletRequest req, Model model) {
 		Long userId = getUserId(req);
 		if (userId == null) return "redirect:/login";
 
@@ -115,12 +130,12 @@ public class UserController {
 
 		var booking = opt.get();
 
-		// ownership check
 		if (!booking.getUser().getId().equals(userId)) {
 			return "redirect:/user/home";
 		}
 
 		model.addAttribute("booking", booking);
-		return "user/bookingBill";
+		model.addAttribute("pricing", pricingService.calculateBreakdown(booking));
+		return null;
 	}
 }

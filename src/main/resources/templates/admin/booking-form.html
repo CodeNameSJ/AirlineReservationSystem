@@ -3,67 +3,118 @@
       th:replace="~{layout :: page(${booking.id != null} ? 'Edit Booking' : 'New Booking', ~{::content}, ~{::scripts})}"
       xmlns:th="http://www.thymeleaf.org">
 <th:block th:fragment="content">
-	<h2 th:text="${booking.id != null} ? 'Edit Booking' : 'New Booking'">Booking</h2>
-
-	<!--	<form method="post" th:action="${booking.id != null} ? @{/admin/bookings/update} : @{/admin/bookings/create}">-->
-	<form method="post" th:action="@{/admin/bookings/save}">
-		<!--		<input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>-->
-
-		<input name="id" th:value="${booking.id}" type="hidden"/>
-
-		<div class="form-row">
-			<label for="user">User</label>
-			<select id="user" name="userId" required>
-				<option th:each="u : ${users}" th:selected="${booking.user != null && booking.user.id == u.id}"
-				        th:text="${u.username + ' (' + (u.email != null ? u.email : 'no-email') + ')'}"
-				        th:value="${u.id}">User
-				</option>
-			</select>
+	<section class="page-shell">
+		<div class="section-intro">
+			<span class="eyebrow">Admin Booking</span>
+			<h1 th:text="${booking.id != null} ? 'Edit Booking' : 'Create Booking'">Booking</h1>
+			<p class="section-lead">Create or update a reservation by selecting the user, flight, cabin, and seat count.</p>
 		</div>
 
-		<div class="form-row">
-			<label for="flight">Flight</label>
-			<select id="flight" name="flightId" required>
-				<option th:each="f : ${flights}" th:selected="${booking.flight != null && booking.flight.id == f.id}"
-				        th:text="${f.flightNumber + ' (' + f.origin + ' - ' + f.destination + ') @ ' + (f.departureDisplay != null ? f.departureDisplay : '')}"
-				        th:value="${f.id}">Flight
-				</option>
-			</select>
-		</div>
+		<div class="booking-grid">
+			<div class="form-panel section-card">
+				<div class="form-header">
+					<span class="eyebrow">Reservation Data</span>
+					<h2>Booking fields</h2>
+					<p>Assign the passenger, attach a flight, and set the cabin and seat count.</p>
+				</div>
 
-		<div class="form-row">
-			<label for="seats">Seats</label>
-			<input id="seats" min="1" name="seats"
-			       required th:value="${booking.seats != null && booking.seats > 0 ? booking.seats : 1}" type="number"/>
-		</div>
+				<form method="post" th:action="@{/admin/bookings/save}">
+					<input name="id" th:value="${booking.id}" type="hidden"/>
 
-		<div class="form-row">
-			<label for="seatClass">Seat Class</label>
-			<select id="seatClass" name="seatClass" required>
-				<option th:each="sc : ${seatClasses}" th:selected="${booking.seatClass != null && booking.seatClass == sc}"
-				        th:text="${sc}"
-				        th:value="${sc}"></option>
-			</select>
-		</div>
+					<div class="form-row">
+						<label for="user">
+							User
+							<select id="user" name="userId" required>
+								<option th:each="u : ${users}" th:selected="${booking.user != null && booking.user.id == u.id}"
+								        th:text="${u.username + ' (' + (u.email != null ? u.email : 'no-email') + ')'}"
+								        th:value="${u.id}">User
+								</option>
+							</select>
+						</label>
 
-		<div style="margin-top:12px;">
-			<button type="submit">Save</button>
-			<a class="button" th:href="@{/admin/bookings}">Cancel</a>
-		</div>
-	</form>
+						<label for="flight">
+							Flight
+							<select id="flight" name="flightId" required>
+								<option th:each="f : ${flights}" th:selected="${booking.flight != null && booking.flight.id == f.id}"
+								        th:text="${f.flightNumber + ' (' + f.origin + ' - ' + f.destination + ') @ ' + (f.departureDisplay != null ? f.departureDisplay : '')}"
+								        th:value="${f.id}">Flight
+								</option>
+							</select>
+						</label>
+					</div>
 
-	<form method="post" style="display:inline; margin-top:12px;" th:action="@{/admin/bookings/delete}"
-	      th:if="${booking.id != null}">
-		<!--		<input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>-->
-		<input name="id" th:value="${booking.id}" type="hidden"/>
-		<input name="confirm" type="hidden" value="true"/>
-		<button class="warn-toggle"
-		        data-id="${booking.id}"
-		        data-type="delete"
-		        type="button">
-			Delete
-		</button>
-	</form>
+					<div class="form-row">
+						<label for="seats">
+							Seats
+							<input id="seats" min="1" name="seats"
+							       required th:value="${booking.seats != null && booking.seats > 0 ? booking.seats : 1}" type="number"/>
+						</label>
+
+						<label for="seatClass">
+							Seat Class
+							<select id="seatClass" name="seatClass" required>
+								<option th:each="sc : ${seatClasses}" th:selected="${booking.seatClass != null && booking.seatClass == sc}"
+								        th:text="${sc}"
+								        th:value="${sc}"></option>
+							</select>
+						</label>
+					</div>
+
+					<div class="form-actions">
+						<button type="submit">Save Booking</button>
+						<a class="btn secondary" th:href="@{/admin/bookings}">Back to Bookings</a>
+					</div>
+				</form>
+
+				<div class="stack" th:if="${booking.id != null}">
+					<div class="form-actions">
+						<button class="btn-delete warn-toggle"
+						        data-type="delete"
+						        th:attr="data-id=${booking.id}"
+						        type="button">
+							Delete Booking
+						</button>
+					</div>
+
+					<div class="section-card" style="display:none;" th:id="'warning-delete-' + ${booking.id}">
+						<div class="form-header">
+							<span class="eyebrow">Confirm Delete</span>
+							<h3>Remove this booking?</h3>
+							<p>This action permanently deletes the reservation record.</p>
+						</div>
+						<form class="inline-action" method="post" th:action="@{/admin/bookings/delete}">
+							<input name="id" th:value="${booking.id}" type="hidden"/>
+							<input name="confirm" type="hidden" value="true"/>
+							<div class="form-actions">
+								<button class="btn-delete" type="submit">Yes, Delete</button>
+								<button class="btn secondary warn-toggle" data-type="delete" th:attr="data-id=${booking.id}" type="button">Keep Booking</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+
+			<div class="panel booking-summary">
+				<div class="form-header">
+					<span class="eyebrow">Summary</span>
+					<h2>Current booking</h2>
+					<p>Review the current booking information before saving or deleting this record.</p>
+				</div>
+				<div class="booking-pill-row">
+					<span class="booking-pill" th:text="${booking.id != null ? 'Booking #' + booking.id : 'New booking'}">New booking</span>
+					<span class="booking-pill" th:text="${booking.status != null ? booking.status : 'Pending status'}">Pending status</span>
+				</div>
+				<dl>
+					<dt>Current User</dt>
+					<dd th:text="${booking.user != null ? booking.user.username : 'Not assigned'}">Not assigned</dd>
+					<dt>Current Flight</dt>
+					<dd th:text="${booking.flight != null ? booking.flight.flightNumber : 'Not assigned'}">Not assigned</dd>
+					<dt>Booking Time</dt>
+					<dd th:text="${booking.bookingTimeDisplay != null ? booking.bookingTimeDisplay : 'Created after save'}">Created after save</dd>
+				</dl>
+			</div>
+		</div>
+	</section>
 </th:block>
 
 <th:block th:fragment="scripts">

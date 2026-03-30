@@ -5,45 +5,53 @@
 
 <th:block th:fragment="content">
 	<section class="page-shell">
-		<div class="section-intro">
+		<div class="hero-callout">
 			<span class="eyebrow">Something went wrong</span>
 			<h1>Unexpected Error</h1>
-			<p class="section-lead">
+			<p>
 				We hit some turbulence. The page you're looking for isn’t available or something failed on our side.
 			</p>
 		</div>
 
-		<div class="login-box">
-			<p>Error Details</p>
-
-			<!-- Status Code -->
-			<p th:if="${status}">
-				<strong>Status:</strong> <span th:text="${status}"></span>
-			</p>
-
-			<!-- Error Message -->
-			<p th:if="${error}">
-				<strong>Error:</strong> <span th:text="${error}"></span>
-			</p>
-
-			<!-- Custom Message -->
-			<p th:if="${message}">
-				<strong>Message:</strong> <span th:text="${message}"></span>
-			</p>
-
-			<!-- Timestamp -->
-			<p th:if="${timestamp}">
-				<strong>Time:</strong> <span th:text="${timestamp}"></span>
-			</p>
-
-			<!-- Action Buttons -->
-			<div style="margin-top: 20px;">
-				<a class="animated-button" th:href="@{/}">Go Home</a>
+		<div class="grid-two">
+			<div class="section-card stack">
+				<div class="form-header">
+					<span class="eyebrow">Error Details</span>
+					<h2>Request details</h2>
+					<p>We could not complete this request. The details below may help identify what failed.</p>
+				</div>
+				<div class="detail-grid">
+					<div class="detail-card" th:if="${status}">
+						<span>Status</span>
+						<span th:text="${status}">500</span>
+					</div>
+					<div class="detail-card" th:if="${error}">
+						<span>Error</span>
+						<span th:text="${error}">Internal Server Error</span>
+					</div>
+					<div class="detail-card" th:if="${message}">
+						<span>Message</span>
+						<span th:text="${message}">Unexpected failure</span>
+					</div>
+					<div class="detail-card" th:if="${timestamp}">
+						<span>Time</span>
+						<span th:text="${timestamp}">2026-03-31T00:00:00</span>
+					</div>
+				</div>
 			</div>
 
-			<p style="margin-top: 15px;">
-				Or try again later.
-			</p>
+			<div class="section-card stack">
+				<div class="form-header">
+					<span class="eyebrow">Next Step</span>
+					<h2>What you can do</h2>
+					<p>Return to the homepage, browse flights again, or try the action later if the problem continues.</p>
+				</div>
+				<div class="form-actions">
+					<a class="button" th:href="@{/}">Go Home</a>
+					<a class="btn secondary" th:href="@{/flights}">Browse Flights</a>
+				</div>
+				<p class="field-note">If this repeats, the server log context above is the starting point for diagnosis.</p>
+			</div>
 		</div>
 	</section>
 </th:block>

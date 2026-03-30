@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en"
+      th:replace="~{layout :: page('Booking Details', ~{::content}, ~{::scripts})}"
+      xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="content">
+	<section class="page-shell" th:if="${booking != null}">
+		<div class="section-intro booking-hero">
+			<span class="eyebrow">Booking Details</span>
+			<h1>Booking <span th:text="${booking.id}">B123</span></h1>
+			<p class="section-lead">A complete view of your booking, route, cabin, timing, fare total, and current
+			                        status.</p>
+		</div>
+
+		<div class="booking-grid">
+			<div class="detail-panel">
+				<div class="invoice-route">
+					<div class="invoice-route-top">
+						<span class="invoice-status">Flight <span th:text="${booking.flight.flightNumber}">FL123</span></span>
+						<span class="invoice-code inverse" th:text="${booking.status}">BOOKED</span>
+					</div>
+					<div class="invoice-airports">
+						<span th:text="${booking.flight.origin}">Origin</span>
+						<span class="arrow">→</span>
+						<span th:text="${booking.flight.destination}">Destination</span>
+					</div>
+					<p class="invoice-note">Departure <span
+							th:text="${booking.flight.departureDisplay}">17 Aug 2025, 08:00</span></p>
+				</div>
+
+				<dl>
+					<dt>Booking Time</dt>
+					<dd th:text="${booking.bookingTimeDisplay}">17 Aug 2025, 08:00</dd>
+					<dt>Passenger</dt>
+					<dd th:text="${booking.user.username}">Passenger</dd>
+					<dt>Email</dt>
+					<dd th:text="${booking.user.email}">mail@example.com</dd>
+					<dt>Seat Class</dt>
+					<dd th:text="${booking.seatClass}">ECONOMY</dd>
+					<dt>Seats</dt>
+					<dd th:text="${booking.seats}">1</dd>
+					<dt>Base Fare</dt>
+					<dd th:text="${pricing != null ? '₹' + pricing.baseFare() : '₹' + booking.totalAmount}">₹0.00</dd>
+					<dt>Tax</dt>
+					<dd th:text="${pricing != null ? '₹' + pricing.taxAmount() : 'Included'}">₹0.00</dd>
+					<dt>Service Fee</dt>
+					<dd th:text="${pricing != null ? '₹' + pricing.serviceFee() : 'Included'}">₹0.00</dd>
+					<dt>Total Paid</dt>
+					<dd th:text="${'₹' + booking.totalAmount}">₹0.00</dd>
+				</dl>
+			</div>
+
+			<div class="panel booking-summary">
+				<div class="section-intro">
+					<span class="eyebrow">Manage</span>
+					<h3>Next actions</h3>
+					<p class="section-lead">Open the printable invoice or go back to the booking dashboard.</p>
+				</div>
+
+				<div class="booking-pill-row">
+					<span class="booking-pill">Status <span th:text="${booking.status}">BOOKED</span></span>
+					<span class="booking-pill">Cabin <span th:text="${booking.seatClass}">ECONOMY</span></span>
+				</div>
+
+				<div class="success-actions">
+					<a class="button" th:href="@{/user/booking/{id}/bill(id=${booking.id})}">Open Invoice</a>
+					<a class="btn secondary" th:href="@{/user/home}">Back to My Bookings</a>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="page-shell" th:if="${booking == null}">
+		<div class="empty-state">
+			<div class="section-intro">
+				<span class="eyebrow">Booking Unavailable</span>
+				<h1>No booking was found</h1>
+				<p class="section-lead">The requested booking could not be loaded.</p>
+			</div>
+			<div class="action-bar">
+				<a class="button" th:href="@{/user/home}">Back to My Bookings</a>
+			</div>
+		</div>
+	</section>
+</th:block>
+
+<th:block th:fragment="scripts"></th:block>
+</html>

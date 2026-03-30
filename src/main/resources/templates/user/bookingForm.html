@@ -3,32 +3,91 @@
       lang="en"
       th:replace="~{layout :: page('Book Flight', ~{::content}, ~{::scripts})}">
 <th:block th:fragment="content">
-	<h1>Book Flight</h1>
-	<div th:if="${flight != null}">
-		<p>Flight:
-			<span th:text="${flight.origin}"></span> → <span th:text="${flight.destination}"></span>
-		</p>
-		<p>Departure:
-			<span th:text="${flight.departureDisplay}"></span>
-		</p>
-		<form th:action="@{/user/book}" method="post">
-			<input type="hidden" name="flightId" th:value="${flight.id}"/>
+	<section class="page-shell" th:if="${flight != null}">
+		<div class="hero-callout booking-hero">
+			<span class="eyebrow">Reserve Cabin</span>
+			<h1>Complete your booking</h1>
+			<p>Review the route, choose the cabin, and confirm the number of seats for this booking.</p>
+		</div>
 
-			<label>Seats:
-				<input type="number" name="seats" value="1" min="1" required/>
-			</label><br>
+		<div class="booking-grid">
+			<div class="form-panel section-card">
+				<div class="form-header">
+					<span class="eyebrow">Passenger Setup</span>
+					<h2>Booking preferences</h2>
+					<p>Choose the number of seats and cabin type for this itinerary.</p>
+				</div>
 
-			<label>Seat Class:
-				<select name="seatClass" required>
-					<option th:each="seatClass : ${seatClasses}"
-					        th:value="${seatClass}"
-					        th:text="${seatClass}">
-					</option>
-				</select>
-			</label>
-			<button type="submit">Confirm Booking</button>
-		</form>
-	</div>
+				<form method="post" th:action="@{/user/book}">
+					<input name="flightId" th:value="${flight.id}" type="hidden"/>
+
+					<div class="form-row">
+						<label for="seats">
+							Seats
+							<input id="seats" min="1" name="seats" required type="number" value="1"/>
+						</label>
+
+						<label for="seatClass">
+							Seat Class
+							<select id="seatClass" name="seatClass" required>
+								<option th:each="seatClass : ${seatClasses}"
+								        th:text="${seatClass}"
+								        th:value="${seatClass}">
+								</option>
+							</select>
+						</label>
+					</div>
+
+					<div class="form-actions">
+						<button type="submit">Confirm Booking</button>
+						<a class="btn secondary" th:href="@{/flight/{id}(id=${flight.id})}">Back to Flight</a>
+					</div>
+				</form>
+			</div>
+
+			<div class="panel booking-summary">
+				<div class="invoice-route">
+					<div class="invoice-route-top">
+						<span class="invoice-status">Flight <span th:text="${flight.flightNumber}">FL123</span></span>
+						<span class="invoice-code inverse">Airline Reservation</span>
+					</div>
+					<div class="invoice-airports">
+						<span th:text="${flight.origin}">Origin</span>
+						<span class="arrow">→</span>
+						<span th:text="${flight.destination}">Destination</span>
+					</div>
+					<p class="invoice-note">Departure <span th:text="${flight.departureDisplay}">31 Mar 2026, 08:00</span></p>
+				</div>
+
+				<div class="booking-pill-row">
+					<span class="booking-pill">Economy <span th:text="${'₹' + flight.priceEconomy}">₹0</span></span>
+					<span class="booking-pill">Business <span th:text="${'₹' + flight.priceBusiness}">₹0</span></span>
+				</div>
+
+				<dl>
+					<dt>Arrival</dt>
+					<dd th:text="${flight.arrivalDisplay != null ? flight.arrivalDisplay : '-'}">-</dd>
+					<dt>Economy Seats</dt>
+					<dd th:text="${flight.economySeatsAvailable} + ' available'">0 available</dd>
+					<dt>Business Seats</dt>
+					<dd th:text="${flight.businessSeatsAvailable} + ' available'">0 available</dd>
+				</dl>
+			</div>
+		</div>
+	</section>
+
+	<section class="page-shell" th:if="${flight == null}">
+		<div class="empty-state">
+			<div class="section-intro">
+				<span class="eyebrow">Unavailable</span>
+				<h1>Flight not found</h1>
+				<p class="section-lead">The booking form was opened without a valid flight record.</p>
+			</div>
+			<div class="action-bar">
+				<a class="button" th:href="@{/flights}">Return to Flights</a>
+			</div>
+		</div>
+	</section>
 </th:block>
 <th:block th:fragment="scripts"></th:block>
 </html>

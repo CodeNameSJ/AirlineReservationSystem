@@ -95,6 +95,10 @@
 	letter-spacing: 0.08em;
 }
 
+.username {
+	text-transform: uppercase;
+}
+
 .dropdown {
 	position: relative;
 }

@@ -7,7 +7,7 @@
 		<div class="section-intro">
 			<span class="eyebrow">Secure Access</span>
 			<h1>Welcome back</h1>
-			<p class="section-lead">Enter your credentials to review bookings, manage flights, and continue with a quieter premium workflow.</p>
+			<p class="section-lead">Enter your credentials to view bookings and continue using the system.</p>
 		</div>
 		<div class="login-box">
 			<p>Login</p>
@@ -27,7 +27,7 @@
 			<p>Don't have an account?
 				<a th:href="@{/register}" class="a2">Signup</a>
 			</p>
-			<p th:if="${error}" th:text="${error}" style="color:red" class="a2"></p>
+			<p class="a2 form-error" th:if="${error}" th:text="${error}"></p>
 		</div>
 	</section>
 </th:block>

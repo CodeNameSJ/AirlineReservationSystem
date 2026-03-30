@@ -19,6 +19,10 @@ public class PricingService {
 	private BigDecimal serviceFee;
 
 	public BigDecimal calculateTotal(Booking booking) {
+		return calculateBreakdown(booking).totalAmount();
+	}
+
+	public PricingBreakdown calculateBreakdown(Booking booking) {
 
 		if (booking == null || booking.getFlight() == null || booking.getSeatClass() == null) {
 			throw new IllegalArgumentException("Invalid booking data for pricing");
@@ -34,6 +38,11 @@ public class PricingService {
 
 		BigDecimal total = subtotal.add(tax).add(serviceFee);
 
-		return total.setScale(2, RoundingMode.HALF_UP);
+		return new PricingBreakdown(
+				subtotal.setScale(2, RoundingMode.HALF_UP),
+				tax,
+				serviceFee.setScale(2, RoundingMode.HALF_UP),
+				total.setScale(2, RoundingMode.HALF_UP)
+		);
 	}
 }

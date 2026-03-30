@@ -7,8 +7,7 @@
 		<div class="section-intro">
 			<span class="eyebrow">Create Account</span>
 			<h1>Join the cabin</h1>
-			<p class="section-lead">Create your account once and manage every route, booking, and confirmation from a
-			                        calmer control surface.</p>
+			<p class="section-lead">Create your account to search flights, book seats, and manage your reservations.</p>
 		</div>
 		<div class="login-box">
 			<p>Sign Up</p>
@@ -39,7 +38,7 @@
 			<p>Already have an account?
 				<a class="a2" th:href="@{/login}">Login</a>
 			</p>
-			<p class="a2" style="color:red" th:if="${error}" th:text="${error}"></p>
+			<p class="a2 form-error" th:if="${error}" th:text="${error}"></p>
 		</div>
 	</section>
 </th:block>

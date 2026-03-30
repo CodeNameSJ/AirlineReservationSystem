@@ -6,8 +6,8 @@
 	<section class="page-shell">
 		<div class="hero-callout">
 			<span class="eyebrow">Curated Routes</span>
-			<h1>Move through every itinerary with lounge-level calm.</h1>
-			<p>Search, compare, and book in a cleaner interface built around route clarity, pricing confidence, and faster decisions.</p>
+			<h1>Search and book your next flight.</h1>
+			<p>Find routes, compare fares, and complete your booking with clear flight and pricing details.</p>
 		</div>
 
 		<div th:replace="~{fragments/searchForm :: searchForm}"></div>
@@ -15,7 +15,7 @@
 		<div class="section-intro">
 			<span class="eyebrow">Featured Flights</span>
 			<h2>Recommended departures this week</h2>
-			<p class="section-lead">A premium shortlist of active routes with quick booking access and clearer fare presentation.</p>
+			<p class="section-lead">Browse active routes with quick access to flight details and booking.</p>
 		</div>
 
 		<div class="card-container" th:if="${flights != null and !#lists.isEmpty(flights)}">
