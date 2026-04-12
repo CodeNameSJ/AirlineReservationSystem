@@ -11,7 +11,7 @@
 		<relativePath/>
 	</parent>
 
-	<groupId>org.airline</groupId>
+	<groupId>org.airlinereservationsystem</groupId>
 	<artifactId>airlinereservationsystem</artifactId>
 	<version>1.0.0</version>
 	<packaging>jar</packaging>
