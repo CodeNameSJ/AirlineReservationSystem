@@ -3,6 +3,7 @@ package org.airlinereservationsystem.service;
 import org.airlinereservationsystem.model.User;
 import org.airlinereservationsystem.model.enums.Role;
 import org.airlinereservationsystem.repository.UserRepository;
+import org.airlinereservationsystem.util.Constants;
 import org.airlinereservationsystem.util.UserValidationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -32,15 +33,15 @@ public class UserService {
 		}
 
 		if (user.getPassword() == null || user.getPassword().isBlank()) {
-			throw new UserValidationException("password", "Password required");
+			throw new UserValidationException("password", Constants.PASSWORD_REQUIRED_ERROR.getMessage());
 		}
 
 		if (userRepo.findByUsername(user.getUsername()).isPresent()) {
-			throw new UserValidationException("username", "Username already exists");
+			throw new UserValidationException("username", Constants.USERNAME_EXISTS_ERROR.getMessage());
 		}
 
 		if (userRepo.findByEmail(user.getEmail()).isPresent()) {
-			throw new UserValidationException("email", "Email already exists");
+			throw new UserValidationException("email", Constants.EMAIL_EXISTS_ERROR.getMessage());
 		}
 
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -56,13 +57,13 @@ public class UserService {
 		userRepo.findByUsername(user.getUsername())
 				.filter(found -> !found.getId().equals(existing.getId()))
 				.ifPresent(found -> {
-					throw new UserValidationException("username", "Username already exists");
+					throw new UserValidationException("username", Constants.USERNAME_EXISTS_ERROR.getMessage());
 				});
 
 		userRepo.findByEmail(user.getEmail())
 				.filter(found -> !found.getId().equals(existing.getId()))
 				.ifPresent(found -> {
-					throw new UserValidationException("email", "Email already exists");
+					throw new UserValidationException("email", Constants.EMAIL_EXISTS_ERROR.getMessage());
 				});
 
 		// Password handling
@@ -76,7 +77,7 @@ public class UserService {
 		if (user.getRole() == null) {
 			user.setRole(existing.getRole());
 		}
-		
+
 		userRepo.save(user);
 	}
 
@@ -85,7 +86,8 @@ public class UserService {
 
 		String stored = user.getPassword();
 
-		if (stored == null) return false;
+		if (stored == null)
+			return false;
 
 		// Normal encoded case
 		if (stored.startsWith("$2")) {
@@ -102,7 +104,6 @@ public class UserService {
 		return false;
 	}
 
-
 	@Transactional
 	public void delete(User user) {
 		userRepo.delete(user);
@@ -118,7 +119,8 @@ public class UserService {
 	}
 
 	public Optional<User> findByUsername(String username) {
-		if (username == null) return Optional.empty();
+		if (username == null)
+			return Optional.empty();
 		return userRepo.findByUsername(username.trim().toLowerCase());
 	}
 

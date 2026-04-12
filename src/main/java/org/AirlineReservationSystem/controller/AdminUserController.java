@@ -11,7 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import static org.airlinereservationsystem.util.ifAdmin.isNotAdmin;
+import static org.airlinereservationsystem.util.IfAdmin.isNotAdmin;
 
 @Controller
 @RequestMapping("/admin/users")
@@ -43,7 +43,8 @@ public class AdminUserController {
 	}
 
 	@PostMapping("/save")
-	public String saveUser(HttpServletRequest req, @ModelAttribute User user, Model model, RedirectAttributes redirectAttributes) {
+	public String saveUser(HttpServletRequest req, @ModelAttribute User user, Model model,
+			RedirectAttributes redirectAttributes) {
 		if (isNotAdmin(req))
 			return "redirect:/login";
 		try {

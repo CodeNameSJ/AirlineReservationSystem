@@ -31,15 +31,17 @@ public class GlobalExceptionHandler {
 	// Fallback for unexpected errors
 	@ExceptionHandler(Exception.class)
 	public String handleGeneric(Exception ex, Model model) {
-		model.addAttribute("error", "Something went wrong");
+		model.addAttribute("error", Constants.GENERIC_ERROR.getMessage());
 		return "error"; // create error.html if not exists
 	}
 
 	private String resolveView(HttpServletRequest request) {
 		String uri = request.getRequestURI();
 
-		if (uri.contains("/register")) return "register";
-		if (uri.contains("/login")) return "login";
+		if (uri.contains("/register"))
+			return "register";
+		if (uri.contains("/login"))
+			return "login";
 
 		return "error";
 	}

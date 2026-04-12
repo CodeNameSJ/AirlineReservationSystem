@@ -31,12 +31,14 @@ public class AuthController {
 			return "redirect:/";
 		}
 
-		if (error != null) model.addAttribute("error", error);
+		if (error != null)
+			model.addAttribute("error", error);
 		return "login";
 	}
 
 	@PostMapping("/login")
-	public String doLogin(@RequestParam String username, @RequestParam String password, HttpServletRequest req, Model model) {
+	public String doLogin(@RequestParam String username, @RequestParam String password, HttpServletRequest req,
+			Model model) {
 
 		var opt = userService.findByUsername(username);
 
@@ -52,7 +54,7 @@ public class AuthController {
 		session.setAttribute("username", user.getUsername());
 		session.setAttribute("role", user.getRole().name());
 
-		// 🔥 SAFE redirect handling
+		// redirect handling
 		String redirect = (String) session.getAttribute("redirectAfterLogin");
 		session.removeAttribute("redirectAfterLogin");
 
@@ -83,7 +85,8 @@ public class AuthController {
 	@PostMapping("/register")
 	public String doRegister(@Valid @ModelAttribute("user") User user, BindingResult result, HttpServletRequest req) {
 
-		if (result.hasErrors()) return "register";
+		if (result.hasErrors())
+			return "register";
 
 		try {
 			userService.register(user);
@@ -103,7 +106,8 @@ public class AuthController {
 	@GetMapping("/logout")
 	public String logout(HttpServletRequest req) {
 		HttpSession s = req.getSession(false);
-		if (s != null) s.invalidate();
+		if (s != null)
+			s.invalidate();
 		return "redirect:/";
 	}
 }

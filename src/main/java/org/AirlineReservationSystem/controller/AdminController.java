@@ -12,7 +12,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.List;
 
 import static org.airlinereservationsystem.util.DateUtils.addFormattedMaps;
-import static org.airlinereservationsystem.util.ifAdmin.isNotAdmin;
+import static org.airlinereservationsystem.util.IfAdmin.isNotAdmin;
 
 @Controller
 @RequestMapping("/admin")
@@ -51,7 +51,8 @@ public class AdminController {
 	}
 
 	@PostMapping("/flights")
-	public String saveFlight(HttpServletRequest req, @ModelAttribute Flight flight, Model model, RedirectAttributes redirectAttributes) {
+	public String saveFlight(HttpServletRequest req, @ModelAttribute Flight flight, Model model,
+			RedirectAttributes redirectAttributes) {
 		if (isNotAdmin(req))
 			return "redirect:/login";
 		boolean isNewFlight = flight.getId() == null;

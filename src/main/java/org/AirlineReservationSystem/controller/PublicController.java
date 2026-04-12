@@ -36,13 +36,6 @@ public class PublicController {
 		return "home";
 	}
 
-//	@GetMapping({"/flight-list"})
-//	public String flightList(Model model) {
-//		List<Flight> flights = flightService.findAll();
-//		addFormattedMaps(model, flights);
-//		model.addAttribute("flights", flights);
-//		return "flights";
-//	}
 
 	@ModelAttribute("airports")
 	public List<String> populateAirports() {
@@ -77,9 +70,6 @@ public class PublicController {
 		if (opt.isEmpty()) return "redirect:/flights";
 
 		model.addAttribute("flight", opt.get());
-
-//		model.addAttribute("departureMap", DateUtils.formatForDisplay(f.getDepartureTime()));
-//		model.addAttribute("arrivalMap", DateUtils.formatForDisplay(f.getArrivalTime()));
 		return "flightDetails";
 	}
 }

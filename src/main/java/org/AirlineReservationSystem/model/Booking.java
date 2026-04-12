@@ -14,7 +14,8 @@ import java.util.Objects;
 @Setter
 @Getter
 @Entity
-@Table(name = "bookings", indexes = {@Index(name = "idx_booking_user", columnList = "user_id"), @Index(name = "idx_booking_flight", columnList = "flight_id")})
+@Table(name = "bookings", indexes = { @Index(name = "idx_booking_user", columnList = "user_id"),
+		@Index(name = "idx_booking_flight", columnList = "flight_id") })
 public class Booking {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,6 +47,7 @@ public class Booking {
 	private BookingStatus status;
 
 	public Booking() {
+		// Default constructor for JPA
 	}
 
 	private void validate() {
@@ -77,17 +79,26 @@ public class Booking {
 
 	@Override
 	public final boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null) return false;
-		Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
-		Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
-		if (thisEffectiveClass != oEffectiveClass) return false;
+		if (this == o)
+			return true;
+		if (o == null)
+			return false;
+		Class<?> oEffectiveClass = o instanceof HibernateProxy
+				? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass()
+				: o.getClass();
+		Class<?> thisEffectiveClass = this instanceof HibernateProxy
+				? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass()
+				: this.getClass();
+		if (thisEffectiveClass != oEffectiveClass)
+			return false;
 		Booking booking = (Booking) o;
 		return getId() != null && Objects.equals(getId(), booking.getId());
 	}
 
 	@Override
 	public final int hashCode() {
-		return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
+		return this instanceof HibernateProxy
+				? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode()
+				: getClass().hashCode();
 	}
 }

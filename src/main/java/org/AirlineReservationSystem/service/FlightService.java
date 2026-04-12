@@ -3,6 +3,7 @@ package org.airlinereservationsystem.service;
 import org.airlinereservationsystem.model.Flight;
 import org.airlinereservationsystem.model.enums.SeatClass;
 import org.airlinereservationsystem.repository.FlightRepository;
+import org.airlinereservationsystem.util.Constants;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,14 +34,18 @@ public class FlightService {
 		}
 
 		if (hasOrigin && hasDestination) {
-			return hasDateRange ? flightRepo.findByOriginAndDestinationAndDepartureTimeBetween(origin, destination, start, end) : flightRepo.findByOriginAndDestination(origin, destination);
+			return hasDateRange
+					? flightRepo.findByOriginAndDestinationAndDepartureTimeBetween(origin, destination, start, end)
+					: flightRepo.findByOriginAndDestination(origin, destination);
 		}
 
 		if (hasOrigin) {
-			return hasDateRange ? flightRepo.findByOriginAndDepartureTimeBetween(origin, start, end) : flightRepo.findByOrigin(origin);
+			return hasDateRange ? flightRepo.findByOriginAndDepartureTimeBetween(origin, start, end)
+					: flightRepo.findByOrigin(origin);
 		}
 
-		return hasDateRange ? flightRepo.findByDestinationAndDepartureTimeBetween(destination, start, end) : flightRepo.findByDestination(destination);
+		return hasDateRange ? flightRepo.findByDestinationAndDepartureTimeBetween(destination, start, end)
+				: flightRepo.findByDestination(destination);
 
 	}
 
@@ -49,7 +54,8 @@ public class FlightService {
 	}
 
 	public Optional<Flight> findByFlightNumber(String flightNumber) {
-		if (flightNumber == null) return Optional.empty();
+		if (flightNumber == null)
+			return Optional.empty();
 		return flightRepo.findByFlightNumber(normalizeFlightNumber(flightNumber));
 	}
 
@@ -66,13 +72,13 @@ public class FlightService {
 		normalizeFlight(flight);
 
 		if (flight.getTotalEconomySeats() < 0 || flight.getTotalBusinessSeats() < 0) {
-			throw new IllegalArgumentException("Seat counts cannot be negative");
+			throw new IllegalArgumentException(Constants.NEGATIVE_SEAT_COUNTS_ERROR.getMessage());
 		}
 
 		flightRepo.findByFlightNumber(flight.getFlightNumber())
 				.filter(existing -> flight.getId() == null || !existing.getId().equals(flight.getId()))
 				.ifPresent(existing -> {
-					throw new IllegalArgumentException("Flight number already exists");
+					throw new IllegalArgumentException(Constants.FLIGHT_NUMBER_EXISTS_ERROR.getMessage());
 				});
 
 		if (flight.getId() == null) {
@@ -99,20 +105,21 @@ public class FlightService {
 	public int reserveSeatsAtomic(Long flightId, SeatClass seatClass, int seats) {
 
 		if (seatClass == null) {
-			throw new IllegalArgumentException("Seat class required");
+			throw new IllegalArgumentException(Constants.SEAT_CLASS_REQUIRED_ERROR.getMessage());
 		}
 
 		if (seats <= 0) {
-			throw new IllegalArgumentException("Seats must be greater than 0");
+			throw new IllegalArgumentException(Constants.SEATS_MUST_BE_GREATER_THAN_ZERO_ERROR.getMessage());
 		}
 
-		int updated = (seatClass == SeatClass.ECONOMY) ? flightRepo.reserveEconomySeats(flightId, seats) : flightRepo.reserveBusinessSeats(flightId, seats);
+		int updated = (seatClass == SeatClass.ECONOMY) ? flightRepo.reserveEconomySeats(flightId, seats)
+				: flightRepo.reserveBusinessSeats(flightId, seats);
 
 		if (updated == 0) {
 			if (!flightRepo.existsById(flightId)) {
-				throw new IllegalArgumentException("Flight not found");
+				throw new IllegalArgumentException(Constants.NO_FLIGHT_FOUND_ERROR.getMessage());
 			}
-			throw new IllegalStateException("Not enough seats available");
+			throw new IllegalStateException(Constants.NOT_ENOUGH_SEATS_AVAILABLE_ERROR.getMessage());
 		}
 
 		return updated;
@@ -122,20 +129,21 @@ public class FlightService {
 	public int releaseSeatsAtomic(Long flightId, SeatClass seatClass, int seats) {
 
 		if (seatClass == null) {
-			throw new IllegalArgumentException("Seat class required");
+			throw new IllegalArgumentException(Constants.SEAT_CLASS_REQUIRED_ERROR.getMessage());
 		}
 
 		if (seats <= 0) {
-			throw new IllegalArgumentException("Seats must be greater than 0");
+			throw new IllegalArgumentException(Constants.SEATS_MUST_BE_GREATER_THAN_ZERO_ERROR.getMessage());
 		}
 
-		int updated = (seatClass == SeatClass.ECONOMY) ? flightRepo.releaseEconomySeats(flightId, seats) : flightRepo.releaseBusinessSeats(flightId, seats);
+		int updated = (seatClass == SeatClass.ECONOMY) ? flightRepo.releaseEconomySeats(flightId, seats)
+				: flightRepo.releaseBusinessSeats(flightId, seats);
 
 		if (updated == 0) {
 			if (!flightRepo.existsById(flightId)) {
-				throw new IllegalArgumentException("Flight not found");
+				throw new IllegalArgumentException(Constants.NO_FLIGHT_FOUND_ERROR.getMessage());
 			}
-			throw new IllegalStateException("Seat release exceeds capacity");
+			throw new IllegalStateException(Constants.SEAT_RELEASE_EXCEEDS_CAPACITY_ERROR.getMessage());
 		}
 
 		return updated;

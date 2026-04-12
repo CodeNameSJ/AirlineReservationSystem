@@ -3,6 +3,7 @@ package org.airlinereservationsystem.service;
 import org.airlinereservationsystem.model.Booking;
 import org.airlinereservationsystem.model.Flight;
 import org.airlinereservationsystem.model.enums.SeatClass;
+import org.airlinereservationsystem.util.Constants;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -25,12 +26,13 @@ public class PricingService {
 	public PricingBreakdown calculateBreakdown(Booking booking) {
 
 		if (booking == null || booking.getFlight() == null || booking.getSeatClass() == null) {
-			throw new IllegalArgumentException("Invalid booking data for pricing");
+			throw new IllegalArgumentException(Constants.INVALID_BOOKING_DATA_ERROR.getMessage());
 		}
 
 		Flight flight = booking.getFlight();
 
-		BigDecimal pricePerSeat = booking.getSeatClass() == SeatClass.ECONOMY ? flight.getPriceEconomy() : flight.getPriceBusiness();
+		BigDecimal pricePerSeat = booking.getSeatClass() == SeatClass.ECONOMY ? flight.getPriceEconomy()
+				: flight.getPriceBusiness();
 
 		BigDecimal subtotal = pricePerSeat.multiply(BigDecimal.valueOf(booking.getSeats()));
 
@@ -42,7 +44,6 @@ public class PricingService {
 				subtotal.setScale(2, RoundingMode.HALF_UP),
 				tax,
 				serviceFee.setScale(2, RoundingMode.HALF_UP),
-				total.setScale(2, RoundingMode.HALF_UP)
-		);
+				total.setScale(2, RoundingMode.HALF_UP));
 	}
 }

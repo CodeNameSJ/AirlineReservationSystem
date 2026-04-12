@@ -14,7 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Optional;
 
-import static org.airlinereservationsystem.util.ifAdmin.isNotAdmin;
+import static org.airlinereservationsystem.util.IfAdmin.isNotAdmin;
 
 @Controller
 @RequestMapping("/admin/bookings")
