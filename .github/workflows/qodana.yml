@@ -1,46 +1,45 @@
 name: Qodana
 
 on:
-   push:
-      branches: [ main ]
-   pull_request:
-      branches: [ main ]
-   workflow_dispatch:
+    push:
+        branches: [main]
+    pull_request:
+        branches: [main]
+    workflow_dispatch:
 
 env:
-   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+    FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
-   qodana:
-      runs-on: ubuntu-latest
-      permissions:
-         contents: write
-         pull-requests: write
-         checks: write
-         security-events: write
-      steps:
-         -  name: Set up JDK
-            uses: actions/setup-java@v5
-            with:
-               distribution: temurin
-               java-version: 24
+    qodana:
+        runs-on: ubuntu-latest
+        permissions:
+            contents: write
+            pull-requests: write
+            checks: write
+            security-events: write
+        steps:
+            - name: Set up JDK
+              uses: actions/setup-java@v5
+              with:
+                  distribution: temurin
+                  java-version: 21
 
-         -  name: Checkout source code
-            uses: actions/checkout@v6
-            with:
-               ref: ${{ github.event.pull_request.head.sha || github.sha }}
-               fetch-depth: 0
+            - name: Checkout source code
+              uses: actions/checkout@v6
+              with:
+                  ref: ${{ github.event.pull_request.head.sha || github.sha }}
+                  fetch-depth: 0
 
-         -  name: Remove local IntelliJ project metadata
-            run: rm -rf .idea
+            - name: Remove local IntelliJ project metadata
+              run: rm -rf .idea
 
-         -  name: Qodana Scan
-            uses: JetBrains/qodana-action@latest
-            with:
-               upload-result: true
+            - name: Qodana Scan
+              uses: JetBrains/qodana-action@latest
+              with:
+                  upload-result: true
 
-         -  name: Upload SARIF to GitHub code scanning
-            uses: github/codeql-action/upload-sarif@v4
-            with:
-               sarif_file: ${{ runner.temp }}/qodana/results/qodana.sarif.json
-
+            - name: Upload SARIF to GitHub code scanning
+              uses: github/codeql-action/upload-sarif@v4
+              with:
+                  sarif_file: ${{ runner.temp }}/qodana/results/qodana.sarif.json
