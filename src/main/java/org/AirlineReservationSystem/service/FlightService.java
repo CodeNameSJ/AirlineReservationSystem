@@ -3,7 +3,7 @@ package org.AirlineReservationSystem.service;
 import org.AirlineReservationSystem.model.Flight;
 import org.AirlineReservationSystem.model.enums.SeatClass;
 import org.AirlineReservationSystem.repository.FlightRepository;
-import org.AirlineReservationSystem.util.Constants;
+import org.AirlineReservationSystem.util.ErrorConstants;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -67,11 +67,11 @@ public class FlightService {
 		normalizeFlight(flight);
 
 		if (flight.getTotalEconomySeats() < 0 || flight.getTotalBusinessSeats() < 0) {
-			throw new IllegalArgumentException(Constants.NEGATIVE_SEAT_COUNTS_ERROR.getMessage());
+			throw new IllegalArgumentException(ErrorConstants.NEGATIVE_SEAT_COUNTS_ERROR.getMessage());
 		}
 
 		flightRepo.findByFlightNumber(flight.getFlightNumber()).filter(existing -> flight.getId() == null || !existing.getId().equals(flight.getId())).ifPresent(existing -> {
-			throw new IllegalArgumentException(Constants.FLIGHT_NUMBER_EXISTS_ERROR.getMessage());
+			throw new IllegalArgumentException(ErrorConstants.FLIGHT_NUMBER_EXISTS_ERROR.getMessage());
 		});
 
 		if (flight.getId() == null) {
@@ -98,20 +98,20 @@ public class FlightService {
 	public int reserveSeatsAtomic(Long flightId, SeatClass seatClass, int seats) {
 
 		if (seatClass == null) {
-			throw new IllegalArgumentException(Constants.SEAT_CLASS_REQUIRED_ERROR.getMessage());
+			throw new IllegalArgumentException(ErrorConstants.SEAT_CLASS_REQUIRED_ERROR.getMessage());
 		}
 
 		if (seats <= 0) {
-			throw new IllegalArgumentException(Constants.SEATS_MUST_BE_GREATER_THAN_ZERO_ERROR.getMessage());
+			throw new IllegalArgumentException(ErrorConstants.SEATS_MUST_BE_GREATER_THAN_ZERO_ERROR.getMessage());
 		}
 
 		int updated = (seatClass == SeatClass.ECONOMY) ? flightRepo.reserveEconomySeats(flightId, seats) : flightRepo.reserveBusinessSeats(flightId, seats);
 
 		if (updated == 0) {
 			if (!flightRepo.existsById(flightId)) {
-				throw new IllegalArgumentException(Constants.NO_FLIGHT_FOUND_ERROR.getMessage());
+				throw new IllegalArgumentException(ErrorConstants.NO_FLIGHT_FOUND_ERROR.getMessage());
 			}
-			throw new IllegalStateException(Constants.NOT_ENOUGH_SEATS_AVAILABLE_ERROR.getMessage());
+			throw new IllegalStateException(ErrorConstants.NOT_ENOUGH_SEATS_AVAILABLE_ERROR.getMessage());
 		}
 
 		return updated;
@@ -121,20 +121,20 @@ public class FlightService {
 	public int releaseSeatsAtomic(Long flightId, SeatClass seatClass, int seats) {
 
 		if (seatClass == null) {
-			throw new IllegalArgumentException(Constants.SEAT_CLASS_REQUIRED_ERROR.getMessage());
+			throw new IllegalArgumentException(ErrorConstants.SEAT_CLASS_REQUIRED_ERROR.getMessage());
 		}
 
 		if (seats <= 0) {
-			throw new IllegalArgumentException(Constants.SEATS_MUST_BE_GREATER_THAN_ZERO_ERROR.getMessage());
+			throw new IllegalArgumentException(ErrorConstants.SEATS_MUST_BE_GREATER_THAN_ZERO_ERROR.getMessage());
 		}
 
 		int updated = (seatClass == SeatClass.ECONOMY) ? flightRepo.releaseEconomySeats(flightId, seats) : flightRepo.releaseBusinessSeats(flightId, seats);
 
 		if (updated == 0) {
 			if (!flightRepo.existsById(flightId)) {
-				throw new IllegalArgumentException(Constants.NO_FLIGHT_FOUND_ERROR.getMessage());
+				throw new IllegalArgumentException(ErrorConstants.NO_FLIGHT_FOUND_ERROR.getMessage());
 			}
-			throw new IllegalStateException(Constants.SEAT_RELEASE_EXCEEDS_CAPACITY_ERROR.getMessage());
+			throw new IllegalStateException(ErrorConstants.SEAT_RELEASE_EXCEEDS_CAPACITY_ERROR.getMessage());
 		}
 
 		return updated;

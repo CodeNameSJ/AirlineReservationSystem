@@ -12,7 +12,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.List;
 
 import static org.AirlineReservationSystem.util.DateUtils.addFormattedMaps;
-import static org.AirlineReservationSystem.util.IfAdmin.isNotAdmin;
+import static org.AirlineReservationSystem.util.CheckIfAdmin.isNotAdmin;
 
 @Controller
 @RequestMapping("/admin")

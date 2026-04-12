@@ -31,7 +31,7 @@ public class GlobalExceptionHandler {
 	// Fallback for unexpected errors
 	@ExceptionHandler(Exception.class)
 	public String handleGeneric(Exception ex, Model model) {
-		model.addAttribute("error", Constants.GENERIC_ERROR.getMessage());
+		model.addAttribute("error", ErrorConstants.GENERIC_ERROR.getMessage());
 		return "error"; // create error.html if not exists
 	}
 

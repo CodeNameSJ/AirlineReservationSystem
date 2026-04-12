@@ -3,7 +3,7 @@ package org.AirlineReservationSystem.service;
 import org.AirlineReservationSystem.model.User;
 import org.AirlineReservationSystem.model.enums.Role;
 import org.AirlineReservationSystem.repository.UserRepository;
-import org.AirlineReservationSystem.util.Constants;
+import org.AirlineReservationSystem.util.ErrorConstants;
 import org.AirlineReservationSystem.util.UserValidationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -33,15 +33,15 @@ public class UserService {
 		}
 
 		if (user.getPassword() == null || user.getPassword().isBlank()) {
-			throw new UserValidationException("password", Constants.PASSWORD_REQUIRED_ERROR.getMessage());
+			throw new UserValidationException("password", ErrorConstants.PASSWORD_REQUIRED_ERROR.getMessage());
 		}
 
 		if (userRepo.findByUsername(user.getUsername()).isPresent()) {
-			throw new UserValidationException("username", Constants.USERNAME_EXISTS_ERROR.getMessage());
+			throw new UserValidationException("username", ErrorConstants.USERNAME_EXISTS_ERROR.getMessage());
 		}
 
 		if (userRepo.findByEmail(user.getEmail()).isPresent()) {
-			throw new UserValidationException("email", Constants.EMAIL_EXISTS_ERROR.getMessage());
+			throw new UserValidationException("email", ErrorConstants.EMAIL_EXISTS_ERROR.getMessage());
 		}
 
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -55,11 +55,11 @@ public class UserService {
 		User existing = userRepo.findById(user.getId()).orElseThrow(() -> new RuntimeException("User not found"));
 
 		userRepo.findByUsername(user.getUsername()).filter(found -> !found.getId().equals(existing.getId())).ifPresent(found -> {
-			throw new UserValidationException("username", Constants.USERNAME_EXISTS_ERROR.getMessage());
+			throw new UserValidationException("username", ErrorConstants.USERNAME_EXISTS_ERROR.getMessage());
 		});
 
 		userRepo.findByEmail(user.getEmail()).filter(found -> !found.getId().equals(existing.getId())).ifPresent(found -> {
-			throw new UserValidationException("email", Constants.EMAIL_EXISTS_ERROR.getMessage());
+			throw new UserValidationException("email", ErrorConstants.EMAIL_EXISTS_ERROR.getMessage());
 		});
 
 		// Password handling

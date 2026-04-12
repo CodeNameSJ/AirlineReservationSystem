@@ -3,8 +3,8 @@ package org.AirlineReservationSystem.util;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
-public class IfAdmin {
-	private IfAdmin() {
+public class CheckIfAdmin {
+	private CheckIfAdmin() {
 		/* This utility class should not be instantiated */
 	}
 

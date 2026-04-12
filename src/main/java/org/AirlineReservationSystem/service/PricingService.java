@@ -3,7 +3,7 @@ package org.AirlineReservationSystem.service;
 import org.AirlineReservationSystem.model.Booking;
 import org.AirlineReservationSystem.model.Flight;
 import org.AirlineReservationSystem.model.enums.SeatClass;
-import org.AirlineReservationSystem.util.Constants;
+import org.AirlineReservationSystem.util.ErrorConstants;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +26,7 @@ public class PricingService {
 	public PricingBreakdown calculateBreakdown(Booking booking) {
 
 		if (booking == null || booking.getFlight() == null || booking.getSeatClass() == null) {
-			throw new IllegalArgumentException(Constants.INVALID_BOOKING_DATA_ERROR.getMessage());
+			throw new IllegalArgumentException(ErrorConstants.INVALID_BOOKING_DATA_ERROR.getMessage());
 		}
 
 		Flight flight = booking.getFlight();

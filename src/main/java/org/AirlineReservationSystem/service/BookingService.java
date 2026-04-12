@@ -8,7 +8,7 @@ import org.AirlineReservationSystem.model.enums.SeatClass;
 import org.AirlineReservationSystem.repository.BookingRepository;
 import org.AirlineReservationSystem.repository.FlightRepository;
 import org.AirlineReservationSystem.repository.UserRepository;
-import org.AirlineReservationSystem.util.Constants;
+import org.AirlineReservationSystem.util.ErrorConstants;
 import org.AirlineReservationSystem.util.SeatReleaseProjection;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -80,11 +80,11 @@ public class BookingService {
 			throw new IllegalArgumentException();
 		}
 
-		Booking booking = bookingRepo.findById(id).orElseThrow(() -> new IllegalArgumentException(Constants.NO_BOOKING_FOUND_ERROR.getMessage()));
+		Booking booking = bookingRepo.findById(id).orElseThrow(() -> new IllegalArgumentException(ErrorConstants.NO_BOOKING_FOUND_ERROR.getMessage()));
 
-		User user = userRepo.findById(userId).orElseThrow(() -> new IllegalArgumentException(Constants.NO_USER_FOUND_ERROR.getMessage()));
+		User user = userRepo.findById(userId).orElseThrow(() -> new IllegalArgumentException(ErrorConstants.NO_USER_FOUND_ERROR.getMessage()));
 
-		Flight newFlight = flightRepo.findById(flightId).orElseThrow(() -> new IllegalArgumentException(Constants.NO_FLIGHT_FOUND_ERROR.getMessage()));
+		Flight newFlight = flightRepo.findById(flightId).orElseThrow(() -> new IllegalArgumentException(ErrorConstants.NO_FLIGHT_FOUND_ERROR.getMessage()));
 
 		// old state
 		Long oldFlightId = booking.getFlight().getId();
@@ -140,7 +140,7 @@ public class BookingService {
 	@Transactional
 	public void cancelBooking(Long bookingId) {
 
-		Booking booking = bookingRepo.findById(bookingId).orElseThrow(() -> new IllegalArgumentException(Constants.NO_BOOKING_FOUND_ERROR.getMessage()));
+		Booking booking = bookingRepo.findById(bookingId).orElseThrow(() -> new IllegalArgumentException(ErrorConstants.NO_BOOKING_FOUND_ERROR.getMessage()));
 
 		if (booking.getStatus() == BookingStatus.CANCELLED) return;
 
@@ -152,10 +152,10 @@ public class BookingService {
 
 	@Transactional
 	public void cancelBookingForUser(Long bookingId, Long userId) {
-		Booking booking = bookingRepo.findById(bookingId).orElseThrow(() -> new IllegalArgumentException(Constants.NO_BOOKING_FOUND_ERROR.getMessage()));
+		Booking booking = bookingRepo.findById(bookingId).orElseThrow(() -> new IllegalArgumentException(ErrorConstants.NO_BOOKING_FOUND_ERROR.getMessage()));
 
 		if (!booking.getUser().getId().equals(userId)) {
-			throw new IllegalArgumentException(Constants.UNAUTHORIZED_CANCEL_ATTEMPT_ERROR.getMessage());
+			throw new IllegalArgumentException(ErrorConstants.UNAUTHORIZED_CANCEL_ATTEMPT_ERROR.getMessage());
 		}
 
 		cancelBooking(bookingId);
@@ -164,7 +164,7 @@ public class BookingService {
 	@Transactional
 	public void delete(Long bookingId) {
 
-		Booking booking = bookingRepo.findById(bookingId).orElseThrow(() -> new IllegalArgumentException(Constants.NO_BOOKING_FOUND_ERROR.getMessage()));
+		Booking booking = bookingRepo.findById(bookingId).orElseThrow(() -> new IllegalArgumentException(ErrorConstants.NO_BOOKING_FOUND_ERROR.getMessage()));
 
 		if (booking.getStatus() == BookingStatus.BOOKED) {
 			flightService.releaseSeatsAtomic(booking.getFlight().getId(), booking.getSeatClass(), booking.getSeats());
@@ -207,7 +207,7 @@ public class BookingService {
 
 	private void validateSeats(int seats) {
 		if (seats <= 0) {
-			throw new IllegalArgumentException(Constants.SEATS_MUST_BE_GREATER_THAN_ZERO_ERROR.getMessage());
+			throw new IllegalArgumentException(ErrorConstants.SEATS_MUST_BE_GREATER_THAN_ZERO_ERROR.getMessage());
 		}
 	}
 
