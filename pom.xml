@@ -21,13 +21,6 @@
 		<java.version>24</java.version>
 	</properties>
 	
-	<repositories>
-		<repository>
-			<id>central</id>
-			<url>https://repo1.maven.org/maven2</url>
-		</repository>
-	</repositories>
-
 	<dependencies>
 		<!-- Web -->
 		<dependency>
@@ -156,7 +149,7 @@
         <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-checkstyle-plugin</artifactId>
-            <version>3.3.1</version>
+            <version>3.4.0</version>
             <configuration>
                 <configLocation>google_checks.xml</configLocation>
                 <consoleOutput>true</consoleOutput>
