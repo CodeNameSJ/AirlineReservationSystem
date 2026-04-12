@@ -1,4 +1,4 @@
-package org.airlinereservationsystem.config;
+package org.AirlineReservationSystem.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

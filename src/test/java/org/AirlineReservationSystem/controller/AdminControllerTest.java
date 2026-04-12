@@ -1,8 +1,8 @@
-package org.airlinereservationsystem.controller;
+package org.AirlineReservationSystem.controller;
 
-import org.airlinereservationsystem.model.Flight;
-import org.airlinereservationsystem.service.BookingService;
-import org.airlinereservationsystem.service.FlightService;
+import org.AirlineReservationSystem.model.Flight;
+import org.AirlineReservationSystem.service.BookingService;
+import org.AirlineReservationSystem.service.FlightService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,10 +15,7 @@ import java.util.Optional;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(MockitoExtension.class)
 class AdminControllerTest {
@@ -44,9 +41,7 @@ class AdminControllerTest {
 
 		when(flightService.findByFlightNumber("ai101")).thenReturn(Optional.of(flight));
 
-		mockMvc.perform(get("/admin/flights/edit/ai101").sessionAttr("role", "ADMIN"))
-				.andExpect(status().is3xxRedirection())
-				.andExpect(redirectedUrl("/admin/flights/edit/AI101"));
+		mockMvc.perform(get("/admin/flights/edit/ai101").sessionAttr("role", "ADMIN")).andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("/admin/flights/edit/AI101"));
 	}
 
 	@Test
@@ -57,9 +52,6 @@ class AdminControllerTest {
 
 		when(flightService.findByFlightNumber("AI101")).thenReturn(Optional.of(flight));
 
-		mockMvc.perform(get("/admin/flights/edit/AI101").sessionAttr("role", "ADMIN"))
-				.andExpect(status().isOk())
-				.andExpect(view().name("admin/flight-form"))
-				.andExpect(model().attributeExists("flight"));
+		mockMvc.perform(get("/admin/flights/edit/AI101").sessionAttr("role", "ADMIN")).andExpect(status().isOk()).andExpect(view().name("admin/flight-form")).andExpect(model().attributeExists("flight"));
 	}
 }

@@ -1,9 +1,9 @@
-package org.airlinereservationsystem.service;
+package org.AirlineReservationSystem.service;
 
-import org.airlinereservationsystem.model.Flight;
-import org.airlinereservationsystem.model.enums.SeatClass;
-import org.airlinereservationsystem.repository.FlightRepository;
-import org.airlinereservationsystem.util.Constants;
+import org.AirlineReservationSystem.model.Flight;
+import org.AirlineReservationSystem.model.enums.SeatClass;
+import org.AirlineReservationSystem.repository.FlightRepository;
+import org.AirlineReservationSystem.util.Constants;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,18 +34,14 @@ public class FlightService {
 		}
 
 		if (hasOrigin && hasDestination) {
-			return hasDateRange
-					? flightRepo.findByOriginAndDestinationAndDepartureTimeBetween(origin, destination, start, end)
-					: flightRepo.findByOriginAndDestination(origin, destination);
+			return hasDateRange ? flightRepo.findByOriginAndDestinationAndDepartureTimeBetween(origin, destination, start, end) : flightRepo.findByOriginAndDestination(origin, destination);
 		}
 
 		if (hasOrigin) {
-			return hasDateRange ? flightRepo.findByOriginAndDepartureTimeBetween(origin, start, end)
-					: flightRepo.findByOrigin(origin);
+			return hasDateRange ? flightRepo.findByOriginAndDepartureTimeBetween(origin, start, end) : flightRepo.findByOrigin(origin);
 		}
 
-		return hasDateRange ? flightRepo.findByDestinationAndDepartureTimeBetween(destination, start, end)
-				: flightRepo.findByDestination(destination);
+		return hasDateRange ? flightRepo.findByDestinationAndDepartureTimeBetween(destination, start, end) : flightRepo.findByDestination(destination);
 
 	}
 
@@ -54,8 +50,7 @@ public class FlightService {
 	}
 
 	public Optional<Flight> findByFlightNumber(String flightNumber) {
-		if (flightNumber == null)
-			return Optional.empty();
+		if (flightNumber == null) return Optional.empty();
 		return flightRepo.findByFlightNumber(normalizeFlightNumber(flightNumber));
 	}
 
@@ -75,11 +70,9 @@ public class FlightService {
 			throw new IllegalArgumentException(Constants.NEGATIVE_SEAT_COUNTS_ERROR.getMessage());
 		}
 
-		flightRepo.findByFlightNumber(flight.getFlightNumber())
-				.filter(existing -> flight.getId() == null || !existing.getId().equals(flight.getId()))
-				.ifPresent(existing -> {
-					throw new IllegalArgumentException(Constants.FLIGHT_NUMBER_EXISTS_ERROR.getMessage());
-				});
+		flightRepo.findByFlightNumber(flight.getFlightNumber()).filter(existing -> flight.getId() == null || !existing.getId().equals(flight.getId())).ifPresent(existing -> {
+			throw new IllegalArgumentException(Constants.FLIGHT_NUMBER_EXISTS_ERROR.getMessage());
+		});
 
 		if (flight.getId() == null) {
 			// new flight
@@ -112,8 +105,7 @@ public class FlightService {
 			throw new IllegalArgumentException(Constants.SEATS_MUST_BE_GREATER_THAN_ZERO_ERROR.getMessage());
 		}
 
-		int updated = (seatClass == SeatClass.ECONOMY) ? flightRepo.reserveEconomySeats(flightId, seats)
-				: flightRepo.reserveBusinessSeats(flightId, seats);
+		int updated = (seatClass == SeatClass.ECONOMY) ? flightRepo.reserveEconomySeats(flightId, seats) : flightRepo.reserveBusinessSeats(flightId, seats);
 
 		if (updated == 0) {
 			if (!flightRepo.existsById(flightId)) {
@@ -136,8 +128,7 @@ public class FlightService {
 			throw new IllegalArgumentException(Constants.SEATS_MUST_BE_GREATER_THAN_ZERO_ERROR.getMessage());
 		}
 
-		int updated = (seatClass == SeatClass.ECONOMY) ? flightRepo.releaseEconomySeats(flightId, seats)
-				: flightRepo.releaseBusinessSeats(flightId, seats);
+		int updated = (seatClass == SeatClass.ECONOMY) ? flightRepo.releaseEconomySeats(flightId, seats) : flightRepo.releaseBusinessSeats(flightId, seats);
 
 		if (updated == 0) {
 			if (!flightRepo.existsById(flightId)) {

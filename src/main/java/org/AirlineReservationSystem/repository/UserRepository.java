@@ -1,7 +1,7 @@
-package org.airlinereservationsystem.repository;
+package org.AirlineReservationSystem.repository;
 
-import org.airlinereservationsystem.model.User;
-import org.airlinereservationsystem.model.enums.Role;
+import org.AirlineReservationSystem.model.User;
+import org.AirlineReservationSystem.model.enums.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

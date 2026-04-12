@@ -1,10 +1,10 @@
-package org.airlinereservationsystem.service;
+package org.AirlineReservationSystem.service;
 
-import org.airlinereservationsystem.model.User;
-import org.airlinereservationsystem.model.enums.Role;
-import org.airlinereservationsystem.repository.UserRepository;
-import org.airlinereservationsystem.util.Constants;
-import org.airlinereservationsystem.util.UserValidationException;
+import org.AirlineReservationSystem.model.User;
+import org.AirlineReservationSystem.model.enums.Role;
+import org.AirlineReservationSystem.repository.UserRepository;
+import org.AirlineReservationSystem.util.Constants;
+import org.AirlineReservationSystem.util.UserValidationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,17 +54,13 @@ public class UserService {
 
 		User existing = userRepo.findById(user.getId()).orElseThrow(() -> new RuntimeException("User not found"));
 
-		userRepo.findByUsername(user.getUsername())
-				.filter(found -> !found.getId().equals(existing.getId()))
-				.ifPresent(found -> {
-					throw new UserValidationException("username", Constants.USERNAME_EXISTS_ERROR.getMessage());
-				});
+		userRepo.findByUsername(user.getUsername()).filter(found -> !found.getId().equals(existing.getId())).ifPresent(found -> {
+			throw new UserValidationException("username", Constants.USERNAME_EXISTS_ERROR.getMessage());
+		});
 
-		userRepo.findByEmail(user.getEmail())
-				.filter(found -> !found.getId().equals(existing.getId()))
-				.ifPresent(found -> {
-					throw new UserValidationException("email", Constants.EMAIL_EXISTS_ERROR.getMessage());
-				});
+		userRepo.findByEmail(user.getEmail()).filter(found -> !found.getId().equals(existing.getId())).ifPresent(found -> {
+			throw new UserValidationException("email", Constants.EMAIL_EXISTS_ERROR.getMessage());
+		});
 
 		// Password handling
 		if (user.getPassword() == null || user.getPassword().isBlank()) {
@@ -86,8 +82,7 @@ public class UserService {
 
 		String stored = user.getPassword();
 
-		if (stored == null)
-			return false;
+		if (stored == null) return false;
 
 		// Normal encoded case
 		if (stored.startsWith("$2")) {
@@ -119,8 +114,7 @@ public class UserService {
 	}
 
 	public Optional<User> findByUsername(String username) {
-		if (username == null)
-			return Optional.empty();
+		if (username == null) return Optional.empty();
 		return userRepo.findByUsername(username.trim().toLowerCase());
 	}
 

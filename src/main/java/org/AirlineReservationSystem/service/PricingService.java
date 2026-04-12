@@ -1,9 +1,9 @@
-package org.airlinereservationsystem.service;
+package org.AirlineReservationSystem.service;
 
-import org.airlinereservationsystem.model.Booking;
-import org.airlinereservationsystem.model.Flight;
-import org.airlinereservationsystem.model.enums.SeatClass;
-import org.airlinereservationsystem.util.Constants;
+import org.AirlineReservationSystem.model.Booking;
+import org.AirlineReservationSystem.model.Flight;
+import org.AirlineReservationSystem.model.enums.SeatClass;
+import org.AirlineReservationSystem.util.Constants;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -31,8 +31,7 @@ public class PricingService {
 
 		Flight flight = booking.getFlight();
 
-		BigDecimal pricePerSeat = booking.getSeatClass() == SeatClass.ECONOMY ? flight.getPriceEconomy()
-				: flight.getPriceBusiness();
+		BigDecimal pricePerSeat = booking.getSeatClass() == SeatClass.ECONOMY ? flight.getPriceEconomy() : flight.getPriceBusiness();
 
 		BigDecimal subtotal = pricePerSeat.multiply(BigDecimal.valueOf(booking.getSeats()));
 
@@ -40,10 +39,6 @@ public class PricingService {
 
 		BigDecimal total = subtotal.add(tax).add(serviceFee);
 
-		return new PricingBreakdown(
-				subtotal.setScale(2, RoundingMode.HALF_UP),
-				tax,
-				serviceFee.setScale(2, RoundingMode.HALF_UP),
-				total.setScale(2, RoundingMode.HALF_UP));
+		return new PricingBreakdown(subtotal.setScale(2, RoundingMode.HALF_UP), tax, serviceFee.setScale(2, RoundingMode.HALF_UP), total.setScale(2, RoundingMode.HALF_UP));
 	}
 }

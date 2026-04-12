@@ -1,6 +1,6 @@
-package org.airlinereservationsystem.util;
+package org.AirlineReservationSystem.util;
 
-import org.airlinereservationsystem.model.enums.SeatClass;
+import org.AirlineReservationSystem.model.enums.SeatClass;
 
 public interface SeatReleaseProjection {
 	Long getFlightId();

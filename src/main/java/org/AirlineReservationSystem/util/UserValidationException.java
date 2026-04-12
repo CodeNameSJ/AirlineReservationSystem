@@ -1,4 +1,4 @@
-package org.airlinereservationsystem.util;
+package org.AirlineReservationSystem.util;
 
 import lombok.Getter;
 

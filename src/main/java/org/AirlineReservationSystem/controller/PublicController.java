@@ -1,8 +1,8 @@
-package org.airlinereservationsystem.controller;
+package org.AirlineReservationSystem.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
-import org.airlinereservationsystem.model.Flight;
-import org.airlinereservationsystem.service.FlightService;
+import org.AirlineReservationSystem.model.Flight;
+import org.AirlineReservationSystem.service.FlightService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +17,7 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static org.airlinereservationsystem.util.DateUtils.addFormattedMaps;
+import static org.AirlineReservationSystem.util.DateUtils.addFormattedMaps;
 
 @Controller
 public class PublicController {
@@ -28,7 +28,7 @@ public class PublicController {
 		this.flightService = flightService;
 	}
 
-	@GetMapping({ "/", "/home" })
+	@GetMapping({"/", "/home"})
 	public String home(Model model) {
 		List<Flight> flights = flightService.findAll().stream().limit(10).toList();
 		addFormattedMaps(model, flights);
@@ -38,15 +38,11 @@ public class PublicController {
 
 	@ModelAttribute("airports")
 	public List<String> populateAirports() {
-		return Stream.concat(flightService.originAirports().stream(), flightService.destinationAirports().stream())
-				.filter(s -> s != null && !s.isBlank()).map(String::trim).distinct().sorted().toList();
+		return Stream.concat(flightService.originAirports().stream(), flightService.destinationAirports().stream()).filter(s -> s != null && !s.isBlank()).map(String::trim).distinct().sorted().toList();
 	}
 
 	@GetMapping("/flights")
-	public String showFlights(@RequestParam(required = false) String origin,
-			@RequestParam(required = false) String destination,
-			@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
-			HttpServletRequest request, Model model) {
+	public String showFlights(@RequestParam(required = false) String origin, @RequestParam(required = false) String destination, @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date, HttpServletRequest request, Model model) {
 
 		LocalDateTime start = (date != null) ? date.atStartOfDay() : null;
 		LocalDateTime end = (date != null) ? date.atTime(LocalTime.MAX) : null;
@@ -68,10 +64,9 @@ public class PublicController {
 	}
 
 	@GetMapping("/flight/{id}")
-	public String flightDetails(@PathVariable("id") Long id, Model model) {
+	public String flightDetails(@PathVariable Long id, Model model) {
 		var opt = flightService.findById(id);
-		if (opt.isEmpty())
-			return "redirect:/flights";
+		if (opt.isEmpty()) return "redirect:/flights";
 
 		model.addAttribute("flight", opt.get());
 		return "flightDetails";

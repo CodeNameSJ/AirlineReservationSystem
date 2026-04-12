@@ -1,4 +1,4 @@
-package org.airlinereservationsystem.config;
+package org.AirlineReservationSystem.config;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

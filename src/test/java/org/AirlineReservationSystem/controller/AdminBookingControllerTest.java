@@ -1,12 +1,12 @@
-package org.airlinereservationsystem.controller;
+package org.AirlineReservationSystem.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
-import org.airlinereservationsystem.model.Booking;
-import org.airlinereservationsystem.model.Flight;
-import org.airlinereservationsystem.model.enums.SeatClass;
-import org.airlinereservationsystem.service.BookingService;
-import org.airlinereservationsystem.service.FlightService;
-import org.airlinereservationsystem.service.UserService;
+import org.AirlineReservationSystem.model.Booking;
+import org.AirlineReservationSystem.model.Flight;
+import org.AirlineReservationSystem.model.enums.SeatClass;
+import org.AirlineReservationSystem.service.BookingService;
+import org.AirlineReservationSystem.service.FlightService;
+import org.AirlineReservationSystem.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -46,8 +46,7 @@ class AdminBookingControllerTest {
 		request.getSession(false).setAttribute("role", "ADMIN");
 		when(bookingService.createBooking(3L, 4L, SeatClass.BUSINESS, 2)).thenReturn(booking);
 
-		String view = controller.saveBooking(request, null, 3L, 4L, 2, SeatClass.BUSINESS, null,
-				new ConcurrentModel(), new RedirectAttributesModelMap());
+		String view = controller.saveBooking(request, null, 3L, 4L, 2, SeatClass.BUSINESS, null, new ConcurrentModel(), new RedirectAttributesModelMap());
 
 		assertThat(view).isEqualTo("redirect:/admin/bookings/edit/15");
 		verify(bookingService).createBooking(3L, 4L, SeatClass.BUSINESS, 2);

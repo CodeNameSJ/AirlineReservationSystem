@@ -1,8 +1,8 @@
-package org.airlinereservationsystem.service;
+package org.AirlineReservationSystem.service;
 
-import org.airlinereservationsystem.model.Booking;
-import org.airlinereservationsystem.model.Flight;
-import org.airlinereservationsystem.model.enums.SeatClass;
+import org.AirlineReservationSystem.model.Booking;
+import org.AirlineReservationSystem.model.Flight;
+import org.AirlineReservationSystem.model.enums.SeatClass;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 

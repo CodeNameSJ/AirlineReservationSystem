@@ -1,11 +1,11 @@
-package org.airlinereservationsystem.controller;
+package org.AirlineReservationSystem.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-import org.airlinereservationsystem.model.User;
-import org.airlinereservationsystem.service.UserService;
-import org.airlinereservationsystem.util.UserValidationException;
+import org.AirlineReservationSystem.model.User;
+import org.AirlineReservationSystem.service.UserService;
+import org.AirlineReservationSystem.util.UserValidationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -31,14 +31,12 @@ public class AuthController {
 			return "redirect:/";
 		}
 
-		if (error != null)
-			model.addAttribute("error", error);
+		if (error != null) model.addAttribute("error", error);
 		return "login";
 	}
 
 	@PostMapping("/login")
-	public String doLogin(@RequestParam String username, @RequestParam String password, HttpServletRequest req,
-			Model model) {
+	public String doLogin(@RequestParam String username, @RequestParam String password, HttpServletRequest req, Model model) {
 
 		var opt = userService.findByUsername(username);
 
@@ -85,8 +83,7 @@ public class AuthController {
 	@PostMapping("/register")
 	public String doRegister(@Valid @ModelAttribute("user") User user, BindingResult result, HttpServletRequest req) {
 
-		if (result.hasErrors())
-			return "register";
+		if (result.hasErrors()) return "register";
 
 		try {
 			userService.register(user);
@@ -106,8 +103,7 @@ public class AuthController {
 	@GetMapping("/logout")
 	public String logout(HttpServletRequest req) {
 		HttpSession s = req.getSession(false);
-		if (s != null)
-			s.invalidate();
+		if (s != null) s.invalidate();
 		return "redirect:/";
 	}
 }

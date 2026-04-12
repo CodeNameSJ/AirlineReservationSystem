@@ -1,8 +1,8 @@
-package org.airlinereservationsystem.service;
+package org.AirlineReservationSystem.service;
 
-import org.airlinereservationsystem.model.User;
-import org.airlinereservationsystem.model.enums.Role;
-import org.airlinereservationsystem.repository.UserRepository;
+import org.AirlineReservationSystem.model.User;
+import org.AirlineReservationSystem.model.enums.Role;
+import org.AirlineReservationSystem.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;

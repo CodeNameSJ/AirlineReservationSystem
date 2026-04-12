@@ -1,4 +1,4 @@
-package org.airlinereservationsystem.util;
+package org.AirlineReservationSystem.util;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.ui.Model;
@@ -38,10 +38,8 @@ public class GlobalExceptionHandler {
 	private String resolveView(HttpServletRequest request) {
 		String uri = request.getRequestURI();
 
-		if (uri.contains("/register"))
-			return "register";
-		if (uri.contains("/login"))
-			return "login";
+		if (uri.contains("/register")) return "register";
+		if (uri.contains("/login")) return "login";
 
 		return "error";
 	}

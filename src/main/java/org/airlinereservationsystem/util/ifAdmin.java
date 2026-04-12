@@ -1,4 +1,4 @@
-package org.airlinereservationsystem.util;
+package org.AirlineReservationSystem.util;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;

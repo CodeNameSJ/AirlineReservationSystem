@@ -1,4 +1,4 @@
-package org.airlinereservationsystem.model.enums;
+package org.AirlineReservationSystem.model.enums;
 
 public enum Role {
 	USER, ADMIN

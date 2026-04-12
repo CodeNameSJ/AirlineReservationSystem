@@ -1,6 +1,6 @@
-package org.airlinereservationsystem.util;
+package org.AirlineReservationSystem.util;
 
-import org.airlinereservationsystem.model.Flight;
+import org.AirlineReservationSystem.model.Flight;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

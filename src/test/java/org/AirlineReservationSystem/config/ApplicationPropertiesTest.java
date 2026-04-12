@@ -1,4 +1,4 @@
-package org.airlinereservationsystem.config;
+package org.AirlineReservationSystem.config;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ClassPathResource;
@@ -18,12 +18,9 @@ class ApplicationPropertiesTest {
 			properties.load(inputStream);
 		}
 
-		assertThat(properties.getProperty("spring.datasource.url"))
-				.isEqualTo("${AIRLINE_DB_URL:jdbc:mysql://localhost:3306/airline_db?createDatabaseIfNotExist=true}");
-		assertThat(properties.getProperty("spring.datasource.username"))
-				.isEqualTo("${AIRLINE_DB_USERNAME:root}");
-		assertThat(properties.getProperty("spring.datasource.password"))
-				.isEqualTo("${AIRLINE_DB_PASSWORD:root}");
+		assertThat(properties.getProperty("spring.datasource.url")).isEqualTo("${AIRLINE_DB_URL:jdbc:mysql://localhost:3306/airline_db?createDatabaseIfNotExist=true}");
+		assertThat(properties.getProperty("spring.datasource.username")).isEqualTo("${AIRLINE_DB_USERNAME:root}");
+		assertThat(properties.getProperty("spring.datasource.password")).isEqualTo("${AIRLINE_DB_PASSWORD:root}");
 		assertThat(properties.getProperty("spring.jpa.hibernate.ddl-auto")).isEqualTo("none");
 		assertThat(properties.getProperty("spring.jpa.generate-ddl")).isEqualTo("false");
 	}

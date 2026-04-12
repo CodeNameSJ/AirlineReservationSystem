@@ -1,9 +1,9 @@
-package org.airlinereservationsystem.controller;
+package org.AirlineReservationSystem.controller;
 
-import org.airlinereservationsystem.model.User;
-import org.airlinereservationsystem.model.enums.Role;
-import org.airlinereservationsystem.service.BookingService;
-import org.airlinereservationsystem.service.UserService;
+import org.AirlineReservationSystem.model.User;
+import org.AirlineReservationSystem.model.enums.Role;
+import org.AirlineReservationSystem.service.BookingService;
+import org.AirlineReservationSystem.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,10 +16,7 @@ import java.util.Optional;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(MockitoExtension.class)
 class AdminUserControllerTest {
@@ -46,9 +43,7 @@ class AdminUserControllerTest {
 
 		when(userService.findByUsername("ALICE")).thenReturn(Optional.of(user));
 
-		mockMvc.perform(get("/admin/users/edit/ALICE").sessionAttr("role", "ADMIN"))
-				.andExpect(status().is3xxRedirection())
-				.andExpect(redirectedUrl("/admin/users/edit/alice"));
+		mockMvc.perform(get("/admin/users/edit/ALICE").sessionAttr("role", "ADMIN")).andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("/admin/users/edit/alice"));
 	}
 
 	@Test
@@ -60,9 +55,6 @@ class AdminUserControllerTest {
 
 		when(userService.findByUsername("alice")).thenReturn(Optional.of(user));
 
-		mockMvc.perform(get("/admin/users/edit/alice").sessionAttr("role", "ADMIN"))
-				.andExpect(status().isOk())
-				.andExpect(view().name("admin/user-form"))
-				.andExpect(model().attributeExists("user", "roles"));
+		mockMvc.perform(get("/admin/users/edit/alice").sessionAttr("role", "ADMIN")).andExpect(status().isOk()).andExpect(view().name("admin/user-form")).andExpect(model().attributeExists("user", "roles"));
 	}
 }
