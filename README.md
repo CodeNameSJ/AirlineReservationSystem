@@ -6,7 +6,7 @@ I'll update and implement new methods and technologies as I learn.
 <hr>
 
 ```
-spotless:apply   # auto format
+mvn spotless:apply   # auto format
 mvn spotless:check   # verify formatting
 mvn spring-boot:run
 mvn test
