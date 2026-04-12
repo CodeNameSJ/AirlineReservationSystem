@@ -1,18 +1,18 @@
 <div class="flight-search-card" th:fragment="searchForm">
-	<form id="flightSearchForm" th:action="@{/flights}" method="get" class="flight-search-form">
+	<form class="flight-search-form" id="flightSearchForm" method="get" th:action="@{/flights}">
 		<div class="inline">
 			<!-- Origin -->
 			<div class="form-group">
 				<label for="origin">Origin
 					<select id="origin" name="origin">
-						<option value="" disabled
-						        th:selected="${param.origin == null}">
-							FROM
+						<option disabled th:selected="${param.origin == null}"
+						        value="">
+							<!--							FROM-->
 						</option>
 						<option th:each="airport : ${airports}"
-						        th:value="${airport}"
+						        th:selected="${param.origin == airport}"
 						        th:text="${airport}"
-						        th:selected="${param.origin == airport}">
+						        th:value="${airport}">
 						</option>
 					</select>
 				</label>
@@ -24,14 +24,14 @@
 			<div class="form-group">
 				<label for="destination">Destination
 					<select id="destination" name="destination">
-						<option value="" disabled
-						        th:selected="${param.destination == null}">
+						<option disabled th:selected="${param.destination == null}"
+						        value="">
 							TO
 						</option>
 						<option th:each="airport : ${airports}"
-						        th:value="${airport}"
+						        th:selected="${param.destination == airport}"
 						        th:text="${airport}"
-						        th:selected="${param.destination == airport}">
+						        th:value="${airport}">
 						</option>
 					</select>
 				</label>
@@ -40,10 +40,10 @@
 
 		<div class="form-group">
 			<label>Dates
-				<input type="date" name="date"  th:value="${param.date}" />
+				<input name="date" th:value="${param.date}" type="date"/>
 			</label>
 		</div>
 
-		<button type="submit" class="animated-button">Search Flights</button>
+		<button class="animated-button" type="submit">Search Flights</button>
 	</form>
 </div>
