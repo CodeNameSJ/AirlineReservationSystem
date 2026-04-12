@@ -52,3 +52,4 @@ Thumbs.db
 /unique_coords.txt
 /unique_deps.txt
 /effective-pom.xml
+/target
