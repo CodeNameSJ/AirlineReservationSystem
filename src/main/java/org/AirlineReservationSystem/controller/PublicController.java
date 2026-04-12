@@ -28,7 +28,7 @@ public class PublicController {
 		this.flightService = flightService;
 	}
 
-	@GetMapping({"/", "/home"})
+	@GetMapping({ "/", "/home" })
 	public String home(Model model) {
 		List<Flight> flights = flightService.findAll().stream().limit(10).toList();
 		addFormattedMaps(model, flights);
@@ -36,14 +36,17 @@ public class PublicController {
 		return "home";
 	}
 
-
 	@ModelAttribute("airports")
 	public List<String> populateAirports() {
-		return Stream.concat(flightService.originAirports().stream(), flightService.destinationAirports().stream()).filter(s -> s != null && !s.isBlank()).map(String::trim).distinct().sorted().toList();
+		return Stream.concat(flightService.originAirports().stream(), flightService.destinationAirports().stream())
+				.filter(s -> s != null && !s.isBlank()).map(String::trim).distinct().sorted().toList();
 	}
 
 	@GetMapping("/flights")
-	public String showFlights(@RequestParam(required = false) String origin, @RequestParam(required = false) String destination, @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date, HttpServletRequest request, Model model) {
+	public String showFlights(@RequestParam(required = false) String origin,
+			@RequestParam(required = false) String destination,
+			@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+			HttpServletRequest request, Model model) {
 
 		LocalDateTime start = (date != null) ? date.atStartOfDay() : null;
 		LocalDateTime end = (date != null) ? date.atTime(LocalTime.MAX) : null;
@@ -67,7 +70,8 @@ public class PublicController {
 	@GetMapping("/flight/{id}")
 	public String flightDetails(@PathVariable("id") Long id, Model model) {
 		var opt = flightService.findById(id);
-		if (opt.isEmpty()) return "redirect:/flights";
+		if (opt.isEmpty())
+			return "redirect:/flights";
 
 		model.addAttribute("flight", opt.get());
 		return "flightDetails";

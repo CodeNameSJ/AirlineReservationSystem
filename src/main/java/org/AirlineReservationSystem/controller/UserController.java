@@ -27,7 +27,8 @@ public class UserController {
 
 	private Long getUserId(HttpServletRequest req) {
 		HttpSession s = req.getSession(false);
-		if (s == null || s.getAttribute("userId") == null) return null;
+		if (s == null || s.getAttribute("userId") == null)
+			return null;
 		return (Long) s.getAttribute("userId");
 	}
 
@@ -35,7 +36,8 @@ public class UserController {
 	public String viewBookings(HttpServletRequest req, Model model) {
 
 		Long userId = getUserId(req);
-		if (userId == null) return "redirect:/login";
+		if (userId == null)
+			return "redirect:/login";
 
 		model.addAttribute("bookings", bookingService.findByUserId(userId));
 		return "user/home";
@@ -47,13 +49,15 @@ public class UserController {
 		Long userId = getUserId(req);
 		if (userId == null) {
 			String url = "/user/book?flightId=" + flightId;
-			if (!url.startsWith("/user")) url = "/user/home";
+			if (!url.startsWith("/user"))
+				url = "/user/home";
 			req.getSession(true).setAttribute("redirectAfterLogin", url);
 			return "redirect:/login";
 		}
 
 		var opt = flightService.findById(flightId);
-		if (opt.isEmpty()) return "redirect:/user/home";
+		if (opt.isEmpty())
+			return "redirect:/user/home";
 
 		model.addAttribute("flight", opt.get());
 		model.addAttribute("seatClasses", SeatClass.values());
@@ -62,7 +66,8 @@ public class UserController {
 	}
 
 	@PostMapping("/book")
-	public String doBook(@RequestParam Long flightId, @RequestParam int seats, @RequestParam SeatClass seatClass, HttpServletRequest req, Model model) {
+	public String doBook(@RequestParam Long flightId, @RequestParam int seats, @RequestParam SeatClass seatClass,
+			HttpServletRequest req, Model model) {
 
 		Long userId = getUserId(req);
 		if (userId == null) {
@@ -102,7 +107,8 @@ public class UserController {
 	public String cancel(@RequestParam Long id, HttpServletRequest req, RedirectAttributes redirectAttributes) {
 
 		Long userId = getUserId(req);
-		if (userId == null) return "redirect:/login";
+		if (userId == null)
+			return "redirect:/login";
 
 		bookingService.cancelBookingForUser(id, userId);
 		redirectAttributes.addFlashAttribute("successMessage", "Booking canceled successfully.");
@@ -112,23 +118,27 @@ public class UserController {
 	@GetMapping("/booking/{id}")
 	public String bookingDetail(@PathVariable Long id, HttpServletRequest req, Model model) {
 		String redirect = addAuthorizedBookingToModel(id, req, model);
-		if (redirect != null) return redirect;
+		if (redirect != null)
+			return redirect;
 		return "user/bookingDetail";
 	}
 
 	@GetMapping("/booking/{id}/bill")
 	public String bookingBill(@PathVariable Long id, HttpServletRequest req, Model model) {
 		String redirect = addAuthorizedBookingToModel(id, req, model);
-		if (redirect != null) return redirect;
+		if (redirect != null)
+			return redirect;
 		return "user/bookingBill";
 	}
 
 	private String addAuthorizedBookingToModel(Long id, HttpServletRequest req, Model model) {
 		Long userId = getUserId(req);
-		if (userId == null) return "redirect:/login";
+		if (userId == null)
+			return "redirect:/login";
 
 		var opt = bookingService.findById(id);
-		if (opt.isEmpty()) return "redirect:/user/home";
+		if (opt.isEmpty())
+			return "redirect:/user/home";
 
 		var booking = opt.get();
 
