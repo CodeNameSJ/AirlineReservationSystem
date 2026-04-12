@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.3.11</version>
+		<version>4.0.5</version>
 		<relativePath/>
 	</parent>
 
@@ -60,10 +60,18 @@
 		</dependency>
 
 		<!-- Flyway -->
+		<!--	Use this for latest Sprint boot version -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-flyway</artifactId>
 		</dependency>
+
+		<!--		<dependency>-->
+		<!--			<groupId>org.flywaydb</groupId>-->
+		<!--			<artifactId>flyway-core</artifactId>-->
+		<!--			<version>9.22.3</version>-->
+		<!--			<scope>compile</scope>-->
+		<!--		</dependency>-->
 
 		<!-- MySQL -->
 		<dependency>
