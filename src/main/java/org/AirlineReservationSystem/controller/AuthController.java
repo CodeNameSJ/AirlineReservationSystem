@@ -17,93 +17,99 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class AuthController {
 
-	private final UserService userService;
+  private final UserService userService;
 
-	public AuthController(UserService userService) {
-		this.userService = userService;
-	}
+  public AuthController(UserService userService) {
+    this.userService = userService;
+  }
 
-	@GetMapping("/login")
-	public String loginPage(@RequestParam(required = false) String error, HttpServletRequest req, Model model) {
+  @GetMapping("/login")
+  public String loginPage(
+      @RequestParam(required = false) String error, HttpServletRequest req, Model model) {
 
-		HttpSession s = req.getSession(false);
-		if (s != null && s.getAttribute("userId") != null) {
-			return "redirect:/";
-		}
+    HttpSession s = req.getSession(false);
+    if (s != null && s.getAttribute("userId") != null) {
+      return "redirect:/";
+    }
 
-		if (error != null) model.addAttribute("error", error);
-		return "login";
-	}
+    if (error != null) model.addAttribute("error", error);
+    return "login";
+  }
 
-	@PostMapping("/login")
-	public String doLogin(@RequestParam String username, @RequestParam String password, HttpServletRequest req, Model model) {
+  @PostMapping("/login")
+  public String doLogin(
+      @RequestParam String username,
+      @RequestParam String password,
+      HttpServletRequest req,
+      Model model) {
 
-		var opt = userService.findByUsername(username);
+    var opt = userService.findByUsername(username);
 
-		if (opt.isEmpty() || !userService.passwordMatches(opt.get(), password)) {
-			model.addAttribute("error", "Invalid username or password");
-			return "login";
-		}
+    if (opt.isEmpty() || !userService.passwordMatches(opt.get(), password)) {
+      model.addAttribute("error", "Invalid username or password");
+      return "login";
+    }
 
-		User user = opt.get();
+    User user = opt.get();
 
-		HttpSession session = req.getSession(true);
-		session.setAttribute("userId", user.getId());
-		session.setAttribute("username", user.getUsername());
-		session.setAttribute("role", user.getRole().name());
+    HttpSession session = req.getSession(true);
+    session.setAttribute("userId", user.getId());
+    session.setAttribute("username", user.getUsername());
+    session.setAttribute("role", user.getRole().name());
 
-		// redirect handling
-		String redirect = (String) session.getAttribute("redirectAfterLogin");
-		session.removeAttribute("redirectAfterLogin");
+    // redirect handling
+    String redirect = (String) session.getAttribute("redirectAfterLogin");
+    session.removeAttribute("redirectAfterLogin");
 
-		if (redirect != null && redirect.startsWith("/")) {
-			return "redirect:" + redirect;
-		}
+    if (redirect != null && redirect.startsWith("/")) {
+      return "redirect:" + redirect;
+    }
 
-		// role-based fallback
-		if ("ADMIN".equalsIgnoreCase(user.getRole().name())) {
-			return "redirect:/admin/dashboard";
-		}
+    // role-based fallback
+    if ("ADMIN".equalsIgnoreCase(user.getRole().name())) {
+      return "redirect:/admin/dashboard";
+    }
 
-		return "redirect:/user/home";
-	}
+    return "redirect:/user/home";
+  }
 
-	@GetMapping("/register")
-	public String registerPage(HttpServletRequest req, Model model) {
+  @GetMapping("/register")
+  public String registerPage(HttpServletRequest req, Model model) {
 
-		HttpSession s = req.getSession(false);
-		if (s != null && s.getAttribute("userId") != null) {
-			return "redirect:/";
-		}
+    HttpSession s = req.getSession(false);
+    if (s != null && s.getAttribute("userId") != null) {
+      return "redirect:/";
+    }
 
-		model.addAttribute("user", new User());
-		return "register";
-	}
+    model.addAttribute("user", new User());
+    return "register";
+  }
 
-	@PostMapping("/register")
-	public String doRegister(@Valid @ModelAttribute("user") User user, BindingResult result, HttpServletRequest req) {
+  @PostMapping("/register")
+  public String doRegister(
+      @Valid @ModelAttribute("user") User user, BindingResult result, HttpServletRequest req) {
 
-		if (result.hasErrors()) return "register";
+    if (result.hasErrors()) return "register";
 
-		try {
-			userService.register(user);
-		} catch (UserValidationException e) {
-			result.rejectValue(e.getField(), "error.user", e.getMessage());
-			return "register";
-		}
+    try {
+      userService.register(user);
+    } catch (UserValidationException e) {
+      result.rejectValue(e.getField(), "error.user", e.getMessage());
+      return "register";
+    }
 
-		HttpSession session = req.getSession(true);
-		session.setAttribute("userId", user.getId());
-		session.setAttribute("username", user.getUsername());
-		session.setAttribute("role", user.getRole().name());
+    HttpSession session = req.getSession(true);
+    session.setAttribute("userId", user.getId());
+    session.setAttribute("username", user.getUsername());
+    session.setAttribute("role", user.getRole().name());
 
-		return "redirect:/user/home";
-	}
+    return "redirect:/user/home";
+  }
 
-	@GetMapping("/logout")
-	public String logout(HttpServletRequest req) {
-		HttpSession s = req.getSession(false);
-		if (s != null) s.invalidate();
-		return "redirect:/";
-	}
+  @GetMapping("/logout")
+  public String logout(HttpServletRequest req) {
+    HttpSession s = req.getSession(false);
+    if (s != null) s.invalidate();
+    return "redirect:/";
+  }
 }

@@ -3,9 +3,9 @@ package org.AirlineReservationSystem.util;
 import org.AirlineReservationSystem.model.enums.SeatClass;
 
 public interface SeatReleaseProjection {
-	Long getFlightId();
+  Long getFlightId();
 
-	SeatClass getSeatClass();
+  SeatClass getSeatClass();
 
-	Integer getTotalSeats();
+  Integer getTotalSeats();
 }

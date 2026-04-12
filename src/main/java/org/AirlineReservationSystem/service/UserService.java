@@ -1,5 +1,7 @@
 package org.AirlineReservationSystem.service;
 
+import java.util.List;
+import java.util.Optional;
 import org.AirlineReservationSystem.model.User;
 import org.AirlineReservationSystem.model.enums.Role;
 import org.AirlineReservationSystem.repository.UserRepository;
@@ -9,129 +11,139 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
-
 @Service
 @Transactional(readOnly = true)
 public class UserService {
 
-	private final UserRepository userRepo;
-	private final PasswordEncoder passwordEncoder;
+  private final UserRepository userRepo;
+  private final PasswordEncoder passwordEncoder;
 
-	public UserService(UserRepository userRepo, PasswordEncoder passwordEncoder) {
-		this.userRepo = userRepo;
-		this.passwordEncoder = passwordEncoder;
-	}
+  public UserService(UserRepository userRepo, PasswordEncoder passwordEncoder) {
+    this.userRepo = userRepo;
+    this.passwordEncoder = passwordEncoder;
+  }
 
-	@Transactional
-	public void register(User user) {
-		normalizeIdentity(user);
+  @Transactional
+  public void register(User user) {
+    normalizeIdentity(user);
 
-		if (user.getRole() == null) {
-			user.setRole(Role.USER);
-		}
+    if (user.getRole() == null) {
+      user.setRole(Role.USER);
+    }
 
-		if (user.getPassword() == null || user.getPassword().isBlank()) {
-			throw new UserValidationException("password", ErrorConstants.PASSWORD_REQUIRED_ERROR.getMessage());
-		}
+    if (user.getPassword() == null || user.getPassword().isBlank()) {
+      throw new UserValidationException(
+          "password", ErrorConstants.PASSWORD_REQUIRED_ERROR.getMessage());
+    }
 
-		if (userRepo.findByUsername(user.getUsername()).isPresent()) {
-			throw new UserValidationException("username", ErrorConstants.USERNAME_EXISTS_ERROR.getMessage());
-		}
+    if (userRepo.findByUsername(user.getUsername()).isPresent()) {
+      throw new UserValidationException(
+          "username", ErrorConstants.USERNAME_EXISTS_ERROR.getMessage());
+    }
 
-		if (userRepo.findByEmail(user.getEmail()).isPresent()) {
-			throw new UserValidationException("email", ErrorConstants.EMAIL_EXISTS_ERROR.getMessage());
-		}
+    if (userRepo.findByEmail(user.getEmail()).isPresent()) {
+      throw new UserValidationException("email", ErrorConstants.EMAIL_EXISTS_ERROR.getMessage());
+    }
 
-		user.setPassword(passwordEncoder.encode(user.getPassword()));
-		userRepo.save(user);
-	}
+    user.setPassword(passwordEncoder.encode(user.getPassword()));
+    userRepo.save(user);
+  }
 
-	@Transactional
-	public void update(User user) {
-		normalizeIdentity(user);
+  @Transactional
+  public void update(User user) {
+    normalizeIdentity(user);
 
-		User existing = userRepo.findById(user.getId()).orElseThrow(() -> new RuntimeException("User not found"));
+    User existing =
+        userRepo.findById(user.getId()).orElseThrow(() -> new RuntimeException("User not found"));
 
-		userRepo.findByUsername(user.getUsername()).filter(found -> !found.getId().equals(existing.getId())).ifPresent(found -> {
-			throw new UserValidationException("username", ErrorConstants.USERNAME_EXISTS_ERROR.getMessage());
-		});
+    userRepo
+        .findByUsername(user.getUsername())
+        .filter(found -> !found.getId().equals(existing.getId()))
+        .ifPresent(
+            found -> {
+              throw new UserValidationException(
+                  "username", ErrorConstants.USERNAME_EXISTS_ERROR.getMessage());
+            });
 
-		userRepo.findByEmail(user.getEmail()).filter(found -> !found.getId().equals(existing.getId())).ifPresent(found -> {
-			throw new UserValidationException("email", ErrorConstants.EMAIL_EXISTS_ERROR.getMessage());
-		});
+    userRepo
+        .findByEmail(user.getEmail())
+        .filter(found -> !found.getId().equals(existing.getId()))
+        .ifPresent(
+            found -> {
+              throw new UserValidationException(
+                  "email", ErrorConstants.EMAIL_EXISTS_ERROR.getMessage());
+            });
 
-		// Password handling
-		if (user.getPassword() == null || user.getPassword().isBlank()) {
-			user.setPassword(existing.getPassword());
-		} else {
-			user.setPassword(passwordEncoder.encode(user.getPassword()));
-		}
+    // Password handling
+    if (user.getPassword() == null || user.getPassword().isBlank()) {
+      user.setPassword(existing.getPassword());
+    } else {
+      user.setPassword(passwordEncoder.encode(user.getPassword()));
+    }
 
-		// Role handling (allow admin change, preserve otherwise)
-		if (user.getRole() == null) {
-			user.setRole(existing.getRole());
-		}
+    // Role handling (allow admin change, preserve otherwise)
+    if (user.getRole() == null) {
+      user.setRole(existing.getRole());
+    }
 
-		userRepo.save(user);
-	}
+    userRepo.save(user);
+  }
 
-	@Transactional
-	public boolean passwordMatches(User user, String rawPassword) {
+  @Transactional
+  public boolean passwordMatches(User user, String rawPassword) {
 
-		String stored = user.getPassword();
+    String stored = user.getPassword();
 
-		if (stored == null) return false;
+    if (stored == null) return false;
 
-		// Normal encoded case
-		if (stored.startsWith("$2")) {
-			return passwordEncoder.matches(rawPassword, stored);
-		}
+    // Normal encoded case
+    if (stored.startsWith("$2")) {
+      return passwordEncoder.matches(rawPassword, stored);
+    }
 
-		// Legacy plain-text fallback → migrate
-		if (stored.equals(rawPassword)) {
-			user.setPassword(passwordEncoder.encode(rawPassword));
-			userRepo.save(user);
-			return true;
-		}
+    // Legacy plain-text fallback → migrate
+    if (stored.equals(rawPassword)) {
+      user.setPassword(passwordEncoder.encode(rawPassword));
+      userRepo.save(user);
+      return true;
+    }
 
-		return false;
-	}
+    return false;
+  }
 
-	@Transactional
-	public void delete(User user) {
-		userRepo.delete(user);
-	}
+  @Transactional
+  public void delete(User user) {
+    userRepo.delete(user);
+  }
 
-	@Transactional
-	public void delete(Long id) {
-		userRepo.deleteById(id);
-	}
+  @Transactional
+  public void delete(Long id) {
+    userRepo.deleteById(id);
+  }
 
-	public List<User> findAll() {
-		return userRepo.findAll();
-	}
+  public List<User> findAll() {
+    return userRepo.findAll();
+  }
 
-	public Optional<User> findByUsername(String username) {
-		if (username == null) return Optional.empty();
-		return userRepo.findByUsername(username.trim().toLowerCase());
-	}
+  public Optional<User> findByUsername(String username) {
+    if (username == null) return Optional.empty();
+    return userRepo.findByUsername(username.trim().toLowerCase());
+  }
 
-	public Optional<User> findByEmail(String email) {
-		return userRepo.findByEmail(email);
-	}
+  public Optional<User> findByEmail(String email) {
+    return userRepo.findByEmail(email);
+  }
 
-	public Optional<User> findById(Long id) {
-		return userRepo.findById(id);
-	}
+  public Optional<User> findById(Long id) {
+    return userRepo.findById(id);
+  }
 
-	private void normalizeIdentity(User user) {
-		if (user.getUsername() != null) {
-			user.setUsername(user.getUsername().trim().toLowerCase());
-		}
-		if (user.getEmail() != null) {
-			user.setEmail(user.getEmail().trim().toLowerCase());
-		}
-	}
+  private void normalizeIdentity(User user) {
+    if (user.getUsername() != null) {
+      user.setUsername(user.getUsername().trim().toLowerCase());
+    }
+    if (user.getEmail() != null) {
+      user.setEmail(user.getEmail().trim().toLowerCase());
+    }
+  }
 }

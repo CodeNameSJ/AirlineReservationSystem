@@ -1,20 +1,20 @@
 package org.AirlineReservationSystem.config;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 class SecurityBeansConfigTest {
 
-	private final SecurityBeansConfig securityBeansConfig = new SecurityBeansConfig();
+  private final SecurityBeansConfig securityBeansConfig = new SecurityBeansConfig();
 
-	@Test
-	void exposesBcryptPasswordEncoder() {
-		PasswordEncoder passwordEncoder = securityBeansConfig.passwordEncoder();
+  @Test
+  void exposesBcryptPasswordEncoder() {
+    PasswordEncoder passwordEncoder = securityBeansConfig.passwordEncoder();
 
-		assertThat(passwordEncoder).isInstanceOf(BCryptPasswordEncoder.class);
-		assertThat(passwordEncoder.matches("secret", passwordEncoder.encode("secret"))).isTrue();
-	}
+    assertThat(passwordEncoder).isInstanceOf(BCryptPasswordEncoder.class);
+    assertThat(passwordEncoder.matches("secret", passwordEncoder.encode("secret"))).isTrue();
+  }
 }
